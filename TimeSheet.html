@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Sheet</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>Modern Tech</h2>
+                <p>Solutions</p>
+            </div>
+
+            <nav class="sidebar-menu main-menu">
+                <a href="index.html" class="menu-item"><i class="icon-dashboard"></i> Dashboard</a>
+                <a href="EmployeeRecords.html" class="menu-item"><i class="icon-employees"></i> Employees</a>
+                <a href="index.html" class="menu-item"><i class="icon-timeoff"></i> Time Off</a>
+                <a href="#" class="menu-item"><i class="icon-attendance"></i> Attendance</a>
+                <a href="#" class="menu-item"><i class="icon-payroll"></i> PayRoll</a>
+                <a href="#" class="menu-item"><i class="icon-performance"></i> Performance</a>
+                <a href="#" class="menu-item"><i class="icon-reports"></i> Reports</a>
+                <a href="Settings.html" class="menu-item"><i class="icon-settings"></i> Settings</a>
+            </nav>
+
+            <hr class="sidebar-divider">
+
+            <nav class="sidebar-menu sub-menu">
+                <a href="TimeSheet.html" class="menu-item active">Time Sheet</a>
+                <a href="TimeTracker.html" class="menu-item">Time Tracker</a>
+                <a href="Scheduling.html" class="menu-item">Scheduling</a>
+                <a href="EmployeeRecords.html" class="menu-item">Employee Records</a>
+                <a href="ReviewCycle.html" class="menu-item">Review Cycle</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-admin">HR Admin</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <p>Time Sheet</p>
+            </header>
+
+            <section class="balance-section">
+                <h1 class="reflected-title">Time Sheet</h1>
+                <p style="color: var(--text-muted);">Time sheet content coming soon.</p>
+            </section>
+        </main>
+    </div>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeSwift - Timesheet</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-layout">
+        
+        <aside class="app-sidebar">
+            <div class="sidebar-top">
+                <div class="brand">
+                    <span class="brand-logo">❖</span>
+                    <span class="brand-name">TimeSwift</span>
+                </div>
+                
+                <div class="team-selector">
+                    <div class="team-icon">I</div>
+                    <div class="team-info">
+                        <h4>Intercom</h4>
+                        <p>Marketing Team</p>
+                    </div>
+                    <span class="chevron">▼</span>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link"><span class="icon">📊</span> Dashboard</a>
+                <a href="#" class="nav-link"><span class="icon">📋</span> Tasks</a>
+                <a href="#" class="nav-link"><span class="icon">📢</span> Issues</a>
+                <a href="#" class="nav-link active"><span class="icon">🕒</span> Timesheet</a>
+                <a href="#" class="nav-link"><span class="icon">✅</span> Milestones</a>
+                <a href="#" class="nav-link"><span class="icon">📈</span> Reports</a>
+                
+                <div class="nav-section-title">MANAGE</div>
+                <a href="#" class="nav-link"><span class="icon">📄</span> Documents</a>
+                <a href="#" class="nav-link"><span class="icon">💰</span> Finance</a>
+                <a href="#" class="nav-link"><span class="icon">👤</span> User</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <a href="#" class="nav-link"><span class="icon">❓</span> Help</a>
+            </div>
+        </aside>
+
+        <main class="app-main">
+            
+            <header class="top-bar">
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search...">
+                    <kbd class="search-shortcut">⌘ K</kbd>
+                </div>
+                
+                <div class="user-actions">
+                    <button class="action-icon-btn">🕒</button>
+                    <button class="action-icon-btn notification-btn">🔔</button>
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/36" alt="Avatar" class="avatar">
+                        <div class="profile-meta">
+                            <h4>Dibbendo</h4>
+                            <p>Designer</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                
+                <div class="action-bar-row">
+                    <h1 class="page-title">Timesheet</h1>
+                    <div class="view-controls">
+                        <div class="toggle-group">
+                            <button class="toggle-btn active">☰ List</button>
+                            <button class="toggle-btn">☷ Grid</button>
+                        </div>
+                        <button class="btn btn-secondary">📤 Export</button>
+                        <button class="btn btn-primary"> Add Log Time <span class="btn-arrow">▼</span></button>
+                    </div>
+                </div>
+
+                <div class="filters-row">
+                    <div class="filters-left">
+                        <div class="dropdown-filter">Group By Date <span class="chevron">▼</span></div>
+                        <div class="vertical-divider"></div>
+                        <span class="filter-label">Filters:</span>
+                        <div class="active-filter-tag">Approved <span class="remove-tag">×</span></div>
+                        <div class="active-filter-tag">Pending <span class="remove-tag">×</span></div>
+                        <button class="btn-clear-filter">Clear Filter</button>
+                    </div>
+                    <div class="filters-right">
+                        <button class="btn btn-filter-toggle">🎛 Filters</button>
+                        <div class="date-range-picker">
+                            📅 10 Mar - 21 Mar, 2023
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-header-grid">
+                    <div class="col-select-all"><input type="checkbox"></div>
+                    <div class="col-task">Task/Issues</div>
+                    <div class="col-user">User</div>
+                    <div class="col-billing">Billing Type</div>
+                    <div class="col-status">Status</div>
+                    <div class="col-period">Time Period</div>
+                    <div class="col-logged">Logged Time</div>
+                    <div class="col-actions">⚙️</div>
+                </div>
+
+                <div class="timesheet-group">
+                    <div class="group-header">
+                        <div class="group-header-left">
+                            <input type="checkbox">
+                            <span class="group-date">12/10/2023</span>
+                            <span class="group-count">2 items</span>
+                            <button class="btn-group-action delete-action">🗑 Delete</button>
+                            <button class="btn-group-action">Time : Ascending</button>
+                        </div>
+                        <div class="group-header-right">
+                            <span class="group-total-time">27:32:12</span>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                    </div>
+                    
+                    <div class="group-rows-container">
+                        <div class="timesheet-row">
+                            <div class="col-checkbox"><input type="checkbox"></div>
+                            <div class="col-task">
+                                <span class="indicator blue"></span>
+                                <span class="task-id">DC-T535</span>
+                                <span class="task-name">Artistic Alchemy</span>
+                            </div>
+                            <div class="col-user">Alexe Jordan</div>
+                            <div class="col-billing text-muted">Billable</div>
+                            <div class="col-status"><span class="badge badge-approved">● Approved</span></div>
+                            <div class="col-period text-muted">09:23 - 12:23</div>
+                            <div class="col-logged font-numeric">12:34:23</div>
+                            <div class="col-actions"><button class="btn-row-menu">•••</button></div>
+                        </div>
+                        <div class="timesheet-row selected">
+                            <div class="col-checkbox"><input type="checkbox" checked></div>
+                            <div class="col-task">
+                                <span class="indicator purple"></span>
+                                <span class="task-id">DC-T345</span>
+                                <span class="task-name">Visual Vortex</span>
+                            </div>
+                            <div class="col-user">Kate Tanner</div>
+                            <div class="col-billing text-muted">Non Billable</div>
+                            <div class="col-status"><span class="badge badge-pending">● Pending</span></div>
+                            <div class="col-period text-muted">12:32 - 06:55</div>
+                            <div class="col-logged font-numeric">06:26:34</div>
+                            <div class="col-actions"><button class="btn-row-menu">•••</button></div>
+                        </div>
+                        <div class="timesheet-row">
+                            <div class="col-checkbox"><input type="checkbox"></div>
+                            <div class="col-task">
+                                <span class="indicator blue"></span>
+                                <span class="task-id">DC-T856</span>
+                                <span class="task-name">Urban Graphics</span>
+                            </div>
+                            <div class="col-user">Michael Knight</div>
+                            <div class="col-billing text-muted">Non Billable</div>
+                            <div class="col-status"><span class="badge badge-pending">● Pending</span></div>
+                            <div class="col-period text-muted">09:21 - 12:33</div>
+                            <div class="col-logged font-numeric">03:13:21</div>
+                            <div class="col-actions"><button class="btn-row-menu">•••</button></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timesheet-group">
+                    <div class="group-header">
+                        <div class="group-header-left">
+                            <input type="checkbox">
+                            <span class="group-date">11/10/2023</span>
+                        </div>
+                        <div class="group-header-right">
+                            <span class="group-total-time">23:43:21</span>
+                            <span class="accordion-arrow">▼</span>
+                        </div>
+                    </div>
+                    <div class="group-rows-container">
+                        <div class="timesheet-row">
+                            <div class="col-checkbox"><input type="checkbox"></div>
+                            <div class="col-task">
+                                <span class="indicator green"></span>
+                                <span class="task-id">DC-T322</span>
+                                <span class="task-name">Fresh Ink</span>
+                            </div>
+                            <div class="col-user">Alexe Jordan</div>
+                            <div class="col-billing text-muted">Billable</div>
+                            <div class="col-status"><span class="badge badge-approved">● Approved</span></div>
+                            <div class="col-period text-muted">09:12 - 12:34</div>
+                            <div class="col-logged font-numeric">05:32:21</div>
+                            <div class="col-actions"><button class="btn-row-menu">•••</button></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

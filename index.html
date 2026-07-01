@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Request Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>Modern Tech</h2>
+                <p>Solutions</p>
+            </div>
+
+            <nav class="sidebar-menu main-menu">
+                <a href="index.html" class="menu-item"><i class="icon-dashboard"></i> Dashboard</a>
+                <a href="EmployeeRecords.html" class="menu-item"><i class="icon-employees"></i> Employees</a>
+                <a href="index.html" class="menu-item active"><i class="icon-timeoff"></i> Time Off</a>
+                <a href="#" class="menu-item"><i class="icon-attendance"></i> Attendance</a>
+                <a href="#" class="menu-item"><i class="icon-payroll"></i> PayRoll</a>
+                <a href="#" class="menu-item"><i class="icon-performance"></i> Performance</a>
+                <a href="#" class="menu-item"><i class="icon-reports"></i> Reports</a>
+                <a href="Settings.html" class="menu-item"><i class="icon-settings"></i> Settings</a>
+            </nav>
+
+            <hr class="sidebar-divider">
+
+            <nav class="sidebar-menu sub-menu">
+                <a href="TimeSheet.html" class="menu-item">Time Sheet</a>
+                <a href="TimeTracker.html" class="menu-item">Time Tracker</a>
+                <a href="Scheduling.html" class="menu-item">Scheduling</a>
+                <a href="EmployeeRecords.html" class="menu-item">Employee Records</a>
+                <a href="ReviewCycle.html" class="menu-item">Review Cycle</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-admin">HR Admin</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <p>Leave Request Management</p>
+            </header>
+
+            <section class="balance-section">
+                <h1 class="section-title reflected-title">Leave Balance</h1>
+                <div class="cards-grid">
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <span>Sick Leave</span>
+                            <span class="card-icon icon-sick"></span>
+                        </div>
+                        <div class="card-body"><strong>5 / 10</strong> days used</div>
+                    </div>
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <span>Vacation</span>
+                            <span class="card-icon icon-vacation"></span>
+                        </div>
+                        <div class="card-body"><strong>3 / 10</strong> days used</div>
+                    </div>
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <span>Casual Leave</span>
+                            <span class="card-icon icon-casual"></span>
+                        </div>
+                        <div class="card-body"><strong>6 / 10</strong> days used</div>
+                    </div>
+                    <div class="balance-card">
+                        <div class="card-header">
+                            <span>Maternity/Paternity</span>
+                            <span class="card-icon icon-parental"></span>
+                        </div>
+                        <div class="card-body"><strong>2 / 10</strong> days used</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="history-section">
+                <div class="history-header">
+                    <h1 class="section-title reflected-title">Leave Request History</h1>
+                    <div class="history-filters">
+                        <button class="btn-filter" id="filterStatus">Leave Status &gt;</button>
+                        <button class="btn-filter" id="filterType">Leave Type &gt;</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Leave Type</th>
+                                <th>Dates Requested</th>
+                                <th>Reason</th>
+                                <th>Submitted On</th>
+                                <th>Status</th>
+                                <th>Assigned To</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
