@@ -1,0 +1,18 @@
+nav{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100vh;
+  display: flex;
+  background: midnightblue;
+}
+
+li a{
+  color: white;
+  text-decoration: none;
+}
+
+table{
+  margin-left: 200px;
+}
