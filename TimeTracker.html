@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>Modern Tech</h2>
+                <p>Solutions</p>
+            </div>
+
+            <nav class="sidebar-menu main-menu">
+                <a href="index.html" class="menu-item"><i class="icon-dashboard"></i> Dashboard</a>
+                <a href="EmployeeRecords.html" class="menu-item"><i class="icon-employees"></i> Employees</a>
+                <a href="index.html" class="menu-item active"><i class="icon-timeoff"></i> Time Off</a>
+                <a href="#" class="menu-item"><i class="icon-attendance"></i> Attendance</a>
+                <a href="#" class="menu-item"><i class="icon-payroll"></i> PayRoll</a>
+                <a href="#" class="menu-item"><i class="icon-performance"></i> Performance</a>
+                <a href="#" class="menu-item"><i class="icon-reports"></i> Reports</a>
+                <a href="Settings.html" class="menu-item"><i class="icon-settings"></i> Settings</a>
+            </nav>
+
+            <hr class="sidebar-divider">
+
+            <nav class="sidebar-menu sub-menu">
+                <a href="TimeSheet.html" class="menu-item">Time Sheet</a>
+                <a href="Time Tracker.html" class="menu-item active">Time Tracker</a>
+                <a href="Scheduling.html" class="menu-item">Scheduling</a>
+                <a href="EmployeeRecords.html" class="menu-item">Employee Records</a>
+                <a href="ReviewCycle.html" class="menu-item">Review Cycle</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-admin">HR Admin</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <p>Time Tracker</p>
+            </header>
+
+            <section class="balance-section">
+                <div class="content-body">
+                
+                <div class="tracker-recorder-panel">
+                    <input type="text" class="tracker-input" placeholder="What are you working on right now?">
+                    
+                    <div class="recorder-meta">
+                        <button class="project-select-btn">📁 Select Project <span class="chevron">▼</span></button>
+                        <div class="vertical-divider"></div>
+                        <span class="billing-toggle active" title="Billable">💲</span>
+                        <div class="vertical-divider"></div>
+                        <span class="live-timer-digits">00:00:00</span>
+                        <button class="btn-timer-trigger start">Start</button>
+                    </div>
+                </div>
+
+                <div class="day-group-title-row">
+                    <h3>Today, 2 July</h3>
+                    <div class="day-summary-total">
+                        <span class="text-muted">Total:</span> <strong>06:45:12</strong>
+                    </div>
+                </div>
+
+                <div class="tracker-list-container">
+                    
+                    <div class="tracker-log-item">
+                        <div class="log-details">
+                            <span class="indicator purple"></span>
+                            <span class="log-task-title">Responsive UI Layout & Gallery Components</span>
+                            <span class="project-tag-label">Frontend Web Development</span>
+                        </div>
+                        <div class="log-meta">
+                            <span class="billing-status billable">💲</span>
+                            <span class="log-time-range text-muted">12:32 - 15:45</span>
+                            <span class="log-duration font-numeric">03:13:00</span>
+                            <button class="btn-play-again">▶</button>
+                        </div>
+                    </div>
+
+                    <div class="tracker-log-item">
+                        <div class="log-details">
+                            <span class="indicator blue"></span>
+                            <span class="log-task-title">Lead Generation & Junior Leadership Sync</span>
+                            <span class="project-tag-label">BPO Operations</span>
+                        </div>
+                        <div class="log-meta">
+                            <span class="billing-status non-billable text-muted">💲</span>
+                            <span class="log-time-range text-muted">09:00 - 11:32</span>
+                            <span class="log-duration font-numeric">02:32:00</span>
+                            <button class="btn-play-again">▶</button>
+                        </div>
+                    </div>
+
+                    <div class="tracker-log-item">
+                        <div class="log-details">
+                            <span class="indicator green"></span>
+                            <span class="log-task-title">Life Choices Academy Training Session</span>
+                            <span class="project-tag-label">Software Learnership</span>
+                        </div>
+                        <div class="log-meta">
+                            <span class="billing-status non-billable text-muted">💲</span>
+                            <span class="log-time-range text-muted">08:00 - 09:00</span>
+                            <span class="log-duration font-numeric">01:00:12</span>
+                            <button class="btn-play-again">▶</button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

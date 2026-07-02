@@ -17,7 +17,7 @@
             <nav class="sidebar-menu main-menu">
                 <a href="index.html" class="menu-item"><i class="icon-dashboard"></i> Dashboard</a>
                 <a href="EmployeeRecords.html" class="menu-item"><i class="icon-employees"></i> Employees</a>
-                <a href="index.html" class="menu-item"><i class="icon-timeoff"></i> Time Off</a>
+                <a href="index.html" class="menu-item active"><i class="icon-timeoff"></i> Time Off</a>
                 <a href="#" class="menu-item"><i class="icon-attendance"></i> Attendance</a>
                 <a href="#" class="menu-item"><i class="icon-payroll"></i> PayRoll</a>
                 <a href="#" class="menu-item"><i class="icon-performance"></i> Performance</a>
@@ -47,11 +47,113 @@
 
             <section class="balance-section">
                 <h1 class="reflected-title">Scheduling</h1>
-                <p style="color: var(--text-muted);">Scheduling content coming soon.</p>
+                <div class="content-body">
+                
+                <div class="action-bar-row">
+                    <h1 class="page-title">Scheduling</h1>
+                    <div class="view-controls">
+                        <div class="toggle-group">
+                            <button class="toggle-btn">Day</button>
+                            <button class="toggle-btn">Week</button>
+                            <button class="toggle-btn active">Month</button>
+                        </div>
+                        <button class="btn btn-secondary">📤 Export</button>
+                        <button class="btn btn-primary">Add Shift +</button>
+                    </div>
+                </div>
+
+                <div class="filters-row">
+                    <div class="filters-left">
+                        <div class="calendar-navigator">
+                            <button class="btn-nav-arrow">◀</button>
+                            <span class="current-month">March 2023</span>
+                            <button class="btn-nav-arrow">▶</button>
+                        </div>
+                        <div class="vertical-divider"></div>
+                        <button class="btn-clear-filter">Today</button>
+                    </div>
+                    <div class="filters-right">
+                        <button class="btn btn-filter-toggle">🎛 Filter Members</button>
+                    </div>
+                </div>
+
+                <div class="calendar-container">
+                    
+                    <div class="calendar-weekdays">
+                        <div>Mon</div>
+                        <div>Tue</div>
+                        <div>Wed</div>
+                        <div>Thu</div>
+                        <div>Fri</div>
+                        <div>Sat</div>
+                        <div>Sun</div>
+                    </div>
+
+                    <div class="calendar-days-grid">
+                        <div class="day-cell outside">
+                            <span class="day-number">27</span>
+                        </div>
+                        <div class="day-cell outside">
+                            <span class="day-number">28</span>
+                        </div>
+                        
+                        <div class="day-cell">
+                            <span class="day-number">1</span>
+                            <div class="event-tag badge-approved">09:00 Design Sprint</div>
+                        </div>
+                        <div class="day-cell">
+                            <span class="day-number">2</span>
+                        </div>
+                        <div class="day-cell">
+                            <span class="day-number">3</span>
+                            <div class="event-tag badge-pending">14:30 Team Review</div>
+                        </div>
+                        <div class="day-cell">
+                            <span class="day-number">4</span>
+                        </div>
+                        <div class="day-cell">
+                            <span class="day-number">5</span>
+                        </div>
+                        <div class="day-cell weekend">
+                            <span class="day-number">6</span>
+                        </div>
+                        <div class="day-cell weekend">
+                            <span class="day-number">7</span>
+                        </div>
+
+                        <div class="day-cell">
+                            <span class="day-number">8</span>
+                        </div>
+                        <div class="day-cell">
+                            <span class="day-number">9</span>
+                        </div>
+                        <div class="day-cell today">
+                            <span class="day-number">10</span>
+                            <div class="event-tag badge-approved">10:00 Client Pitch</div>
+                            <div class="event-tag badge-pending">12:30 UX Sync</div>
+                        </div>
+                        <div class="day-cell">
+                            <span class="day-number">11</span>
+                        </div>
+                        <div class="day-cell">
+                            <span class="day-number">12</span>
+                        </div>
+                        <div class="day-cell weekend">
+                            <span class="day-number">13</span>
+                        </div>
+                        <div class="day-cell weekend">
+                            <span class="day-number">14</span>
+                        </div>
+                        
+                        </div>
+                </div>
+
+            </div>
             </section>
         </main>
     </div>
 
+    
     <script src="script.js"></script>
 </body>
 </html>

@@ -17,7 +17,7 @@
             <nav class="sidebar-menu main-menu">
                 <a href="index.html" class="menu-item"><i class="icon-dashboard"></i> Dashboard</a>
                 <a href="EmployeeRecords.html" class="menu-item"><i class="icon-employees"></i> Employees</a>
-                <a href="index.html" class="menu-item"><i class="icon-timeoff"></i> Time Off</a>
+                <a href="index.html" class="menu-item active"><i class="icon-timeoff"></i> Time Off</a>
                 <a href="#" class="menu-item"><i class="icon-attendance"></i> Attendance</a>
                 <a href="#" class="menu-item"><i class="icon-payroll"></i> PayRoll</a>
                 <a href="#" class="menu-item"><i class="icon-performance"></i> Performance</a>
@@ -47,7 +47,203 @@
 
             <section class="balance-section">
                 <h1 class="reflected-title">Review Cycle</h1>
-                <p style="color: var(--text-muted);">Review cycle content coming soon.</p>
+                <div class="content-body">
+                
+                <div class="action-bar-row">
+                    <h1 class="page-title">Review Cycle</h1>
+                    <div class="view-controls">
+                        <button class="btn btn-secondary">📊 Historic Data</button>
+                        <button class="btn btn-primary">Launch New Cycle +</button>
+                    </div>
+                </div>
+
+                <div class="review-stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-label">Active Cycles</span>
+                        <div class="stat-value">Q2 Performance Review</div>
+                        <span class="stat-subtext text-muted">Ends Jul 15, 2026</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Overall Completion</span>
+                        <div class="stat-value">68%</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: 68%;"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Pending Sign-offs</span>
+                        <div class="stat-value">12</div>
+                        <span class="stat-subtext urgent">⚠️ 4 Days remaining</span>
+                    </div>
+                </div>
+
+                <div class="filters-row">
+                    <div class="filters-left">
+                        <div class="dropdown-filter">All Departments <span class="chevron">▼</span></div>
+                        <div class="vertical-divider"></div>
+                        <span class="filter-label">Status:</span>
+                        <div class="active-filter-tag">In Progress <span class="remove-tag">×</span></div>
+                    </div>
+                    <div class="filters-right">
+                        <button class="btn btn-filter-toggle">🎛 Filters</button>
+                    </div>
+                </div>
+
+                <div class="review-header-grid">
+                    <div class="col-select"><input type="checkbox"></div>
+                    <div class="col-employee">Employee</div>
+                    <div class="col-reviewer">Reviewer</div>
+                    <div class="col-type">Cycle Type</div>
+                    <div class="col-rstatus">Status</div>
+                    <div class="col-score">Rating / Score</div>
+                    <div class="col-raction">Action</div>
+                </div>
+
+                <div class="review-table-body">
+                    
+                    <!-- Row 1 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Sibongile Nkosi</span>
+                            <span class="employee-role">Software Engineer</span>
+                        </div>
+                        <div class="col-reviewer">Lungile Moyo</div>
+                        <div class="col-type">360 Peer Review</div>
+                        <div class="col-rstatus"><span class="badge badge-approved">● Completed</span></div>
+                        <div class="col-score font-numeric">4.8 / 5.0</div>
+                        <div class="col-raction"><button class="btn btn-secondary btn-sm">View Report</button></div>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Lungile Moyo</span>
+                            <span class="employee-role">HR Manager</span>
+                        </div>
+                        <div class="col-reviewer">Executive Panel</div>
+                        <div class="col-type">Manager Assessment</div>
+                        <div class="col-rstatus"><span class="badge badge-pending">● In Progress</span></div>
+                        <div class="col-score font-numeric text-muted">Pending</div>
+                        <div class="col-raction"><button class="btn btn-primary btn-sm">Remind</button></div>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Thabo Molefe</span>
+                            <span class="employee-role">Quality Analyst</span>
+                        </div>
+                        <div class="col-reviewer">Self Review</div>
+                        <div class="col-type">Annual Appraisal</div>
+                        <div class="col-rstatus"><span class="badge badge-pending">● In Progress</span></div>
+                        <div class="col-score font-numeric text-muted">Pending</div>
+                        <div class="col-raction"><button class="btn btn-primary btn-sm">Remind</button></div>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Keshav Naidoo</span>
+                            <span class="employee-role">Sales Representative</span>
+                        </div>
+                        <div class="col-reviewer">Lungile Moyo</div>
+                        <div class="col-type">Quarterly Review</div>
+                        <div class="col-rstatus"><span class="badge badge-approved">● Completed</span></div>
+                        <div class="col-score font-numeric">4.2 / 5.0</div>
+                        <div class="col-raction"><button class="btn btn-secondary btn-sm">View Report</button></div>
+                    </div>
+
+                    <!-- Row 5 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Zanele Khumalo</span>
+                            <span class="employee-role">Marketing Specialist</span>
+                        </div>
+                        <div class="col-reviewer">Farai Gumbo</div>
+                        <div class="col-type">360 Peer Review</div>
+                        <div class="col-rstatus"><span class="badge badge-pending">● In Progress</span></div>
+                        <div class="col-score font-numeric text-muted">Pending</div>
+                        <div class="col-raction"><button class="btn btn-primary btn-sm">Remind</button></div>
+                    </div>
+
+                    <!-- Row 6 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Sipho Zulu</span>
+                            <span class="employee-role">UI/UX Designer</span>
+                        </div>
+                        <div class="col-reviewer">Lungile Moyo</div>
+                        <div class="col-type">Manager Assessment</div>
+                        <div class="col-rstatus"><span class="badge badge-approved">● Completed</span></div>
+                        <div class="col-score font-numeric">4.6 / 5.0</div>
+                        <div class="col-raction"><button class="btn btn-secondary btn-sm">View Report</button></div>
+                    </div>
+
+                    <!-- Row 7 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Naledi Moeketsi</span>
+                            <span class="employee-role">DevOps Engineer</span>
+                        </div>
+                        <div class="col-reviewer">Self Review</div>
+                        <div class="col-type">Annual Appraisal</div>
+                        <div class="col-rstatus"><span class="badge badge-pending">● In Progress</span></div>
+                        <div class="col-score font-numeric text-muted">Pending</div>
+                        <div class="col-raction"><button class="btn btn-primary btn-sm">Remind</button></div>
+                    </div>
+
+                    <!-- Row 8 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Farai Gumbo</span>
+                            <span class="employee-role">Content Strategist</span>
+                        </div>
+                        <div class="col-reviewer">Zanele Khumalo</div>
+                        <div class="col-type">360 Peer Review</div>
+                        <div class="col-rstatus"><span class="badge badge-approved">● Completed</span></div>
+                        <div class="col-score font-numeric">4.0 / 5.0</div>
+                        <div class="col-raction"><button class="btn btn-secondary btn-sm">View Report</button></div>
+                    </div>
+
+                    <!-- Row 9 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Karabo Dlamini</span>
+                            <span class="employee-role">Accountant</span>
+                        </div>
+                        <div class="col-reviewer">Lungile Moyo</div>
+                        <div class="col-type">Manager Assessment</div>
+                        <div class="col-rstatus"><span class="badge badge-pending">● In Progress</span></div>
+                        <div class="col-score font-numeric text-muted">Pending</div>
+                        <div class="col-raction"><button class="btn btn-primary btn-sm">Remind</button></div>
+                    </div>
+
+                    <!-- Row 10 -->
+                    <div class="review-row">
+                        <div class="col-select"><input type="checkbox"></div>
+                        <div class="col-employee">
+                            <span class="employee-name">Fatima Patel</span>
+                            <span class="employee-role">Customer Support Lead</span>
+                        </div>
+                        <div class="col-reviewer">Self Review</div>
+                        <div class="col-type">Annual Appraisal</div>
+                        <div class="col-rstatus"><span class="badge badge-approved">● Completed</span></div>
+                        <div class="col-score font-numeric">4.5 / 5.0</div>
+                        <div class="col-raction"><button class="btn btn-secondary btn-sm">View Report</button></div>
+                    </div>
+
+                </div>
+
+            </div>
             </section>
         </main>
     </div>
