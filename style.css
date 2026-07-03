@@ -8,11 +8,25 @@ nav{
   background: midnightblue;
 }
 
+ul{
+  list-style-type: none;
+}
+
 li a{
+  display: block;
   color: white;
   text-decoration: none;
+  padding: 14px 16px;
+  font-size: x-large;
+  font-weight: bold;
 }
 
 table{
   margin-left: 200px;
+}
+
+table,th,td{
+  border: 2px solid black;
+  border-collapse: collapse;
+  padding: 10px;
 }
