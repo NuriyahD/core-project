@@ -156,9 +156,36 @@ const payrollData = [
   }
 ]
 
+const employee = JSON.parse(localStorage.getItem("selectedEmployee"));
+
+const payroll = payrollData.find(
+    p => p.employeeId === employee.employeeId
+);
+
 const hourlyRates = payrollData.map(employee => ({
     employeeId: employee.employeeId,
     hourlyRate: (employee.finalSalary / (employee.hoursWorked - employee.leaveDeductions)).toFixed(2)
 }));
 
-console.log(hourlyRates);
+const hourlyDeductions = payroll.leaveDeductions*hourlyRates;
+document.getElementById("deduction").textContent = "R" + hourlyDeductions.toFixed(2);
+
+document.getElementById("employeeName").textContent = employee.name;
+
+document.getElementById("salary").textContent = "R" + employee.salary.toLocaleString();
+
+document.getElementById("deduction").textContent = payroll.leaveDeductions + " Hours";
+
+function generatePayslip(){
+    localStorage.setItem("selectedEmployee", JSON.stringify(employee))
+
+    window.location.href = "payslip.html"
+}
+
+function generatePayslip(selectedEmployee) {
+    const employee = employees.find(emp => emp.employeeId ===1)
+    const payroll = payrollData.find(pay => pay.employeeId)
+    localStorage.setItem("selectedEmployee", JSON.stringify(employee));
+
+    window.location.href = "payslip.html"
+}
