@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <style>
     :root {
       --surface: #fbf9f9;
@@ -71,6 +72,15 @@
       max-width: 1480px;
       margin: 0 auto;
       padding: var(--space-lg);
+      padding-left: calc(var(--space-lg) + 220px + 24px);
+    }
+
+    .sidebar-hidden .sidebar {
+      display: none;
+    }
+
+    .sidebar-hidden .page-shell {
+      padding-left: var(--space-lg);
     }
 
     header.main-header {
@@ -189,7 +199,7 @@
     /* Summary cards for review metrics */
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: var(--space-md);
       margin-bottom: var(--space-lg);
     }
@@ -228,15 +238,80 @@
       line-height: 1.5;
     }
 
+    .efficiency-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      grid-column: span 2;
+      min-height: 148px;
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      border-color: transparent;
+      color: #ffffff;
+    }
+
+    .efficiency-card small,
+    .efficiency-card .value,
+    .efficiency-card .meta {
+      color: #ffffff;
+    }
+
+    .efficiency-card small {
+      opacity: 0.72;
+      margin-bottom: 8px;
+    }
+
+    .efficiency-card .value {
+      font-size: 42px;
+      line-height: 1;
+    }
+
+    .efficiency-card .meta {
+      margin-top: 8px;
+      font-weight: 700;
+      opacity: 0.82;
+    }
+
+    .efficiency-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .efficiency-trend {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-full);
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .summary-chart-card {
+      min-height: 190px;
+    }
+
+    .summary-chart-container {
+      position: relative;
+      width: 100%;
+      height: 128px;
+      margin-top: 12px;
+    }
+
     /* Main content split between review table and details panel */
     .content-grid {
       display: grid;
-      grid-template-columns: 1.55fr 1fr;
+      grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.9fr);
       gap: 20px;
       margin-bottom: var(--space-lg);
     }
 
     .panel {
+      min-width: 0;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
@@ -283,7 +358,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 720px;
+      min-width: 760px;
     }
 
     th,
@@ -333,6 +408,7 @@
 
     .detail-card {
       display: grid;
+      order: 2;
       gap: 16px;
     }
 
@@ -492,53 +568,143 @@
       line-height: 1.7;
     }
     .sidebar {
-      position: sticky;
+      width: 220px;
+      flex-shrink: 0;
+      padding: 18px 18px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      position: fixed;
       top: 24px;
-      left: 0;
+      left: 24px;
       height: auto;
       overflow-y: visible;
+      z-index: 40;
+    }
+
+    .sidebar-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      background: var(--surface-container-lowest);
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .sidebar-toggle:hover {
+      background: var(--surface-container);
+    }
+
+    .sidebar-hidden .sidebar {
+      display: none;
+    }
+
+    .sidebar-show-btn {
+      display: none;
+      position: fixed;
+      top: 28px;
+      left: 12px;
+      z-index: 50;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-hidden .sidebar-show-btn {
+      display: inline-flex;
+    }
+
+    .sidebar-hidden .page-shell {
+      padding-left: var(--space-lg);
+    }
+
+    /* Charts styling */
+    .charts-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: var(--space-md);
+      margin-top: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+
+    .chart-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-panel h3 {
+      margin: 0 0 18px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--on-surface);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      width: 100%;
     }
 
     @media (max-width: 1080px) {
-      .page-shell {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        position: static;
-        max-width: none;
-      }
-
-      .sidebar ul {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .summary-grid, .content-grid {
+      .content-grid {
         grid-template-columns: 1fr;
       }
 
-      .toolbar {
-        align-items: stretch;
+      .charts-section {
+        grid-template-columns: 1fr;
       }
 
-      table {
-        min-width: 0;
+      .page-shell {
+        padding-left: var(--space-lg);
+      }
+
+      .sidebar {
+        position: static;
+        width: 220px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .efficiency-card {
+        grid-column: span 1;
       }
     }
   </style>
 </head>
 <body>
   
+  <button id="sidebarShowBtn" class="sidebar-toggle sidebar-show-btn" type="button" aria-label="Show sidebar">
+    <i class="bx bx-chevron-right"></i>
+  </button>
+
   <div class="page-shell">
-    <nav class="sidebar" style="position: sticky; top: 24px; left: 0; height: auto; overflow-y: visible;">
-      <a href="javascript:void(0)" class="closebtn" onclick"closeNav()">&times;</a>
+    <nav class="sidebar">
+      <button id="sidebarToggleBtn" class="sidebar-toggle" type="button" aria-label="Toggle sidebar">
+        <i class="bx bx-chevron-left"></i>
+      </button>
       <ul>
         <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="performance-review.html" class="active">Performance Reviews</a></li>
-        <li><a href="payroll.html">Payroll</a></li>
+        <li><a href="employees.html">Employees</a></li>
+        <li><a href="time-off.html">Time Off</a></li>
         <li><a href="attendance.html">Attendance</a></li>
+        <li><a href="payroll.html">PayRoll</a></li>
+        <li><a href="performance-review.html" class="active">Performance</a></li>
+        <li><a href="reports.html">Reports</a></li>
         <li><a href="settings.html">Settings</a></li>
+        <li><a href="timesheet.html">Time Sheet</a></li>
+        <li><a href="time-tracker.html">Time Tracker</a></li>
+        <li><a href="scheduling.html">Scheduling</a></li>
+        <li><a href="employee-records.html">Employee Records</a></li>
+        <li><a href="review-cycle.html">Review Cycle</a></li>
+        <li><a href="hr-admin.html">HR Admin</a></li>
       </ul>
     </nav>
 
@@ -556,10 +722,15 @@
 
       <div class="main-content">
         <section class="summary-grid">
-          <article class="summary-card">
-            <small>Total Reviews</small>
-            <p class="value" id="totalReviews">0</p>
-            <p class="meta">This Year</p>
+          <article class="summary-card efficiency-card">
+            <div class="efficiency-card-header">
+              <small>Workforce Efficiency</small>
+              <span class="efficiency-trend" aria-hidden="true">&#8599;</span>
+            </div>
+            <div>
+              <p class="value" id="globalEfficiency">0%</p>
+              <p class="meta" id="efficiencyDelta">+3.9% from previous cycle</p>
+            </div>
           </article>
           <article class="summary-card">
             <small>Completed</small>
@@ -576,49 +747,15 @@
             <p class="value" id="upcomingReviews">0</p>
             <p class="meta">Planned reviews</p>
           </article>
+          <article class="summary-card summary-chart-card">
+            <small>Review Status</small>
+            <div class="summary-chart-container">
+              <canvas id="summaryStatusChart"></canvas>
+            </div>
+          </article>
         </section>
 
         <div class="content-grid">
-          <section class="panel">
-            <div class="toolbar">
-              <label>
-                Department
-                <select id="departmentFilter">
-                  <option value="all">All Departments</option>
-                </select>
-              </label>
-              <label>
-                Status
-                <select id="statusFilter">
-                  <option value="all">All Statuses</option>
-                  <option value="completed">Completed</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="upcoming">Upcoming</option>
-                </select>
-              </label>
-              <label class="search-field">
-                Search
-                <input id="panelSearch" type="search" placeholder="Filter reviews" />
-              </label>
-            </div>
-
-            <div class="table-shell">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Employee</th>
-                    <th>Department</th>
-                    <th>Review Period</th>
-                    <th>Reviewer</th>
-                    <th>Status</th>
-                    <th>Score</th>
-                  </tr>
-                </thead>
-                <tbody id="reviewTableBody"></tbody>
-              </table>
-            </div>
-          </section>
-
           <aside class="panel detail-card">
             <div>
               <h2>Review Details</h2>
@@ -667,11 +804,91 @@
               <button class="secondary">Edit Review</button>
             </div>
           </aside>
+
+          <section class="panel">
+            <div class="toolbar">
+              <label>
+                Department
+                <select id="departmentFilter">
+                  <option value="all">All Departments</option>
+                </select>
+              </label>
+              <label>
+                Status
+                <select id="statusFilter">
+                  <option value="all">All Statuses</option>
+                  <option value="completed">Completed</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="upcoming">Upcoming</option>
+                </select>
+              </label>
+              <label class="search-field">
+                Search
+                <input id="panelSearch" type="search" placeholder="Filter reviews" />
+              </label>
+            </div>
+
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Review Period</th>
+                    <th>Reviewer</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+              </table>
+            </div>
+          </section>
         </div>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+          <article class="chart-panel">
+            <h3>Performance Rating Distribution</h3>
+            <div class="chart-container">
+              <canvas id="ratingChart"></canvas>
+            </div>
+          </article>
+
+          <article class="chart-panel">
+            <h3>Employees by Department</h3>
+            <div class="chart-container">
+              <canvas id="departmentChart"></canvas>
+            </div>
+          </article>
+
+          <article class="chart-panel">
+            <h3>Average Category Scores</h3>
+            <div class="chart-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </article>
+
+          <article class="chart-panel">
+            <h3>Review Status Overview</h3>
+            <div class="chart-container">
+              <canvas id="statusChart"></canvas>
+            </div>
+          </article> 
+
+          <article class="chart-panel">
+            <h3>Attendance Rate by Employee</h3>
+            <div class="chart-container">
+              <canvas id="attendanceChart"></canvas>
+            </div>
+          </article>
+        </section>
       </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
   <script>
     // Base employee information used by the review dashboard
     const payrollData = [
@@ -780,7 +997,8 @@
     };
 
     const elements = {
-      totalReviews: document.getElementById('totalReviews'),
+      globalEfficiency: document.getElementById('globalEfficiency'),
+      efficiencyDelta: document.getElementById('efficiencyDelta'),
       completedReviews: document.getElementById('completedReviews'),
       inProgressReviews: document.getElementById('inProgressReviews'),
       upcomingReviews: document.getElementById('upcomingReviews'),
@@ -801,7 +1019,9 @@
       detailReviewPeriod: document.getElementById('detailReviewPeriod'),
       detailReviewer: document.getElementById('detailReviewer'),
       detailCategoryBars: document.getElementById('detailCategoryBars'),
-      detailComments: document.getElementById('detailComments')
+      detailComments: document.getElementById('detailComments'),
+      sidebarToggleBtn: document.getElementById('sidebarToggleBtn'),
+      sidebarShowBtn: document.getElementById('sidebarShowBtn')
     };
 
     function buildFilters() {
@@ -821,7 +1041,10 @@
         upcoming: 0
       };
       reviewData.forEach(item => counts[item.status]++);
-      elements.totalReviews.textContent = reviewData.length;
+      const averageScore = reviewData.reduce((total, item) => total + item.overallScore, 0) / reviewData.length;
+      const globalEfficiency = (averageScore / 5) * 100;
+      elements.globalEfficiency.textContent = `${globalEfficiency.toFixed(1)}%`;
+      elements.efficiencyDelta.textContent = '+4.2% from previous cycle';
       elements.completedReviews.textContent = counts.completed;
       elements.inProgressReviews.textContent = counts['in-progress'];
       elements.upcomingReviews.textContent = counts.upcoming;
@@ -894,6 +1117,239 @@
       }).join('');
     }
 
+    // Chart initialization functions
+    function initCharts() {
+      const chartColors = [
+        '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
+        '#ec4899', '#06b6d4', '#f97316', '#14b8a6', '#6366f1'
+      ];
+
+      // 1. Performance Rating Distribution (Pie Chart)
+      const ratingCounts = {};
+      reviewData.forEach(emp => {
+        ratingCounts[emp.rating] = (ratingCounts[emp.rating] || 0) + 1;
+      });
+
+      const ratingLabels = Object.keys(ratingCounts);
+      const ratingData = Object.values(ratingCounts);
+      const ratingColors = {
+        'Excellent': '#10b981',
+        'Good': '#3b82f6',
+        'Average': '#f59e0b'
+      };
+
+      const ratingCtx = document.getElementById('ratingChart').getContext('2d');
+      new Chart(ratingCtx, {
+        type: 'pie',
+        data: {
+          labels: ratingLabels,
+          datasets: [{
+            data: ratingData,
+            backgroundColor: ratingLabels.map(label => ratingColors[label]),
+            borderColor: '#fff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { padding: 12, font: { size: 13 } }
+            }
+          }
+        }
+      });
+
+      // 2. Department Distribution (Doughnut Chart)
+      const deptCounts = {};
+      reviewData.forEach(emp => {
+        deptCounts[emp.department] = (deptCounts[emp.department] || 0) + 1;
+      });
+
+      const deptLabels = Object.keys(deptCounts).sort();
+      const deptData = deptLabels.map(dept => deptCounts[dept]);
+
+      const deptCtx = document.getElementById('departmentChart').getContext('2d');
+      new Chart(deptCtx, {
+        type: 'doughnut',
+        data: {
+          labels: deptLabels,
+          datasets: [{
+            data: deptData,
+            backgroundColor: chartColors.slice(0, deptLabels.length),
+            borderColor: '#fff',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { padding: 12, font: { size: 13 } }
+            }
+          }
+        }
+      });
+
+      // 3. Average Category Scores (Radar Chart)
+      const categoryTotals = {
+        quality: 0,
+        productivity: 0,
+        communication: 0,
+        teamwork: 0,
+        initiative: 0
+      };
+
+      reviewData.forEach(emp => {
+        Object.entries(emp.categoryScores).forEach(([cat, score]) => {
+          categoryTotals[cat] += score;
+        });
+      });
+
+      const categoryNames = Object.keys(categoryTotals).map(cat => 
+        cat.charAt(0).toUpperCase() + cat.slice(1)
+      );
+      const categoryScores = Object.values(categoryTotals).map(total => 
+        (total / reviewData.length).toFixed(1)
+      );
+
+      const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+      new Chart(categoryCtx, {
+        type: 'radar',
+        data: {
+          labels: categoryNames,
+          datasets: [{
+            label: 'Average Score',
+            data: categoryScores,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            borderWidth: 2,
+            pointBackgroundColor: '#3b82f6',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            fill: true
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            r: {
+              beginAtZero: true,
+              max: 5,
+              ticks: { stepSize: 1 }
+            }
+          }
+        }
+      });
+
+      // 4. Review Status Overview (Horizontal Bar Chart)
+      const statusCounts = { completed: 0, 'in-progress': 0, upcoming: 0 };
+      reviewData.forEach(emp => {
+        statusCounts[emp.status]++;
+      });
+
+      const statusLabels = ['Completed', 'In Progress', 'Upcoming'];
+      const statusData = [statusCounts.completed, statusCounts['in-progress'], statusCounts.upcoming];
+      const statusColors = ['#10b981', '#f59e0b', '#3b82f6'];
+
+      const summaryStatusCtx = document.getElementById('summaryStatusChart').getContext('2d');
+      new Chart(summaryStatusCtx, {
+        type: 'doughnut',
+        data: {
+          labels: statusLabels,
+          datasets: [{
+            data: statusData,
+            backgroundColor: statusColors,
+            borderColor: '#fff',
+            borderWidth: 2,
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '62%',
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                boxWidth: 10,
+                padding: 10,
+                font: { size: 11 }
+              }
+            }
+          }
+        }
+      });
+
+      const statusCtx = document.getElementById('statusChart').getContext('2d');
+      new Chart(statusCtx, {
+        type: 'bar',
+        data: {
+          labels: statusLabels,
+          datasets: [{
+            label: 'Number of Reviews',
+            data: statusData,
+            backgroundColor: statusColors,
+            borderRadius: 6,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: { beginAtZero: true, max: 5 }
+          }
+        }
+      });
+
+      // 5. Attendance Rate by Employee (Bar Chart)
+      const empNames = reviewData.map(emp => emp.name.split(' ')[0]).slice(0, 10);
+      const attendanceRates = reviewData.map(emp => emp.attendanceRate).slice(0, 10);
+
+      const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+      new Chart(attendanceCtx, {
+        type: 'bar',
+        data: {
+          labels: empNames,
+          datasets: [{
+            label: 'Attendance Rate (%)',
+            data: attendanceRates,
+            backgroundColor: '#10b981',
+            borderRadius: 6,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: { callback: (val) => val + '%' }
+            }
+          }
+        }
+      });
+    }
+    
     function attachEvents() {
       elements.departmentFilter.addEventListener('change', (event) => {
         filters.department = event.target.value;
@@ -915,6 +1371,19 @@
         elements.panelSearch.value = filters.query;
         renderTable();
       });
+
+      const toggleSidebar = () => {
+        document.body.classList.toggle('sidebar-hidden');
+        const isHidden = document.body.classList.contains('sidebar-hidden');
+        const icon = document.body.classList.contains('sidebar-hidden')
+          ? 'bx bx-chevron-right'
+          : 'bx bx-chevron-left';
+        elements.sidebarToggleBtn.querySelector('i').className = icon;
+        elements.sidebarShowBtn.querySelector('i').className = icon;
+      };
+
+      elements.sidebarToggleBtn.addEventListener('click', toggleSidebar);
+      elements.sidebarShowBtn.addEventListener('click', toggleSidebar);
     }
 
     function initialize() {
@@ -922,6 +1391,7 @@
       updateDashboard();
       renderTable();
       attachEvents();
+      initCharts();
     }
 
     initialize();
