@@ -13,6 +13,7 @@ nav{
 
 ul{
   list-style-type: none;
+  padding-left: 0;
 }
 
 li a{
@@ -34,7 +35,7 @@ table,th,td{
   padding: 10px;
 }
 
-.payslip{
+#payslip{
   width: 500px;
   padding: 20px;
   box-shadow: 0 5px 20px rgba(0,0,0,.15);
@@ -46,4 +47,19 @@ button{
   background: black;
   padding: 10px;
   border-radius: 20px;
+  margin: 50px;
+  margin-left: 200px;
+  justify-self: center;
+}
+
+select{
+  margin-left: 200px;
+  margin-bottom: 50px;
+  padding: 10px;
+}
+
+#totals{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-left: 200px;
 }

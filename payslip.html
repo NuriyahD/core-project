@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <!-- Nav -->
+  <!-- Nav(temporary) -->
   <nav>
     <ul>
       <li><a href="">Home</a></li>
@@ -18,44 +18,31 @@
     </ul>
   </nav>
 
-  <button onclick="generatePayslip()">Generate Payslip</button>
+  <h1>Payroll System</h1>
+
+  <select id="employeeList"></select>
+
+  <div id="payslip"></div>
+
   <button onclick="window.print()">Print Payslip</button>
 
-  <div class="payslip">
-    <h2>ModernTech Solutions</h2>
-    <h3>Employee Payslip</h3>
-    
-    <hr>
-    <p><strong>Employee:</strong><span id="employeeName"></span></p>
-    <p><strong>Employee ID:</strong><span id="employeeId"></span></p>
-    <p><strong>Department:</strong><span id="department"></span></p>
-    <p><strong>Position:</strong><span id="position"></span></p>
-    <hr>
+   <!-- Totals -->
+   <div id="totals">
+    <div>
+      <h3>Monthly Pay Roll</h3>
+      <p id="mPay"></p>
+    </div>
+    <div>
+      <h3>Monthly leave deductions</h3>
+      <p id="leave"></p>
+    </div>
+    <div>
+      <h3>Annual pay roll</h3>
+      <p id="annual"></p>
+    </div>
+   </div>
 
-    <!-- slip -->
-    <table>
-        <tr>
-            <td>Basic Salary</td>
-            <td id="salary"></td>
-        </tr>
-
-        <tr>
-            <td>Hours Worked</td>
-            <td id="hoursWorked"></td>
-        </tr>
-
-        <tr>
-            <td>Leave Deduction</td>
-            <td id="deduction"></td>
-        </tr>
-
-        <tr>
-            <th>Net Salary</th>
-            <th id="netSalary"></th>
-        </tr>
-
-    </table>
-  </div>
   <script src="./script.js"></script>
+
 </body>
 </html>
