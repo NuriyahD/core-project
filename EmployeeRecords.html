@@ -4,113 +4,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Records</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Employee Records - ModernTech Solutions</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            padding: 1.5rem;
+            z-index: 100;
+            overflow-y: auto;
+            border-right: 1px solid #93c5fd;
+        }
+        .sidebar-brand {
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #1f2937;
+            border-radius: 8px;
+        }
+
+        .sidebar-brand .brand-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1e3a8a;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: #1f2937;
+            color: #ffffff;
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid #374151;
+            margin: 1.5rem 0;
+        }
+
+        .sub-menu-title {
+            color: #6b7280;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding-left: 15px;
+            margin-bottom: 5px;
+            letter-spacing: 0.05em;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 5px solid;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 991px) {
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 0.75rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
     <div class="dashboard-container">
+
         <aside class="sidebar">
-            <div class="sidebar-brand">
-                <h2>Modern Tech</h2>
-                <p>Solutions</p>
+            <div class="sidebar-brand mb-4">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"></path>
+                        <path d="M12 22v-6"></path>
+                        <path d="M8 22v-3"></path>
+                        <path d="M16 22v-3"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h5 class="text-white fw-bold m-0 fs-6">ModernTech</h5>
+                    <small class="text-success small opacity-75">Solutions</small>
+                </div>
             </div>
 
             <nav class="sidebar-menu main-menu">
-                <a href="index.html" class="menu-item"><i class="icon-dashboard"></i> Dashboard</a>
-                <a href="EmployeeRecords.html" class="menu-item active"><i class="icon-employees"></i> Employees</a>
-                <a href="index.html" class="menu-item"><i class="icon-timeoff"></i> Time Off</a>
-                <a href="#" class="menu-item"><i class="icon-attendance"></i> Attendance</a>
-                <a href="#" class="menu-item"><i class="icon-payroll"></i> PayRoll</a>
-                <a href="#" class="menu-item"><i class="icon-performance"></i> Performance</a>
-                <a href="#" class="menu-item"><i class="icon-reports"></i> Reports</a>
-                <a href="Settings.html" class="menu-item"><i class="icon-settings"></i> Settings</a>
+                <a href="index.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                <a href="EmployeeRecords.html" class="menu-item active"><i class="bi bi-people"></i> Employees</a>
+                <a href="#" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="#" class="menu-item"><i class="bi bi-clock-history"></i> Attendance</a>
+                <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
+                <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
+                <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
+                <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
-            <hr class="sidebar-divider">
-
-            <nav class="sidebar-menu sub-menu">
-                <a href="TimeSheet.html" class="menu-item">Time Sheet</a>
-                <a href="TimeTracker.html" class="menu-item">Time Tracker</a>
-                <a href="Scheduling.html" class="menu-item">Scheduling</a>
-                <a href="EmployeeRecords.html" class="menu-item active">Employee Records</a>
-                <a href="ReviewCycle.html" class="menu-item">Review Cycle</a>
-            </nav>
-
-            <div class="sidebar-footer">
-                <button class="btn-admin">HR Admin</button>
-            </div>
         </aside>
 
         <main class="main-content">
-            <header class="content-header">
-                <p>Employee Records</p>
-            </header>
+            <div class="container-fluid">
 
-            <section class="balance-section">
-                <h1 class="section-title reflected-title">Employee Records</h1>
-                <div class="cards-grid">
-                    <div class="balance-card">
-                        <div class="card-header">
-                            <span>Total Employees</span>
-                            <span class="card-icon icon-employees"></span>
-                        </div>
-                        <div class="card-body"><strong>10</strong> employees</div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <span class="text-uppercase small fw-bold text-success text-opacity-75">HR / Employees</span>
+                        <h1 class="fw-bold h2 text-dark mb-0">Employee Records</h1>
                     </div>
-                    <div class="balance-card">
-                        <div class="card-header">
-                            <span>Active</span>
-                            <span class="card-icon icon-active"></span>
-                        </div>
-                        <div class="card-body"><strong>10</strong> employees</div>
-                    </div>
-                    <div class="balance-card">
-                        <div class="card-header">
-                            <span>On Leave</span>
-                            <span class="card-icon icon-leave"></span>
-                        </div>
-                        <div class="card-body"><strong>0</strong> employees</div>
-                    </div>
-                    <div class="balance-card">
-                        <div class="card-header">
-                            <span>New Hires</span>
-                            <span class="card-icon icon-new-hires"></span>
-                        </div>
-                        <div class="card-body"><strong>0</strong> employees</div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="history-section">
-                <div class="history-header">
-                    <h1 class="section-title reflected-title">Employee List</h1>
-                    <div class="history-filters">
-                        <button class="btn-filter" id="filterDepartment">Department &gt;</button>
-                        <button class="btn-filter" id="filterPosition">Position &gt;</button>
+                    <div>
+                        <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                            <i class="bi bi-plus-lg"></i> Add Staff
+                        </button>
                     </div>
                 </div>
 
-                <div class="table-container">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Employee ID</th>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Department</th>
-                                <th>Salary</th>
-                                <th>Contact</th>
-                            </tr>
-                        </thead>
-                        <tbody id="employeeTableBody">
-                        </tbody>
-                    </table>
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-info d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">Total Staff</p>
+                                <h3 class="fw-bold text-dark mb-0" id="totalStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-info opacity-75"><i class="bi bi-people"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-success d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">Active Status</p>
+                                <h3 class="fw-bold text-success mb-0" id="activeStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-success opacity-75"><i class="bi bi-person-check"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-warning d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">On Active Leave</p>
+                                <h3 class="fw-bold text-warning mb-0" id="leaveStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-warning opacity-75"><i class="bi bi-airplane"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-danger d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">Pending Onboarding</p>
+                                <h3 class="fw-bold text-danger mb-0" id="pendingStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-danger opacity-75"><i class="bi bi-clock-history"></i></div>
+                        </div>
+                    </div>
                 </div>
-            </section>
+
+                <div class="bg-white p-4 rounded shadow-sm border">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr class="text-muted small text-uppercase">
+                                    <th>Staff ID</th>
+                                    <th>Full Name</th>
+                                    <th>Corporate Assignment / Role</th>
+                                    <th>Department</th>
+                                    <th>Remuneration Baseline</th>
+                                    <th>Contact Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                        Assembling secure personnel ledger database...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
         </main>
     </div>
 
-    <script src="script.js"></script>
+    <div class="modal fade" id="addStaffModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Onboard New Team Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">This front-end demonstration represents structural mockup functionality for user access flows.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tableBody = document.getElementById("employeeTableBody");
+            if (!tableBody) return;
+
+            fetch("employmentinfo.json")
+                .then(response => {
+                    if (!response.ok) throw new Error("JSON reference unreadable or file missing.");
+                    return response.json();
+                })
+                .then(data => {
+                    renderTable(data.employeeInformation || data);
+                })
+                .catch(err => {
+                    console.warn("Using local system fallback array data logic:", err.message);
+
+                    const fallbackData = [
+ {
+    "employeeInformation": [
+    
+        {
+            "employeeId": 1,
+            "name": "Sibongile Nkosi",
+            "position": "Software Engineer",
+            "department": "Development",
+            "salary": 70000,
+            "employmentHistory": "Joined in 2015, promoted to Senior in 2018",
+            "contact": "sibongile.nkosi@moderntech.com"
+        },
+        {
+            "employeeId": 2,
+            "name": "Lungile Moyo",
+            "position": "HR Manager",
+            "department": "HR",
+            "salary": 80000,
+            "employmentHistory": "Joined in 2013, promoted to Manager in 2017",
+            "contact": "lungile.moyo@moderntech.com"
+        },
+        {
+            "employeeId": 3,
+            "name": "Thabo Molefe",
+            "position": "Quality Analyst",
+            "department": "QA",
+            "salary": 55000,
+            "employmentHistory": "Joined in 2018",
+            "contact": "thabo.molefe@moderntech.com"
+        },
+        {
+            "employeeId": 4,
+            "name": "Keshav Naidoo",
+            "position": "Sales Representative",
+            "department": "Sales",
+            "salary": 60000,
+            "employmentHistory": "Joined in 2020",
+            "contact": "keshav.naidoo@moderntech.com"
+        },
+        {
+            "employeeId": 5,
+            "name": "Zanele Khumalo",
+            "position": "Marketing Specialist",
+            "department": "Marketing",
+            "salary": 58000,
+            "employmentHistory": "Joined in 2019",
+            "contact": "zanele.khumalo@moderntech.com"
+        },
+        {
+            "employeeId": 6,
+            "name": "Sipho Zulu",
+            "position": "UI/UX Designer",
+            "department": "Design",
+            "salary": 65000,
+            "employmentHistory": "Joined in 2016",
+            "contact": "sipho.zulu@moderntech.com"
+        },
+        {
+            "employeeId": 7,
+            "name": "Naledi Moeketsi",
+            "position": "DevOps Engineer",
+            "department": "IT",
+            "salary": 72000,
+            "employmentHistory": "Joined in 2017",
+            "contact": "naledi.moeketsi@moderntech.com"
+        },
+        {
+            "employeeId": 8,
+            "name": "Farai Gumbo",
+            "position": "Content Strategist",
+            "department": "Marketing",
+            "salary": 56000,
+            "employmentHistory": "Joined in 2021",
+            "contact": "farai.gumbo@moderntech.com"
+        },
+        {
+            "employeeId": 9,
+            "name": "Karabo Dlamini",
+            "position": "Accountant",
+            "department": "Finance",
+            "salary": 62000,
+            "employmentHistory": "Joined in 2018",
+            "contact": "karabo.dlamini@moderntech.com"
+        },
+        {
+            "employeeId": 10,
+            "name": "Fatima Patel",
+            "position": "Customer Support Lead",
+            "department": "Support",
+            "salary": 58000,
+            "employmentHistory": "Joined in 2016",
+            "contact": "fatima.patel@moderntech.com"
+        }
+    ]
+}                ];
+                    renderTable(fallbackData);
+                });
+
+            function renderTable(employeeArray) {
+                tableBody.innerHTML = "";
+
+                employeeArray.forEach(emp => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td class="fw-bold text-primary">${emp.employeeId}</td>
+                        <td class="text-dark fw-semibold">${emp.name}</td>
+                        <td>
+                            <span class="badge bg-light text-dark border px-2 py-1">${emp.position}</span>
+                        </td>
+                        <td class="text-secondary">${emp.department}</td>
+                        <td class="text-dark fw-bold">R ${emp.salary.toLocaleString('en-ZA')}</td>
+                        <td class="text-muted small">${emp.contact}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                const total = employeeArray.length;
+                const active = employeeArray.filter(e => (e.status || "active") === "active").length;
+                const onLeave = employeeArray.filter(e => e.status === "leave").length;
+                const pending = employeeArray.filter(e => e.status === "pending").length;
+
+                if (document.getElementById("totalStaffCount")) document.getElementById("totalStaffCount").innerText = total;
+                if (document.getElementById("activeStaffCount")) document.getElementById("activeStaffCount").innerText = active;
+                if (document.getElementById("leaveStaffCount")) document.getElementById("leaveStaffCount").innerText = onLeave;
+                if (document.getElementById("pendingStaffCount")) document.getElementById("pendingStaffCount").innerText = pending;
+            }
+        });
+    </script>
 </body>
 
 </html>

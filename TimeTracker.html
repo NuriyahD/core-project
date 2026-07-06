@@ -1,123 +1,436 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Tracker</title>
-    <link rel="stylesheet" href="style.css">
+    <title>ModernTech Solutions - Time Tracker</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            padding: 1.5rem;
+            z-index: 100;
+            overflow-y: auto;
+            border-right: 1px solid #93c5fd;
+        }
+
+        .sidebar-brand {
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            font-size: 1.5rem;
+            color: #0369a1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0c4a6e;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: #7dd3fc;
+            color: #0369a1;
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid #93c5fd;
+            margin: 1.5rem 0;
+            opacity: 0.5;
+        }
+
+        .sub-menu-title {
+            color: #0369a1;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding-left: 15px;
+            margin-bottom: 5px;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .corporate-card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .btn-nav-match {
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            transition: background 0.2s;
+        }
+        .btn-nav-match:hover {
+            background-color: #0369a1;
+            color: white;
+        }
+
+        @media (max-width: 991px) {
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #93c5fd;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            @media (max-width: 600px) {
+                .sidebar {
+                    width: 100%;
+                    min-height: auto;
+                    position: relative;
+                    border-right: none;
+                    border-bottom: 1px solid #93c5fd;
+                }
+                .main-content {
+                    margin-left: 0;
+                    padding: 1rem;
+                }
+            }
+        }
+    </style>
 </head>
+
 <body>
+
     <div class="dashboard-container">
+
         <aside class="sidebar">
-            <div class="sidebar-brand">
-                <h2>Modern Tech</h2>
-                <p>Solutions</p>
+            <div class="sidebar-brand mb-4">
+                <div class="brand-icon">
+                    <i class="bi bi-cpu-fill"></i>
+                </div>
+                <div>
+                    <h5 class="text-dark fw-bold m-0 fs-6">ModernTech</h5>
+                    <small class="text-primary small fw-semibold">Solutions</small>
+                </div>
             </div>
 
             <nav class="sidebar-menu main-menu">
-                <a href="index.html" class="menu-item"><i class="icon-dashboard"></i> Dashboard</a>
-                <a href="EmployeeRecords.html" class="menu-item"><i class="icon-employees"></i> Employees</a>
-                <a href="index.html" class="menu-item active"><i class="icon-timeoff"></i> Time Off</a>
-                <a href="#" class="menu-item"><i class="icon-attendance"></i> Attendance</a>
-                <a href="#" class="menu-item"><i class="icon-payroll"></i> PayRoll</a>
-                <a href="#" class="menu-item"><i class="icon-performance"></i> Performance</a>
-                <a href="#" class="menu-item"><i class="icon-reports"></i> Reports</a>
-                <a href="Settings.html" class="menu-item"><i class="icon-settings"></i> Settings</a>
+                <a href="index.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                <a href="EmployeeRecords.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
+                <a href="#" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="#" class="menu-item"><i class="bi bi-clock-history"></i> Attendance</a>
+                <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
+                <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
+                <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
+                <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
             <hr class="sidebar-divider">
 
+            <div class="sub-menu-title">Management Logs</div>
             <nav class="sidebar-menu sub-menu">
                 <a href="TimeSheet.html" class="menu-item">Time Sheet</a>
-                <a href="Time Tracker.html" class="menu-item active">Time Tracker</a>
+                <a href="TimeTracker.html" class="menu-item active">Time Tracker</a>
                 <a href="Scheduling.html" class="menu-item">Scheduling</a>
-                <a href="EmployeeRecords.html" class="menu-item">Employee Records</a>
                 <a href="ReviewCycle.html" class="menu-item">Review Cycle</a>
             </nav>
-
-            <div class="sidebar-footer">
-                <button class="btn-admin">HR Admin</button>
-            </div>
         </aside>
 
-        <main class="main-content">
-            <header class="content-header">
-                <p>Time Tracker</p>
-            </header>
 
-            <section class="balance-section">
-                <div class="content-body">
-                
-                <div class="tracker-recorder-panel">
-                    <input type="text" class="tracker-input" placeholder="What are you working on right now?">
-                    
-                    <div class="recorder-meta">
-                        <button class="project-select-btn">📁 Select Project <span class="chevron">▼</span></button>
-                        <div class="vertical-divider"></div>
-                        <span class="billing-toggle active" title="Billable">💲</span>
-                        <div class="vertical-divider"></div>
-                        <span class="live-timer-digits">00:00:00</span>
-                        <button class="btn-timer-trigger start">Start</button>
+        <div class="main-content">
+            <div class="container-fluid py-4">
+
+                <div class="mb-4">
+                    <span class="text-uppercase tracking-wider small fw-bold text-primary">Employee Tracker</span>
+                    <h1 class="fw-bold h2 text-dark mb-0">Task &amp; Project Time Tracker</h1>
+                </div>
+
+                <div class="corporate-card p-4 mb-4">
+                    <div class="row align-items-center g-3">
+                        <div class="col-lg-5">
+                            <input type="text" id="taskExecutionInput" class="form-control form-control-lg border-opacity-50 fs-6"
+                                placeholder="What are you executing now?" aria-label="Task description">
+                        </div>
+                        <div class="col-md-4 col-lg-3">
+                            <select id="departmentSelect" class="form-select form-select-lg border-opacity-50 fs-6" aria-label="Department">
+                                <option value="" selected disabled>Select Department</option>
+                                <option>Marketing</option>
+                                <option>Development</option>
+                                <option>HR</option>
+                                <option>QA</option>
+                                <option>Sales</option>
+                                <option>Design</option>
+                                <option>IT</option>
+                                <option>Finance</option>
+                                <option>Support</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8 col-lg-4 d-flex align-items-center justify-content-between justify-content-lg-end gap-4">
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-sm btn-danger rounded px-2" id="resetTimerBtn" title="Reset Counter and Logs">Reset All</button>
+                                <span class="fs-3 fw-bold text-dark font-monospace" id="liveTimerDisplay">00:00:00</span>
+                            </div>
+                            <button class="btn btn-nav-match btn-lg px-4 fs-6 rounded-pill" id="actionTimerBtn">Start Tracker</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="day-group-title-row">
-                    <h3>Today, 2 July</h3>
-                    <div class="day-summary-total">
-                        <span class="text-muted">Total:</span> <strong>06:45:12</strong>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0">Today's Operation Logs</h5>
+                    <span class="text-muted small">Session Accumulated: <strong class="text-dark" id="accumulatedTotalDisplay">00:00:00</strong></span>
                 </div>
 
-                <div class="tracker-list-container">
-                    
-                    <div class="tracker-log-item">
-                        <div class="log-details">
-                            <span class="indicator purple"></span>
-                            <span class="log-task-title">Responsive UI Layout & Gallery Components</span>
-                            <span class="project-tag-label">Frontend Web Development</span>
-                        </div>
-                        <div class="log-meta">
-                            <span class="billing-status billable">💲</span>
-                            <span class="log-time-range text-muted">12:32 - 15:45</span>
-                            <span class="log-duration font-numeric">03:13:00</span>
-                            <button class="btn-play-again">▶</button>
-                        </div>
-                    </div>
-
-                    <div class="tracker-log-item">
-                        <div class="log-details">
-                            <span class="indicator blue"></span>
-                            <span class="log-task-title">Lead Generation & Junior Leadership Sync</span>
-                            <span class="project-tag-label">BPO Operations</span>
-                        </div>
-                        <div class="log-meta">
-                            <span class="billing-status non-billable text-muted">💲</span>
-                            <span class="log-time-range text-muted">09:00 - 11:32</span>
-                            <span class="log-duration font-numeric">02:32:00</span>
-                            <button class="btn-play-again">▶</button>
-                        </div>
-                    </div>
-
-                    <div class="tracker-log-item">
-                        <div class="log-details">
-                            <span class="indicator green"></span>
-                            <span class="log-task-title">Life Choices Academy Training Session</span>
-                            <span class="project-tag-label">Software Learnership</span>
-                        </div>
-                        <div class="log-meta">
-                            <span class="billing-status non-billable text-muted">💲</span>
-                            <span class="log-time-range text-muted">08:00 - 09:00</span>
-                            <span class="log-duration font-numeric">01:00:12</span>
-                            <button class="btn-play-again">▶</button>
-                        </div>
-                    </div>
-
-                </div>
+                <div class="d-flex flex-column gap-2" id="logHistoryStack"></div>
 
             </div>
-            </section>
-        </main>
+        </div>
     </div>
-    <script src="script.js"></script>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+        <div id="appToast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="appToastBody">Saved.</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const STORAGE_KEY_LOGS = "modernTechTimeTrackerLogs";
+        const STORAGE_KEY_TOTAL = "modernTechTimeTrackerTotal";
+
+        let isTimerRunning = false;
+        let timerId = null;
+
+        let totalSeconds = 0;
+        let totalMinutes = 0;
+        let totalHours = 0;
+
+        let sessionTotalSeconds = 0;
+        let loggedEntries = [];
+
+        const actionButton = document.getElementById('actionTimerBtn');
+        const displayScreen = document.getElementById('liveTimerDisplay');
+        const resetButton = document.getElementById('resetTimerBtn');
+        const taskInput = document.getElementById('taskExecutionInput');
+        const deptSelect = document.getElementById('departmentSelect');
+        const logHistoryStack = document.getElementById('logHistoryStack');
+        const accumulatedTotalDisplay = document.getElementById('accumulatedTotalDisplay');
+
+        function showToast(message, isError = false) {
+            const toastEl = document.getElementById("appToast");
+            const toastBody = document.getElementById("appToastBody");
+            toastBody.textContent = message;
+            toastEl.classList.toggle("bg-dark", !isError);
+            toastEl.classList.toggle("bg-danger", isError);
+            new bootstrap.Toast(toastEl, { delay: 3000 }).show();
+        }
+
+        function formatDigits(h, m, s) {
+            return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+        }
+
+        function updateAccumulatedDisplay() {
+            let h = Math.floor(sessionTotalSeconds / 3600);
+            let m = Math.floor((sessionTotalSeconds % 3600) / 60);
+            let s = sessionTotalSeconds % 60;
+            accumulatedTotalDisplay.textContent = formatDigits(h, m, s);
+        }
+
+        function renderLogEntry(entry) {
+            const barColor = "#0284c7";
+            const iconClass = entry.seeded ? "bi-check" : "bi-check-all";
+            const btnColor = "outline-primary";
+            return `
+                <div class="corporate-card p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <div style="width: 4px; height: 35px; background: ${barColor}; border-radius: 4px;"></div>
+                        <div>
+                            <div class="fw-bold text-dark">${entry.task}</div>
+                            <span class="badge bg-light text-secondary border mt-1">${entry.dept}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-4 text-end">
+                        <span class="text-muted small">${entry.timeRange}</span>
+                        <span class="fw-bold text-dark font-monospace">${entry.duration}</span>
+                        <button class="btn btn-sm btn-${btnColor} rounded-circle" disabled><i class="bi ${iconClass}"></i></button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAllLogs() {
+            logHistoryStack.innerHTML = loggedEntries.map(renderLogEntry).join("");
+        }
+
+        function persistState() {
+            try {
+                localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(loggedEntries));
+                localStorage.setItem(STORAGE_KEY_TOTAL, String(sessionTotalSeconds));
+            } catch (err) {
+                console.warn("Could not save time-tracker data:", err);
+            }
+        }
+
+        function loadState() {
+            const defaultSeed = [{
+                task: "Enterprise Architecture Review",
+                dept: "Development",
+                timeRange: "09:15 - 11:30",
+                duration: "02:15:00",
+                seeded: true
+            }];
+
+            try {
+                const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
+                const savedTotal = localStorage.getItem(STORAGE_KEY_TOTAL);
+
+                loggedEntries = savedLogs ? JSON.parse(savedLogs) : defaultSeed;
+                sessionTotalSeconds = savedTotal !== null ? (parseInt(savedTotal, 10) || 0) : 8100;
+            } catch (err) {
+                console.warn("Could not restore saved time-tracker data, using defaults:", err);
+                loggedEntries = defaultSeed;
+                sessionTotalSeconds = 8100;
+            }
+        }
+
+        function cycleTimeTracker() {
+            totalSeconds++;
+            if (totalSeconds === 60) {
+                totalSeconds = 0;
+                totalMinutes++;
+                if (totalMinutes === 60) {
+                    totalMinutes = 0;
+                    totalHours++;
+                }
+            }
+            displayScreen.textContent = formatDigits(totalHours, totalMinutes, totalSeconds);
+        }
+
+        function resetTimerCounter() {
+            totalSeconds = 0;
+            totalMinutes = 0;
+            totalHours = 0;
+            displayScreen.textContent = "00:00:00";
+        }
+
+        if (actionButton) {
+            actionButton.addEventListener('click', () => {
+                isTimerRunning = !isTimerRunning;
+
+                if (isTimerRunning) {
+                    actionButton.textContent = "Stop Timer";
+                    actionButton.classList.replace("btn-nav-match", "btn-dark");
+                    timerId = setInterval(cycleTimeTracker, 1000);
+                } else {
+                    actionButton.textContent = "Start Tracker";
+                    actionButton.classList.replace("btn-dark", "btn-nav-match");
+                    clearInterval(timerId);
+
+                    const trackedSeconds = (totalHours * 3600) + (totalMinutes * 60) + totalSeconds;
+
+                    if (trackedSeconds === 0) {
+                        showToast("Tracked 0 seconds — nothing was logged.", true);
+                        resetTimerCounter();
+                        return;
+                    }
+
+                    const taskName = taskInput.value.trim() || "General Administration Activity";
+                    const deptName = deptSelect.value || "Operations";
+                    const durationString = formatDigits(totalHours, totalMinutes, totalSeconds);
+
+                    sessionTotalSeconds += trackedSeconds;
+                    updateAccumulatedDisplay();
+
+                    const currentTime = new Date();
+                    const endTimestampStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    currentTime.setSeconds(currentTime.getSeconds() - trackedSeconds);
+                    const startTimestampStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    loggedEntries.unshift({
+                        task: taskName,
+                        dept: deptName,
+                        timeRange: `${startTimestampStr} - ${endTimestampStr}`,
+                        duration: durationString,
+                        seeded: false
+                    });
+
+                    renderAllLogs();
+                    persistState();
+                    showToast(`Logged ${durationString} on "${taskName}".`);
+
+                    taskInput.value = "";
+                    deptSelect.value = ""; 
+                    resetTimerCounter();
+                }
+            });
+        }
+
+        if (resetButton) {
+            resetButton.addEventListener('click', () => {
+                if (isTimerRunning) {
+                    clearInterval(timerId);
+                    isTimerRunning = false;
+                    actionButton.textContent = "Start Tracker";
+                    actionButton.classList.remove("btn-dark");
+                    actionButton.classList.add("btn-nav-match");
+                }
+                
+                resetTimerCounter();
+                sessionTotalSeconds = 0;
+                loggedEntries = [];
+                
+                taskInput.value = "";
+                deptSelect.value = "";
+                
+                updateAccumulatedDisplay();
+                renderAllLogs();
+                persistState();
+                
+                showToast("Time logs and sessions successfully reset.");
+            });
+        }
+
+        loadState();
+        renderAllLogs();
+        updateAccumulatedDisplay();
+    </script>
 </body>
+
 </html>
