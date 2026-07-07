@@ -13,7 +13,6 @@
         body {
             font-family: system-ui, -apple-system, sans-serif;
             background-color: #f8f9fa;
-            padding-top: 60px; /* Offset for the sticky top navbar */
         }
 
         /* Modern Top Navigation Bar */
@@ -38,13 +37,13 @@
             width: 250px;
             background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
             position: fixed;
-            top: 60px; /* Positioned right under the top nav */
+            top: 0;
             left: 0;
             bottom: 0;
             padding: 1.5rem;
             z-index: 100;
             overflow-y: auto;
-            border-right: 1px solid #bde0fe;
+            border-right: 1px solid #bae6fd;
         }
 
         .sidebar-brand {
@@ -62,9 +61,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.6);
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .sidebar-brand .brand-icon svg {
@@ -72,34 +70,26 @@
             height: 22px;
         }
 
-        /* Sidebar Navigation Controls */
         .menu-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #1e3a8a;
-            font-weight: 500;
+            color: #0369a1;
             text-decoration: none;
             padding: 10px 15px;
             border-radius: 6px;
             margin-bottom: 5px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
+            font-weight: 500;
         }
 
-        .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.5);
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.7);
             color: #0369a1;
-            padding-left: 18px;
-        }
-
-        .menu-item.active {
-            background-color: #0284c7;
-            color: #ffffff;
-            box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
         }
 
         .sidebar-divider {
-            border-top: 1px solid rgba(30, 58, 138, 0.15);
+            border-top: 1px solid rgba(3, 105, 161, 0.2);
             margin: 1.5rem 0;
         }
 
@@ -111,7 +101,18 @@
             padding-left: 15px;
             margin-bottom: 5px;
             letter-spacing: 0.05em;
+            opacity: 0.8;
         }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .text-accent {
+            color: #0496c7 !important;
+        }
+
 
         /* Main Content Workspace Setup */
         .main-content {
@@ -148,6 +149,20 @@
                 top: 0;
                 border-right: none;
                 border-bottom: 1px solid #bde0fe;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #93c5fd;
             }
             .main-content {
                 margin-left: 0;
