@@ -50,7 +50,3 @@ function showPayslip(emp){
     
     `
 }
-
-const mPay = document.getElementById("mPay");
-const leave = document.getElementById("leave");
-const annual = document.getElementById("annual");
