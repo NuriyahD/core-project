@@ -5,7 +5,7 @@ Promise.all([
     fetch("data/employee_info.json").then(res => res.json()),
     fetch("data/payroll_data.json").then(res => res.json())
 ])
-.then (([employeeData, payrollData])=> {
+.then(([employeeData, payrollData]) => {
 
     employees = employeeData.employeeInformation;
     payroll = payrollData.payrollData;
@@ -24,8 +24,8 @@ Promise.all([
 
     select.addEventListener("change", () => {
 
-    const employee = employees.find(e => e.employeeId == select.value);
-    showPayslip(employee)
+    const employee = employees.find(e => e.employeeId === select.value);
+    showPayslip(employee);
 })
 
 })
@@ -33,12 +33,16 @@ Promise.all([
 function showPayslip(emp){
 
     const pay = payroll.find(p => p.employeeId === emp.employeeId)
-
+    if (!pay) {
+    document.getElementById("payslipContent").innerHTML =
+        "<p>No payroll data available.</p>";
+    return;
+    }
+    
     const hourlyRate = (pay.finalSalary/(pay.hoursWorked - pay.leaveDeductions)).toFixed(2)
 
-    document.getElementById("payslip").innerHTML = `
-    <h2>Payslip</h2>
-
+    document.getElementById("payslipContent").innerHTML = `
+    
     <p><b>Name:</b>${emp.name}</p>
     <p><b>Position:</b>${emp.position}</p>
 
