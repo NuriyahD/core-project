@@ -21,21 +21,28 @@
     padding: 20px;
     margin: 20px auto;
     box-shadow: 0 5px 20px rgba(0,0,0,.15);
+    border-radius: 15px;
+    background: white;
   }
 
   #print{
     display: block;
     color: white;
-    background: black;
+    background-color: var(--accent);
     padding: 10px 20px;
     border-radius: 20px;
     margin: 30px auto;
+  }
+
+  #print:hover{
+    background-color: var(--accent-dark);
   }
 
   select{
     display: block;
     margin: 20px auto;
     padding: 10px;
+    border-radius: 15px;
   }
 
   #totals{
@@ -47,6 +54,8 @@
 
   #totals div{
     box-shadow: 0 5px 20px rgba(0,0,0,.15);
+    border-radius: 15px;
+    background: white;
   }
 
   @media(max-width:600px){
@@ -175,17 +184,6 @@
     color: var(--accent-dark);
   }
 
-  .sub-menu-title {
-    color: var(--accent-dark);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: 700;
-    padding-left: 15px;
-    margin-bottom: 5px;
-    letter-spacing: 0.05em;
-    opacity: 0.8;
-  }
-
   .main-content {
     margin-left: 250px;
     padding: 2rem;
@@ -229,6 +227,7 @@
   @media (max-width: 600px) {
     .sidebar {
       width: 100%;
+      max-width: 250px;
       min-height: auto;
       position: relative;
       border-right: none;
@@ -377,10 +376,10 @@
         <p><b>Position:</b>${emp.position}</p>
 
         <hr>
-        <p><b>Hourly Rate:</b>R${hourlyRate}</p>
-        <p><b>Hours Worked:</b>${pay.hoursWorked}</p>
-        <p><b>Leave Deductions:</b>${pay.leaveDeductions} Hours</p>
-        <p><b>Final Salary:</b>R${pay.finalSalary}</p>
+        <p><b>Hourly Rate: </b>R${hourlyRate}</p>
+        <p><b>Hours Worked: </b>${pay.hoursWorked}</p>
+        <p><b>Leave Deductions: </b>${pay.leaveDeductions} Hours</p>
+        <p><b>Final Salary: </b>R${pay.finalSalary}</p>
         
         `;
   }
