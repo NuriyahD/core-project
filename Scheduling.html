@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scheduling & Workforce Management - ModernTech Solutions</title>
+    <title>Scheduling — ModernTech Solutions</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -20,6 +23,14 @@
             --text: #111827;
             --muted: #6b7280;
             --border: #e5e7eb;
+            --confirmed: #067647;
+            --confirmed-soft: #ecfdf3;
+            --confirmed-border: #abefc6;
+
+            --pending: #b54708;
+            --pending-soft: #fffaeb;
+            --pending-border: #fedf89;
+
         }
 
         body {
@@ -127,252 +138,471 @@
             color: var(--accent) !important;
         }
 
-        .dashboard-card {
+        .corporate-card {
             background: var(--panel-bg);
-            border-radius: 8px;
             border: 1px solid #dee2e6;
+            border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .calendar-day-box {
-            background: var(--panel-bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            min-height: 120px;
-            transition: all 0.2s;
+        .btn-coral {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+        }
+        .btn-coral:hover {
+            background-color: var(--accent-dark);
+            color: white;
         }
 
-        .calendar-day-box.today {
-            border-color: var(--accent);
-            background-color: #f0f9ff;
+        .progress {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
         }
+
+        .page-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .page-title { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; }
+
+        /* Buttons */
+        .btn-accent {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+        .btn-accent:hover { background-color: var(--accent-dark); border-color: var(--accent-dark); color: #fff; }
+
+        .btn-outline-ink {
+            border: 1px solid var(--border);
+            color: var(--body-text);
+            background: var(--surface);
+        }
+        .btn-outline-ink:hover { background: var(--canvas); border-color: #cfd4dc; }
+
+        .timeline-toggle .btn {
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 0.4rem 0.9rem;
+        }
+
+        /* Stat cards */
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.05rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .stat-card .stat-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+        .stat-card .stat-value {
+            font-family: var(--font-display);
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--ink);
+        }
+        .stat-card .stat-sub { font-size: 0.76rem; color: var(--muted); }
+        .stat-card .stat-icon {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--accent-soft);
+            color: var(--accent-dark);
+            font-size: 0.95rem;
+            margin-bottom: 0.55rem;
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.4rem 1.5rem;
+        }
+
+        .panel-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.98rem;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel-title i { color: var(--accent); }
+
+        /* Table */
+        .table thead th {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+        .table tbody td {
+            padding-top: 0.85rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px solid var(--border-soft);
+            font-size: 0.88rem;
+            vertical-align: middle;
+        }
+        .table tbody tr:last-child td { border-bottom: none; }
+
+        .employee-cell { display: flex; align-items: center; gap: 10px; }
+        .employee-initials {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--accent-soft);
+            color: var(--accent-dark);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.72rem;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .status-pill {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 4px 11px;
+            border-radius: 999px;
+            border: 1px solid;
+            display: inline-block;
+        }
+        .status-pill.confirmed { background: var(--confirmed-soft); color: var(--confirmed); border-color: var(--confirmed-border); }
+        .status-pill.scheduled { background: var(--pending-soft); color: var(--pending); border-color: var(--pending-border); }
+
+        /* Search */
+        .search-wrap {
+            position: relative;
+            max-width: 260px;
+        }
+        .search-wrap input {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            padding: 0.42rem 0.75rem 0.42rem 2.1rem;
+        }
+        .search-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+        .search-wrap i {
+            position: absolute;
+            left: 0.75rem; top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        /* Calendar */
+        .weekday-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.6rem;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 600;
+            text-align: left;
+            padding: 0 0.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-week-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.6rem;
+        }
+
+        .calendar-day-box {
+            background: var(--surface);
+            border: 1px solid var(--border-soft);
+            border-radius: 9px;
+            min-height: 108px;
+            padding: 0.55rem;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        .calendar-day-box:hover { border-color: #d3d9e0; }
+
+        .calendar-day-box.empty-cell {
+            background: transparent;
+            border: 1px dashed var(--border-soft);
+            min-height: 108px;
+        }
+
+        .calendar-day-box.weekend-cell { background: var(--canvas); }
+
+        .calendar-day-box.today-cell {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .day-number-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .day-number {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--body-text);
+        }
+
+        .today-cell .day-number { color: var(--accent-dark); }
+
+        .coverage-dot-row { display: flex; gap: 2px; }
+        .coverage-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+        .coverage-dot.filled { background: var(--accent); }
 
         .shift-tag {
-            font-size: 0.7rem;
-            padding: 4px 6px;
-            border-radius: 4px;
+            font-size: 0.68rem;
+            font-family: var(--font-body);
+            padding: 3px 6px;
+            border-radius: 5px;
             font-weight: 500;
             margin-top: 4px;
-            transition: all 0.2s;
-            id-marker: reset-target;
+            border: 1px solid;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .shift-tag .tag-time { font-family: var(--font-mono); font-weight: 600; }
+        .shift-tag.confirmed { background: var(--confirmed-soft); color: var(--confirmed); border-color: var(--confirmed-border); }
+        .shift-tag.scheduled { background: var(--pending-soft); color: var(--pending); border-color: var(--pending-border); }
+
+        .legend-swatch {
+            width: 9px; height: 9px;
+            border-radius: 2px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /* Modal */
+        .modal-content { border-radius: 14px; border: none; }
+        .modal-header { border-bottom: 1px solid var(--border); }
+        .modal-footer { border-top: 1px solid var(--border); }
+        .form-label { font-size: 0.78rem; font-weight: 600; color: var(--body-text); }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
         @media (max-width: 991px) {
-            .top-navbar {
-                position: sticky;
-                top: 0;
-            }
+            .top-navbar { position: sticky; top: 0; }
             .sidebar {
-                width: 100%;
-                min-height: auto;
-                position: relative;
-                padding-top: 1.5rem;
-                border-right: none;
-                border-bottom: 1px solid #93c5fd;
+                width: 100%; min-height: auto; position: relative;
+                padding-top: 1.5rem; border-right: none;
             }
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-                padding-top: 1.5rem;
-            }
+            .main-content { margin-left: 0; padding: 1rem; padding-top: 1.5rem; }
         }
-
-        @media (max-width: 600px) {
-            .sidebar {
-                width: 100%;
-                min-height: auto;
-                position: relative;
-                border-right: none;
-                border-bottom: 1px solid #93c5fd;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-            }
-        }
-        
     </style>
 </head>
 
 <body>
     <header class="top-navbar">
+        <div class="d-flex align-items-center gap-2">
+            <span class="breadcrumb-eyebrow">HR Suite</span>
+            <span class="divider-dot"></span>
+            <span class="breadcrumb-eyebrow" style="color: var(--ink); opacity:0.7;">Scheduling</span>
+        </div>
+
         <div class="d-flex align-items-center gap-3">
+            <span class="session-pill"><i class="bi bi-shield-check"></i> Secure session</span>
+            <button class="avatar-btn" type="button" aria-label="User profile">MT</button>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
             <div class="sidebar-brand">
                 <div class="brand-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#5eead4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"></path>
                         <path d="M12 22v-6"></path>
                         <path d="M8 22v-3"></path>
                         <path d="M16 22v-3"></path>
                     </svg>
                 </div>
-                <div class="d-none d-sm-block ms-1">
-                    <h5 class="text-dark fw-bold m-0 fs-6" style="letter-spacing: 0.5px;">ModernTech</h5>
-                    <small class="text-primary small fw-semibold opacity-75">Solutions</small>
+                <div>
+                    <h5 class="fw-bold m-0">ModernTech</h5>
+                    <small>Solutions</small>
                 </div>
             </div>
-        </div>
 
-        <div class="d-flex align-items-center gap-3">
-            <span class="text-muted small d-none d-md-inline-block"><i class="bi bi-shield-check text-success me-1"></i> Secure Session Gateway</span>
-            <div class="dropdown">
-                <button class="btn btn-light btn-sm rounded-circle" type="button" aria-label="User Profile">
-                    <i class="bi bi-person-circle fs-5 text-secondary"></i>
-                </button>
-            </div>
-        </div>
-    </header>
+            <div class="sidebar-divider"></div>
 
-    <div class="dashboard-container">
-        <aside class="sidebar">
             <nav class="sidebar-menu main-menu">
                 <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
                 <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
                 <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
                 <a href="payslip.html" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="performance_reviews.html" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
-                <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
+                <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
-            <hr class="sidebar-divider">
+            <div class="sidebar-divider"></div>
 
             <div class="sub-menu-title">Management Logs</div>
             <nav class="sidebar-menu sub-menu">
                 <a href="timesheet.html" class="menu-item">Time Sheet</a>
                 <a href="timetracker.html" class="menu-item">Time Tracker</a>
-                <a href="scheduling.html" class="menu-item active">Scheduling</a>
+                <a href="scheduling.html" class="menu-item active"><i class="bi bi-grid-3x3-gap"></i> Scheduling</a>
                 <a href="reviewcycle.html" class="menu-item">Review Cycle</a>
             </nav>
         </aside>
 
-        <main class="main-content">
-            <div class="container-fluid">
+        <div class="main-content">
+            <div class="container-fluid px-0">
 
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-end mb-4 flex-wrap gap-3">
                     <div>
-                        <span class="text-uppercase small fw-bold text-accent tracking-wider">Workforce Management</span>
-                        <h1 class="fw-bold h2 text-dark mb-0">Team Scheduling &amp; Shift Coverage</h1>
+                        <div class="page-eyebrow mb-1">Workforce Management</div>
+                        <h1 class="page-title mb-0">Team Schedule</h1>
                     </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <div class="btn-group btn-group-sm" id="viewFilterGroup">
-                            <button class="btn btn-outline-secondary" data-filter="day">Day</button>
-                            <button class="btn btn-outline-secondary" data-filter="week">Week</button>
-                            <button class="btn btn-primary text-white" style="background-color: #0496c7; border-color: #0496c7;" data-filter="all">Month</button>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <div class="btn-group btn-group-sm timeline-toggle" id="timelineFilterGroup">
+                            <button class="btn btn-accent" data-timeline="month">Month view</button>
+                            <button class="btn btn-outline-ink" data-timeline="week">Weeks with shifts</button>
                         </div>
-                        <button id="exportBtn" class="btn btn-outline-dark btn-sm"><i class="bi bi-download"></i> Export Roster</button>
-                        <button class="btn btn-sm px-3 text-white" style="background-color: #0496c7;" data-bs-toggle="modal" data-bs-target="#addShiftModal">+ Assign Shift</button>
+
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-ink" id="prevMonthBtn" aria-label="Previous month"><i class="bi bi-chevron-left"></i></button>
+                            <button class="btn btn-outline-ink fw-bold disabled mono" id="currentMonthLabel" style="opacity:1; min-width: 132px; background: var(--surface); color: var(--ink);">July 2026</button>
+                            <button class="btn btn-outline-ink" id="nextMonthBtn" aria-label="Next month"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+
+                        <button id="exportBtn" class="btn btn-outline-ink btn-sm"><i class="bi bi-download me-1"></i>Export CSV</button>
+                        <button class="btn btn-accent btn-sm px-3" data-bs-toggle="modal" data-bs-target="#addShiftModal"><i class="bi bi-plus-lg me-1"></i>Assign shift</button>
                     </div>
                 </div>
 
-                <div class="dashboard-card p-4 mb-4">
+                <!-- Stat row -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="bi bi-calendar2-week"></i></div>
+                            <span class="stat-label">Shifts this month</span>
+                            <span class="stat-value" id="statTotalShifts">—</span>
+                            <span class="stat-sub">Across all employees</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="bi bi-people"></i></div>
+                            <span class="stat-label">Employees scheduled</span>
+                            <span class="stat-value" id="statEmployees">—</span>
+                            <span class="stat-sub">Unique roster members</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="bi bi-check2-circle"></i></div>
+                            <span class="stat-label">Confirmed</span>
+                            <span class="stat-value" id="statConfirmed">—</span>
+                            <span class="stat-sub">Ready to go</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card">
+                            <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
+                            <span class="stat-label">Awaiting confirmation</span>
+                            <span class="stat-value" id="statScheduled">—</span>
+                            <span class="stat-sub">Needs a sign-off</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Roster table -->
+                <div class="panel mb-4">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                        <h6 class="fw-bold text-dark mb-0"><i class="bi bi-calendar-week me-1"></i> Active Shift Assignments &amp; Roster</h6>
-                        <div class="input-group input-group-sm style-search" style="max-width: 250px;">
-                            <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
-                            <input type="text" id="scheduleSearch" class="form-control border-start-0" placeholder="Search employee...">
+                        <h6 class="panel-title mb-0"><i class="bi bi-list-check"></i> Active roster</h6>
+                        <div class="search-wrap">
+                            <i class="bi bi-search"></i>
+                            <input type="text" id="scheduleSearch" class="form-control" placeholder="Search by name…">
                         </div>
                     </div>
                     <div class="table-responsive">
                         <table class="table align-middle mb-0">
-                            <thead class="table-light">
-                                <tr class="text-muted small text-uppercase">
-                                    <th>Employee Name</th>
-                                    <th>Shift Title</th>
-                                    <th>Scheduled Date &amp; Time</th>
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Shift title</th>
+                                    <th>Scheduled</th>
                                     <th class="text-end">Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="scheduleTableBody">
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted py-4">
-                                        <div class="spinner-border spinner-border-sm text-accent me-2" role="status"></div>
-                                        Syncing team calendars and rosters...
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="scheduleTableBody"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="dashboard-card p-4">
-                    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-calendar3 me-1"></i> Interactive Team Schedule Grid</h6>
-
-                    <div class="row row-cols-7 g-2 text-center fw-bold text-muted small mb-2">
-                        <div class="col">Mon</div>
-                        <div class="col">Tue</div>
-                        <div class="col">Wed</div>
-                        <div class="col">Thu</div>
-                        <div class="col">Fri</div>
-                        <div class="col">Sat</div>
-                        <div class="col">Sun</div>
-                    </div>
-
-                    <div class="row row-cols-7 g-2">
-                        <div class="col">
-                            <div class="calendar-day-box today p-2" data-date="2026-07-06" data-timeline="day">
-                                <span class="d-block text-start small fw-bold text-accent">06</span>
-                                <div class="shift-tag bg-info bg-opacity-10 text-info border border-info border-opacity-20 text-truncate">
-                                    13:00 Core Hours Sync
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="calendar-day-box p-2" data-date="2026-07-07" data-timeline="day">
-                                <span class="d-block text-start small fw-bold text-secondary">07</span>
-                                <div class="shift-tag bg-success bg-opacity-10 text-success border border-success border-opacity-20 text-truncate">
-                                    09:00 Morning Standup
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="calendar-day-box p-2" data-date="2026-07-08" data-timeline="week">
-                                <span class="d-block text-start small fw-bold text-secondary">08</span>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="calendar-day-box p-2" data-date="2026-07-09" data-timeline="week">
-                                <span class="d-block text-start small fw-bold text-secondary">09</span>
-                                <div class="shift-tag bg-warning bg-opacity-10 text-warning border border-warning border-opacity-20 text-truncate">
-                                    16:00 Production Deploy
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="calendar-day-box p-2" data-date="2026-07-10" data-timeline="week">
-                                <span class="d-block text-start small fw-bold text-secondary">10</span>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="calendar-day-box bg-light p-2" data-date="2026-07-11">
-                                <span class="d-block text-start small fw-bold text-muted">11</span>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="calendar-day-box bg-light p-2" data-date="2026-07-12">
-                                <span class="d-block text-start small fw-bold text-muted">12</span>
-                            </div>
+                <!-- Calendar -->
+                <div class="panel">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                        <h6 class="panel-title mb-0"><i class="bi bi-calendar3"></i> Calendar grid</h6>
+                        <div class="d-flex align-items-center gap-3 small">
+                            <span><span class="legend-swatch" style="background: var(--confirmed);"></span>Confirmed</span>
+                            <span><span class="legend-swatch" style="background: var(--pending);"></span>Scheduled</span>
                         </div>
                     </div>
+
+                    <div class="weekday-header">
+                        <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                    </div>
+
+                    <div id="calendarGridContainer" class="d-flex flex-column gap-2"></div>
                 </div>
 
             </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Modals & Toasts configuration unchanged -->
+    <!-- Modal: Assign a Shift -->
     <div class="modal fade" id="addShiftModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Assign Roster Shift</h5>
+                    <h5 class="modal-title fw-bold font-display">Assign new shift</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="shiftForm">
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">Select Employee</label>
+                            <label class="form-label">Employee</label>
                             <select class="form-select" id="shiftEmployee" required>
                                 <option value="" disabled selected>Choose an employee…</option>
                                 <option>Sibongile Nkosi</option>
@@ -383,44 +613,46 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small fw-bold text-muted">Shift Title / Assignment Name</label>
-                            <input type="text" class="form-control" id="shiftTitle" placeholder="e.g. Code Review Coverage" required>
+                            <label class="form-label">Shift title</label>
+                            <input type="text" class="form-control" id="shiftTitle" placeholder="e.g. Support coverage" required>
                         </div>
                         <div class="row g-2">
                             <div class="col-7">
-                                <label class="form-label small fw-bold text-muted">Date</label>
+                                <label class="form-label">Date</label>
                                 <input type="date" class="form-control" id="shiftDate" required>
                             </div>
                             <div class="col-5">
-                                <label class="form-label small fw-bold text-muted">Start Time</label>
+                                <label class="form-label">Start time</label>
                                 <input type="time" class="form-control" id="shiftTime" required>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="shiftForm" class="btn btn-sm text-white" style="background-color: #0496c7;">Save Assignment</button>
+                    <button type="button" class="btn btn-outline-ink btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="shiftForm" class="btn btn-accent btn-sm">Save shift</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Modal: Export complete -->
     <div class="modal fade" id="exportModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content text-center p-3">
-                <div class="fs-1 text-success"><i class="bi bi-file-earmark-spreadsheet"></i></div>
-                <h5 class="fw-bold mt-2">Export Complete</h5>
-                <p class="text-muted small mb-3">A CSV of the current schedule has been downloaded to your device.</p>
-                <button class="btn btn-dark btn-sm w-100" data-bs-dismiss="modal">Dismiss</button>
+                <div class="fs-1" style="color: var(--confirmed);"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+                <h5 class="fw-bold mt-2 font-display">Export complete</h5>
+                <p class="text-muted small mb-3">team_schedule.csv has been saved to your downloads.</p>
+                <button class="btn btn-outline-ink btn-sm w-100" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 
+    <!-- Toast -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-        <div id="appToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="appToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true" style="background: var(--accent);">
             <div class="d-flex">
-                <div class="toast-body" id="appToastBody">Saved.</div>
+                <div class="toast-body" id="appToastBody">Action complete.</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
@@ -429,159 +661,267 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const tbody = document.getElementById("scheduleTableBody");
+        document.addEventListener("DOMContentLoaded", function () {
+            const tableBody = document.getElementById("scheduleTableBody");
             const searchInput = document.getElementById("scheduleSearch");
-            let shiftRecordsCached = [];
+            const calendarGridContainer = document.getElementById("calendarGridContainer");
+            const currentMonthLabel = document.getElementById("currentMonthLabel");
 
-            function showToast(message, isError = false) {
-                const toastEl = document.getElementById("appToast");
-                const toastBody = document.getElementById("appToastBody");
-                toastBody.textContent = message;
-                toastEl.classList.toggle("bg-success", !isError);
-                toastEl.classList.toggle("bg-danger", isError);
-                new bootstrap.Toast(toastEl, { delay: 3500 }).show();
-            }
+            let displayedDate = new Date(2026, 6, 1); // Anchored at July 2026
+            let activeTimelineFilter = "month";
 
-            function getStatusBadge(status) {
-                if (status === "Confirmed") return `<span class="badge bg-success bg-opacity-10 text-success border px-3 py-1">✓ Confirmed</span>`;
-                return `<span class="badge bg-warning bg-opacity-10 text-warning border px-3 py-1">⏳ Scheduled</span>`;
-            }
+            const TODAY = new Date(2026, 6, 8); // page reference date
 
-            shiftRecordsCached = [
-                { "name": "Sibongile Nkosi", "shifts": [{ "date": "2026-07-06", "time": "13:00", "title": "Core Hours Sync", "status": "Confirmed" }] },
-                { "name": "Lungile Moyo", "shifts": [{ "date": "2026-07-07", "time": "09:00", "title": "Morning Standup", "status": "Confirmed" }] },
-                { "name": "Thabo Molefe", "shifts": [{ "date": "2026-07-09", "time": "16:00", "title": "Production Deploy", "status": "Confirmed" }] },
-                { "name": "Keshav Naidoo", "shifts": [{ "date": "2026-07-06", "time": "08:00", "title": "Infrastructure Monitor", "status": "Confirmed" }] },
-                { "name": "Zanele Khumalo", "shifts": [{ "date": "2026-07-08", "time": "10:30", "title": "Client Onboarding Sprint", "status": "Scheduled" }] }
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
             ];
-            
-            renderShiftRows(shiftRecordsCached);
 
-            function renderShiftRows(employeeDataArray, query = "") {
-                if (!tbody) return;
-                let allRowsHTML = "";
+            let shiftRecords = [
+                { name: "Sibongile Nkosi", title: "Core Hours Sync", date: "2026-07-06", time: "13:00", status: "Confirmed" },
+                { name: "Lungile Moyo", title: "Morning Standup", date: "2026-07-07", time: "09:00", status: "Confirmed" },
+                { name: "Thabo Molefe", title: "Production Deploy", date: "2026-07-09", time: "16:00", status: "Confirmed" },
+                { name: "Keshav Naidoo", title: "Infrastructure Monitor", date: "2026-07-06", time: "08:00", status: "Confirmed" },
+                { name: "Zanele Khumalo", title: "Client Onboarding Sprint", date: "2026-07-08", time: "10:30", status: "Scheduled" }
+            ];
 
-                employeeDataArray.forEach(emp => {
-                    if (emp.name.toLowerCase().includes(query.toLowerCase()) && emp.shifts) {
-                        emp.shifts.forEach(shift => {
-                            allRowsHTML += `
-                                <tr>
-                                    <td class="fw-semibold text-dark">${emp.name}</td>
-                                    <td>${shift.title}</td>
-                                    <td><small class="text-secondary"><i class="bi bi-clock me-1"></i>${shift.date} at ${shift.time}</small></td>
-                                    <td class="text-end">${getStatusBadge(shift.status)}</td>
-                                </tr>
+            function initials(fullName) {
+                return fullName.split(" ").map(p => p[0]).join("").slice(0, 2).toUpperCase();
+            }
+
+            function triggerAlert(message) {
+                const banner = document.getElementById("appToast");
+                document.getElementById("appToastBody").textContent = message;
+                new bootstrap.Toast(banner, { delay: 3000 }).show();
+            }
+
+            function updateStats() {
+                const currentYear = displayedDate.getFullYear();
+                const currentMonth = displayedDate.getMonth();
+                const inView = shiftRecords.filter(r => {
+                    const d = new Date(r.date + "T00:00:00");
+                    return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+                });
+                const uniqueEmployees = new Set(inView.map(r => r.name));
+                const confirmedCount = inView.filter(r => r.status === "Confirmed").length;
+                const scheduledCount = inView.filter(r => r.status !== "Confirmed").length;
+
+                document.getElementById("statTotalShifts").textContent = inView.length;
+                document.getElementById("statEmployees").textContent = uniqueEmployees.size;
+                document.getElementById("statConfirmed").textContent = confirmedCount;
+                document.getElementById("statScheduled").textContent = scheduledCount;
+            }
+
+            function updateTableDisplay(filterText = "") {
+                if (!tableBody) return;
+                let rowsHtml = "";
+
+                shiftRecords
+                    .filter(item => item.name.toLowerCase().includes(filterText.toLowerCase()))
+                    .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
+                    .forEach(function (item) {
+                        const isConfirmed = item.status === "Confirmed";
+                        const statusBadge = isConfirmed
+                            ? `<span class="status-pill confirmed">Confirmed</span>`
+                            : `<span class="status-pill scheduled">Scheduled</span>`;
+
+                        rowsHtml += `
+                            <tr>
+                                <td>
+                                    <div class="employee-cell">
+                                        <div class="employee-initials">${initials(item.name)}</div>
+                                        <span class="fw-semibold" style="color: var(--ink);">${item.name}</span>
+                                    </div>
+                                </td>
+                                <td>${item.title}</td>
+                                <td><span class="mono small">${item.date} · ${item.time}</span></td>
+                                <td class="text-end">${statusBadge}</td>
+                            </tr>
+                        `;
+                    });
+
+                tableBody.innerHTML = rowsHtml || `<tr><td colspan="4" class="text-center text-muted py-4">No matching employees found.</td></tr>`;
+            }
+
+            function renderFixedCalendarRows() {
+                if (!calendarGridContainer) return;
+
+                const currentYear = displayedDate.getFullYear();
+                const currentMonth = displayedDate.getMonth();
+
+                currentMonthLabel.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+                const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+                const paddedBlankBoxes = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+                const totalDaysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+                let totalGridCells = [];
+
+                for (let i = 0; i < paddedBlankBoxes; i++) {
+                    totalGridCells.push({ type: "empty" });
+                }
+
+                for (let dayNumber = 1; dayNumber <= totalDaysInMonth; dayNumber++) {
+                    const safeDayString = String(dayNumber).padStart(2, '0');
+                    const safeMonthString = String(currentMonth + 1).padStart(2, '0');
+                    const isoDateString = `${currentYear}-${safeMonthString}-${safeDayString}`;
+                    const dayOfWeekValue = new Date(currentYear, currentMonth, dayNumber).getDay();
+                    const isWeekend = (dayOfWeekValue === 0 || dayOfWeekValue === 6);
+                    const isToday = (currentYear === TODAY.getFullYear() && currentMonth === TODAY.getMonth() && dayNumber === TODAY.getDate());
+
+                    totalGridCells.push({
+                        type: "day",
+                        dateString: isoDateString,
+                        label: safeDayString,
+                        isWeekend: isWeekend,
+                        isToday: isToday
+                    });
+                }
+
+                while (totalGridCells.length % 7 !== 0) {
+                    totalGridCells.push({ type: "empty" });
+                }
+
+                calendarGridContainer.innerHTML = "";
+
+                for (let cellIndex = 0; cellIndex < totalGridCells.length; cellIndex += 7) {
+                    const singleRowSlice = totalGridCells.slice(cellIndex, cellIndex + 7);
+                    let containsShiftRecord = false;
+                    let rowCellsHtml = "";
+
+                    singleRowSlice.forEach(function (cell) {
+                        if (cell.type === "empty") {
+                            rowCellsHtml += `<div class="calendar-day-box empty-cell"></div>`;
+                            return;
+                        }
+
+                        const dayShifts = shiftRecords.filter(s => s.date === cell.dateString);
+                        if (dayShifts.length > 0) containsShiftRecord = true;
+
+                        let tasksForThisDayHtml = "";
+                        dayShifts.forEach(function (shift) {
+                            const statusClass = shift.status === "Confirmed" ? "confirmed" : "scheduled";
+                            tasksForThisDayHtml += `
+                                <div class="shift-tag ${statusClass}" title="${shift.name}: ${shift.title}">
+                                    <span class="tag-time">${shift.time}</span> ${shift.name.split(' ')[0]}: ${shift.title}
+                                </div>
                             `;
                         });
+
+                        const coverageDots = Array.from({ length: 4 }).map((_, i) =>
+                            `<span class="coverage-dot ${i < dayShifts.length ? 'filled' : ''}"></span>`
+                        ).join("");
+
+                        let cellClasses = "calendar-day-box";
+                        if (cell.isWeekend) cellClasses += " weekend-cell";
+                        if (cell.isToday) cellClasses += " today-cell";
+
+                        rowCellsHtml += `
+                            <div class="${cellClasses}" data-date="${cell.dateString}">
+                                <div class="day-number-row">
+                                    <span class="day-number">${cell.label}</span>
+                                    <div class="coverage-dot-row">${coverageDots}</div>
+                                </div>
+                                ${tasksForThisDayHtml}
+                            </div>
+                        `;
+                    });
+
+                    let rowVisibilityStyling = "";
+                    if (activeTimelineFilter === "week" && !containsShiftRecord) {
+                        rowVisibilityStyling = 'style="display: none;"';
                     }
-                });
 
-                tbody.innerHTML = allRowsHTML || `<tr><td colspan="4" class="text-center text-muted py-3">No shifts scheduled matching that query.</td></tr>`;
+                    calendarGridContainer.innerHTML += `
+                        <div class="calendar-week-row" ${rowVisibilityStyling}>
+                            ${rowCellsHtml}
+                        </div>
+                    `;
+                }
+
+                updateStats();
             }
 
-            if (searchInput) {
-                searchInput.addEventListener("input", (e) => {
-                    renderShiftRows(shiftRecordsCached, e.target.value);
-                });
-            }
+            // Initial render
+            updateTableDisplay();
+            renderFixedCalendarRows();
 
-            // Interactive Grid Filtering Tabs Logic
-            const filterButtons = document.querySelectorAll("#viewFilterGroup button");
-            filterButtons.forEach(btn => {
+            // Timeline toggle
+            const timelineFilterButtons = document.querySelectorAll("#timelineFilterGroup button");
+            timelineFilterButtons.forEach(function (btn) {
                 btn.addEventListener("click", function () {
-                    filterButtons.forEach(b => {
-                        b.classList.remove("btn-primary", "text-white");
-                        b.style.backgroundColor = "";
-                        b.style.borderColor = "";
-                        b.classList.add("btn-outline-secondary");
-                    });
-                    this.classList.remove("btn-outline-secondary");
-                    this.classList.add("btn-primary", "text-white");
-                    this.style.backgroundColor = "#0496c7";
-                    this.style.borderColor = "#0496c7";
-
-                    const type = this.getAttribute("data-filter");
-                    document.querySelectorAll("[data-timeline]").forEach(box => {
-                        if (type === "all") {
-                            box.style.opacity = "1";
-                        } else if (type === "week" && (box.getAttribute("data-timeline") === "week" || box.getAttribute("data-timeline") === "day")) {
-                            box.style.opacity = "1";
-                        } else if (type === "day" && box.getAttribute("data-timeline") === "day") {
-                            box.style.opacity = "1";
-                        } else {
-                            box.style.opacity = "0.2";
-                        }
-                    });
+                    timelineFilterButtons.forEach(b => b.classList.replace("btn-accent", "btn-outline-ink"));
+                    this.classList.replace("btn-outline-ink", "btn-accent");
+                    activeTimelineFilter = this.getAttribute("data-timeline");
+                    renderFixedCalendarRows();
                 });
             });
 
-            // Export Roster Content Action logic
-            function exportCSV(data) {
-                const rows = [["Employee Name", "Shift Assignment", "Scheduled Date", "Start Time", "Status"]];
-                data.forEach(emp => {
-                    (emp.shifts || []).forEach(sh => {
-                        rows.push([emp.name, sh.title, sh.date, sh.time, sh.status]);
-                    });
+            // Month pagination
+            document.getElementById("prevMonthBtn").addEventListener("click", function () {
+                displayedDate.setMonth(displayedDate.getMonth() - 1);
+                renderFixedCalendarRows();
+            });
+
+            document.getElementById("nextMonthBtn").addEventListener("click", function () {
+                displayedDate.setMonth(displayedDate.getMonth() + 1);
+                renderFixedCalendarRows();
+            });
+
+            if (searchInput) {
+                searchInput.addEventListener("input", function (event) {
+                    updateTableDisplay(event.target.value);
                 });
-                const csvContent = rows
-                    .map(r => r.map(field => `"${String(field).replace(/"/g, '""')}"`).join(","))
-                    .join("\n");
-                const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = "active_shift_roster.csv";
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-                
-                const expModal = new bootstrap.Modal(document.getElementById('exportModal'));
-                expModal.show();
             }
 
-            const exportBtn = document.getElementById("exportBtn");
-            if (exportBtn) {
-                exportBtn.addEventListener("click", () => exportCSV(shiftRecordsCached));
+            // CSV export
+            const downloadBtn = document.getElementById("exportBtn");
+            if (downloadBtn) {
+                downloadBtn.addEventListener("click", function () {
+                    let csvRows = ["Employee Name,Shift Title,Date,Time,Status"];
+                    shiftRecords.forEach(function (r) {
+                        csvRows.push(`"${r.name}","${r.title}","${r.date}","${r.time}","${r.status}"`);
+                    });
+
+                    const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
+                    const elementLink = document.createElement("a");
+                    elementLink.href = URL.createObjectURL(blob);
+                    elementLink.download = "team_schedule.csv";
+                    elementLink.click();
+
+                    new bootstrap.Modal(document.getElementById('exportModal')).show();
+                });
             }
 
-            const shiftForm = document.getElementById("shiftForm");
-            if (shiftForm) {
-                shiftForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
+            // Assign shift form
+            const shiftSubmissionForm = document.getElementById("shiftForm");
+            if (shiftSubmissionForm) {
+                shiftSubmissionForm.addEventListener("submit", function (event) {
+                    event.preventDefault();
 
-                    const employee = document.getElementById("shiftEmployee").value;
-                    const title = document.getElementById("shiftTitle").value.trim();
-                    const date = document.getElementById("shiftDate").value;
-                    const time = document.getElementById("shiftTime").value;
+                    const formEmployeeName = document.getElementById("shiftEmployee").value;
+                    const formShiftTitle = document.getElementById("shiftTitle").value;
+                    const formShiftDate = document.getElementById("shiftDate").value;
+                    const formShiftTime = document.getElementById("shiftTime").value;
 
-                    let existingEmp = shiftRecordsCached.find(e => e.name === employee);
-                    if (existingEmp) {
-                        existingEmp.shifts.push({ "date": date, "time": time, "title": title, "status": "Scheduled" });
-                    } else {
-                        shiftRecordsCached.push({ "name": employee, "shifts": [{ "date": date, "time": time, "title": title, "status": "Scheduled" }] });
-                    }
-                    renderShiftRows(shiftRecordsCached, searchInput.value);
+                    shiftRecords.push({
+                        name: formEmployeeName,
+                        title: formShiftTitle,
+                        date: formShiftDate,
+                        time: formShiftTime,
+                        status: "Scheduled"
+                    });
 
-                    const targetBox = document.querySelector(`.calendar-day-box[data-date="${date}"]`);
-                    if (targetBox) {
-                        const tag = document.createElement("div");
-                        tag.className = "shift-tag bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 text-truncate";
-                        tag.textContent = `${time} ${title}`;
-                        targetBox.appendChild(tag);
-                        showToast(`Shift assigned to ${employee} on ${date}.`);
-                    } else {
-                        showToast(`Shift assigned for ${employee} on ${date} (Roster table logged successfully).`);
-                    }
+                    updateTableDisplay(searchInput.value);
+                    renderFixedCalendarRows();
 
-                    const modalEl = document.getElementById("addShiftModal");
-                    bootstrap.Modal.getInstance(modalEl).hide();
-                    shiftForm.reset();
+                    triggerAlert(`Shift saved for ${formEmployeeName}.`);
+                    bootstrap.Modal.getInstance(document.getElementById("addShiftModal")).hide();
+                    shiftSubmissionForm.reset();
                 });
             }
         });
     </script>
-    
 </body>
+
 </html>
