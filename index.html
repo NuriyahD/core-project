@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Tech Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --page-bg: #F8F9FA;
+            --panel-bg: #FFFFFF;
+            --sidebar-header-bg: #FFFFFF;
+            --sidebar-bg: #EAF6FF;
+            --accent: #2563EB;
+            --accent-dark: #1D4ED8;
+            --text: #1E293B;
+            --muted: #64748B;
+            --border: #E2E8F0;
+        }
+
+        body {
+            background-color: var(--page-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        #wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            min-height: 100vh;
+        }
+
+        /* Top Sticky Header Framework */
+        .navbar {
+            position: sticky;
+            top: 0;
+            height: 73px;
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border);
+            z-index: 1050; /* Sits completely above sidebar elements */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Branding Interface matching original visuals */
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 236px; /* Matches alignment offset boundary */
+        }
+
+        /* Accurate Custom CSS Rendering of the Logo Mark from the image */
+        .custom-logo-mark {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 36px;
+            position: relative;
+        }
+
+        .custom-logo-mark .logo-circle {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #0284C7;
+            border-radius: 50%;
+            background: transparent;
+        }
+
+        .custom-logo-mark .logo-lines {
+            display: flex;
+            justify-content: space-between;
+            width: 16px;
+            height: 10px;
+            margin-top: -2px;
+        }
+
+        .custom-logo-mark .logo-line {
+            width: 2.5px;
+            background-color: #0284C7;
+            border-radius: 1px;
+        }
+
+        .custom-logo-mark .logo-line.center {
+            height: 12px;
+            margin-top: -3px;
+        }
+
+        .custom-logo-mark .logo-line.side {
+            height: 7px;
+            margin-top: 2px;
+        }
+
+        .brand-title-container {
+            line-height: 1.1;
+        }
+
+        .brand-main {
+            font-weight: 700;
+            color: #1E293B; 
+            font-size: 1.25rem;
+        }
+
+        .brand-sub {
+            color: #3B82F6;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Main Workspace Splitting Frame */
+        .app-workspace {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        /* Sidebar Styling strictly matching layout guidelines */
+        #sidebar {
+            position: sticky;
+            top: 73px; /* Locks below the fixed 73px navbar height */
+            width: 260px;
+            min-width: 260px;
+            height: calc(100vh - 73px);
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+
+        #sidebar .nav-container {
+            padding: 1.5rem 0.75rem;
+        }
+
+        #sidebar .nav-pills .nav-link {
+            color: #0369a1;
+            font-weight: 500;
+            font-size: 1rem;
+            border-radius: 6px;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+        }
+
+        #sidebar .nav-pills .nav-link i {
+            font-size: 1.2rem; 
+            color: #0369a1;
+        }
+
+        #sidebar .nav-pills .nav-link:hover, 
+        #sidebar .nav-pills .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #0369a1;
+        }
+
+        #page-content-wrapper {
+            flex-grow: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-container-fluid {
+            flex-grow: 1;
+            max-width: 500px;
+        }
+
+        .burger-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text);
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .page-divider {
+            width: 1px;
+            background: var(--border);
+            height: 24px;
+        }
+
+        .stats-card {
+            border: none;
+            min-height: 150px;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+            background: linear-gradient(180deg,#ffffff,#f8fafc);
+        }
+
+        .stats-card .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+        }
+
+        .stats-card .card-title {
+            font-size: .82rem;
+            letter-spacing: .04em;
+            margin-bottom: .35rem;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .stats-card .card-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: .45rem;
+        }
+
+        .avatar-placeholder {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        .tiny-text {
+            font-size: 0.75rem;
+        }
+
+        .donut-chart {
+            --present-percent: 80%;
+            --late-percent: 0%;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #20c997 0% var(--present-percent),
+                #ffc107 var(--present-percent) calc(var(--present-percent) + var(--late-percent)),
+                #dc3545 calc(var(--present-percent) + var(--late-percent)) 100%
+            );
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .donut-hole {
+            width: 70%;
+            height: 70%;
+            background-color: #ffffff; 
+            border-radius: 50%;
+        }
+
+        .chart-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-center-text {
+            position: absolute;
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Responsiveness Overhauls */
+        @media (max-width: 991.98px) {
+            .search-container-fluid {
+                max-width: 100%;
+                order: 3;
+                width: 100%;
+                margin-top: 0.75rem;
+            }
+            .navbar {
+                height: auto;
+            }
+            #sidebar {
+                top: 0;
+                height: 100vh;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .burger-btn {
+                display: block;
+            }
+
+            #sidebar {
+                position: fixed;
+                top: 73px; /* Adjusted to align directly beneath the 73px high header navbar */
+                left: -260px;
+                height: calc(100vh - 73px); /* Accounts for header height spacing */
+                box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+            }
+
+            #sidebar.show {
+                left: 0;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 73px; /* Prevents overlay dim effect from covering the primary workspace burger container */
+                left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 999;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+            }
+            
+            .brand-container {
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Top Integrated Sticky Navigation Bar -->
+    <nav class="navbar navbar-light bg-white py-2 px-4">
+        <div class="container-fluid p-0 d-flex flex-wrap align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <button id="burgerToggle" class="burger-btn me-1">
+                    <i class="bi bi-list"></i>
+                </button>
+                <!-- Brand Engine Extracted Here to Remain Pinned Top Alongside the Nav Content -->
+                <div class="brand-container">
+                    <div class="custom-logo-mark">
+                        <div class="logo-circle"></div>
+                        <div class="logo-lines">
+                            <div class="logo-line side"></div>
+                            <div class="logo-line center"></div>
+                            <div class="logo-line side"></div>
+                        </div>
+                    </div>
+                    <div class="brand-title-container d-none d-sm-block">
+                        <div class="brand-main">ModernTech</div>
+                        <div class="brand-sub">Solutions</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-container-fluid mx-lg-3">
+                <div class="input-group search-bar w-100">
+                    <input id="searchInput" type="text" class="form-control bg-light border-0" placeholder="Search">
+                    <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-end ms-auto gap-3">
+                <!-- Functional Notifications Trigger via Dropdown -->
+                <div class="dropdown">
+                    <i id="notificationBell" class="bi bi-bell fs-5 position-relative" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                    </i>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border mt-2" style="width: 320px; max-height: 400px; overflow-y: auto;">
+                        <li class="dropdown-header fw-bold border-bottom pb-2">Notifications</li>
+                        <li>
+                            <div class="dropdown-item p-3 border-bottom text-wrap">
+                                <p class="mb-1 fw-semibold small">New Time Off Request</p>
+                                <span class="text-muted tiny-text">5 minutes ago</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="dropdown-item p-3 border-bottom text-wrap">
+                                <p class="mb-1 fw-semibold small">System Maintenance Scheduled</p>
+                                <span class="text-muted tiny-text">2 hours ago</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="page-divider"></div>
+                
+                <!-- Only Image Profile Dropdown Drop -->
+                <div class="dropdown">
+                    <button class="btn p-0 border-0 dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle fs-4 text-secondary"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                        <li><button class="dropdown-item text-danger fw-semibold" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right me-2"></i>Log out</button></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Lower Split Framework Container -->
+    <div class="app-workspace">
+        <!-- Sidebar Layout Container Base -->
+        <div id="sidebar" class="d-flex flex-column">
+            <div class="nav-container flex-grow-1">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="EmployeeRecords.html" class="nav-link">
+                            <i class="bi bi-people"></i> Employees
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="TimeOff.html" class="nav-link">
+                            <i class="bi bi-calendar-check"></i> Time Off
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="bi bi-clock-history"></i> Attendance
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="payslip.html" class="nav-link">
+                            <i class="bi bi-wallet2"></i> Payroll
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="performance_reviews.html" class="nav-link">
+                            <i class="bi bi-bar-chart"></i> Performance
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Settings.html" class="nav-link">
+                            <i class="bi bi-gear"></i> Settings
+                        </a>
+                    </li>
+                </ul>    
+            </div>
+        </div>
+
+        <!-- Primary Layout Body Space -->
+        <div id="page-content-wrapper">
+            <div id="searchMessage" class="text-muted small px-4 mt-2 d-none"></div>
+
+            <!-- Main Dashboard View Container -->
+            <div class="container-fluid px-4 py-4">
+                <div class="mb-4">
+                    <h4 id="welcomeTitle" class="fw-bold m-0 text-uppercase welcome-heading">Welcome Back, Admin Team!</h4>
+                    <p id="welcomeSubtitle" class="text-muted small welcome-subtitle">Check what's happening at Modern Tech Solutions today</p>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <!-- Total Employees -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="card stats-card p-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="card-icon" style="background: rgba(6,214,160,.12); color: #20c997;">
+                                    <i class="bi bi-person-fill fs-5"></i>
+                                </div>
+                                <div>
+                                    <p class="card-title mb-1">Total Employees</p>
+                                    <h5 class="card-value mb-2">250</h5>
+                                    <small class="text-success"><i class="bi bi-arrow-up"></i> 12 up this month</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- On Leave Today -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="card stats-card p-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="card-icon" style="background: rgba(17,138,178,.12); color: var(--accent);">
+                                    <i class="bi bi-calendar4-week fs-5"></i>
+                                </div>
+                                <div>
+                                    <p class="card-title mb-1">On Leave Today</p>
+                                    <h5 class="card-value mb-2">18</h5>
+                                    <small class="text-success"><i class="bi bi-arrow-up"></i> 3 up this week</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pending Requests -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="card stats-card p-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="card-icon" style="background: rgba(255,90,95,.12); color: #dc3545;">
+                                    <i class="bi bi-clock-history fs-5"></i>
+                                </div>
+                                <div>
+                                    <p class="card-title mb-1">Pending Requests</p>
+                                    <h5 class="card-value mb-2">7</h5>
+                                    <a href="time-off.html" class="card-link text-primary text-decoration-none">View all requests <i class="bi bi-arrow-right-short"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payroll this month -->
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <div class="card stats-card p-4">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="card-icon" style="background: rgba(17,138,178,.12); color: var(--accent-dark);">
+                                    <i class="bi bi-currency-dollar fs-5"></i>
+                                </div>
+                                <div>
+                                    <p class="card-title mb-1">Payroll this month</p>
+                                    <h5 class="card-value mb-2">R 632,700</h5>
+                                    <a href="payroll.html" class="card-link text-primary text-decoration-none">View summary <i class="bi bi-arrow-right-short"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <!-- Attendance Card Container -->
+                    <div class="col-12 col-lg-6">
+                        <div class="card p-4 border-0 shadow-sm h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Attendance Overview</h6>
+                                <select id="attendanceDropdown" class="form-select form-select-sm w-auto border-0 bg-light text-muted fw-semibold">
+                                    <option value="month">This Month</option>
+                                    <option value="week">This Week</option>
+                                    <option value="year">This Year</option>
+                                </select>
+                            </div>
+
+                            <div class="row align-items-center">
+                                <div class="col-5 chart-container position-relative">
+                                    <div class="donut-chart" id="donutChartContainer">
+                                        <div class="donut-hole"></div>
+                                        <div class="chart-center-text">
+                                            <span id="centerPercent" class="fw-bold fs-5">80%</span><br>
+                                            <span class="text-muted tiny-text">Present</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+                                        <li class="d-flex justify-content-between align-items-center small">
+                                            <span><i class="bi bi-circle-fill text-success me-2"></i> Present</span>
+                                            <span class="fw-semibold text-muted" id="presentLabel">80% <span class="fw-normal opacity-50">(200)</span></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between align-items-center small">
+                                            <span><i class="bi bi-circle-fill text-warning me-2"></i> Late</span>
+                                            <span class="fw-semibold text-muted" id="lateLabel">0% <span class="fw-normal opacity-50">(0)</span></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between align-items-center small">
+                                            <span><i class="bi bi-circle-fill text-danger me-2"></i> Absent</span>
+                                            <span class="fw-semibold text-muted" id="absentLabel">20% <span class="fw-normal opacity-50">(50)</span></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="text-center mt-3 border-top pt-2">
+                                <a href="attendance.html" class="text-primary text-decoration-none small fw-semibold">View full attendance report <i class="bi bi-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Time Off Requests Segment -->
+                    <div class="col-12 col-lg-6">
+                        <div class="card p-4 border-0 shadow-sm h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Time Off Requests</h6>
+                                <a href="requests.html" class="text-primary text-decoration-none small fw-semibold">View all <i class="bi bi-arrow-right-short"></i></a>
+                            </div>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-placeholder text-white fw-bold bg-secondary rounded-circle">SN</div>
+                                        <div>
+                                            <p class="mb-0 fw-semibold small">Sibongile Nkosi</p>
+                                            <span class="text-muted tiny-text">Personal Leave</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 small fw-medium">2025-07-22</p>
+                                        <span class="badge bg-success">Approved</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-placeholder text-white fw-bold bg-danger rounded-circle">LM</div>
+                                        <div>
+                                            <p class="mb-0 fw-semibold small">Lungile Moyo</p>
+                                            <span class="text-muted tiny-text">Family Responsibility</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 small fw-medium">2025-07-15</p>
+                                        <span class="badge bg-danger">Denied</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-placeholder text-white fw-bold bg-info rounded-circle">TM</div>
+                                        <div>
+                                            <p class="mb-0 fw-semibold small">Thabo Molefe</p>
+                                            <span class="text-muted tiny-text">Personal Leave</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0 small fw-medium">2024-12-05</p>
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Employees Segment -->
+                <div class="row g-4">
+                    <div class="col-12 col-lg-6">
+                        <div class="card p-4 border-0 shadow-sm h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Recent Employees</h6>
+                                <a href="employees.html" class="text-primary text-decoration-none small fw-semibold">See More <i class="bi bi-arrow-right-short"></i></a>
+                            </div>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-placeholder bg-success-subtle text-success fw-bold rounded-circle">SN</div>
+                                        <div>
+                                            <p class="mb-0 fw-semibold small">Sibongile Nkosi</p>
+                                            <span class="text-muted tiny-text">Software Engineer</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-success small fw-medium">Joined in 2015</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-placeholder bg-secondary-subtle text-secondary fw-bold rounded-circle">LM</div>
+                                        <div>
+                                            <p class="mb-0 fw-semibold small">Lungile Moyo</p>
+                                            <span class="text-muted tiny-text">HR Manager</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-success small fw-medium">Joined in 2013</span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="avatar-placeholder bg-info-subtle text-info fw-bold rounded-circle">TM</div>
+                                        <div>
+                                            <p class="mb-0 fw-semibold small">Thabo Molefe</p>
+                                            <span class="text-muted tiny-text">Quality Analyst</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-success small fw-medium">Joined in 2018</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payroll Summary -->
+                    <div class="col-12 col-lg-6">
+                        <div class="card p-4 border-0 shadow-sm h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Payroll Summary</h6>
+                                <a href="payroll.html" class="text-primary text-decoration-none small fw-semibold">View full report <i class="bi bi-arrow-right-short"></i></a>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div>
+                                    <p class="text-muted small mb-1">Total Payroll</p>
+                                    <h5 class="fw-bold mb-0">R 632,700</h5>
+                                    <p class="text-success small mb-0">+8.5% vs Apr 2026</p>
+                                </div>
+                                <span class="badge bg-light text-dark rounded-pill">May 2026</span>
+                            </div>
+                            <div class="payroll-placeholder">
+                                <svg width="100%" height="150" viewBox="0 0 300 200" style="margin-top: 10px;">
+                                    <line x1="40" y1="170" x2="290" y2="170" stroke="#e9ecef" stroke-width="1"/>
+                                    <defs>
+                                        <linearGradient id="fillGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:0.2" />
+                                            <stop offset="100%" style="stop-color:#4a90e2;stop-opacity:0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <polygon points="40,120 80,100 120,110 160,90 200,85 240,80 280,70 280,170 240,170 200,170 160,170 120,170 80,170 40,170" fill="url(#fillGradient)"/>
+                                    <polyline points="40,120 80,100 120,110 160,90 200,85 240,80 280,70" fill="none" stroke="#4a90e2" stroke-width="2" stroke-linejoin="round"/>
+                                    <circle cx="40" cy="120" r="3" fill="#4a90e2"/>
+                                    <circle cx="280" cy="70" r="3" fill="#4a90e2"/>
+                                    <text x="40" y="190" font-size="12" text-anchor="middle" fill="#6c757d">Dec</text>
+                                    <text x="280" y="190" font-size="12" text-anchor="middle" fill="#6c757d">May</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Log Out Intercept Modal -->
+<div class="modal fade" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <div class="modal-body">
+        <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
+        <h5 class="modal-title fw-bold mb-2" id="logoutModalLabel">You have been logged out</h5>
+        <p class="text-muted small">Redirecting you to the authentication page...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Responsive Burger View Setup
+    const burgerToggle = document.getElementById('burgerToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('show');
+    }
+
+    if (burgerToggle) burgerToggle.addEventListener('click', toggleSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+    // Filter Logic Search implementation
+    const searchInput = document.getElementById('searchInput');
+    const searchMessage = document.getElementById('searchMessage');
+    const searchableCards = Array.from(document.querySelectorAll('#page-content-wrapper .card'));
+
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            let resultsCount = 0;
+
+            searchableCards.forEach(card => {
+                if (query === '') {
+                    card.parentElement.style.display = '';
+                    if (searchMessage) searchMessage.classList.add('d-none');
+                } else {
+                    const matched = card.textContent.toLowerCase().includes(query);
+                    card.parentElement.style.display = matched ? '' : 'none';
+                    if (matched) resultsCount++;
+                }
+            });
+
+            if (query !== '' && searchMessage) {
+                searchMessage.classList.remove('d-none');
+                searchMessage.textContent = resultsCount > 0 ? `Found ${resultsCount} metric items matches.` : 'No search parameters found matches.';
+            }
+        });
+    }
+
+    // Modal Log Out Intercept Script Routing
+    const logoutModalEl = document.getElementById('logoutModal');
+    if (logoutModalEl) {
+        logoutModalEl.addEventListener('shown.bs.modal', () => {
+            setTimeout(() => {
+                window.location.href = 'signin.html';
+            }, 2000);
+        });
+    }
+
+    // Dynamic Attendance Dropdown Management Engine
+    const attendanceDropdown = document.getElementById('attendanceDropdown');
+    const centerPercent = document.getElementById('centerPercent');
+    const donutChartContainer = document.getElementById('donutChartContainer');
+    const presentLabel = document.getElementById('presentLabel');
+    const lateLabel = document.getElementById('lateLabel');
+    const absentLabel = document.getElementById('absentLabel');
+
+    // Mapped attendance data (with visual variance added to week and year for functional demonstration)
+    const attendanceData = {
+        month: { presentPct: 80, presentCount: 200, latePct: 0, lateCount: 0, absentPct: 20, absentCount: 50 },
+        week:  { presentPct: 86, presentCount: 215, latePct: 4, lateCount: 10, absentPct: 10, absentCount: 25 },
+        year:  { presentPct: 74, presentCount: 185, latePct: 10, lateCount: 25, absentPct: 16, absentCount: 40 }
+    };
+
+    function updateAttendanceDisplay(period) {
+        const data = attendanceData[period];
+        if (!data) return;
+
+        // Sync local CSS variables inside the donut chart container dynamically
+        donutChartContainer.style.setProperty('--present-percent', `${data.presentPct}%`);
+        donutChartContainer.style.setProperty('--late-percent', `${data.latePct}%`);
+
+        // Update Text Nodes
+        centerPercent.textContent = `${data.presentPct}%`;
+        presentLabel.innerHTML = `${data.presentPct}% <span class="fw-normal opacity-50">(${data.presentCount})</span>`;
+        lateLabel.innerHTML = `${data.latePct}% <span class="fw-normal opacity-50">(${data.lateCount})</span>`;
+        absentLabel.innerHTML = `${data.absentPct}% <span class="fw-normal opacity-50">(${data.absentCount})</span>`;
+    }
+
+    if (attendanceDropdown) {
+        attendanceDropdown.addEventListener('change', (e) => {
+            updateAttendanceDisplay(e.target.value);
+        });
+        // Run once on load to establish baseline sync
+        updateAttendanceDisplay(attendanceDropdown.value);
+    }
+</script>
+</body>
+</html>
