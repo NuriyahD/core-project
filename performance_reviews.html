@@ -736,8 +736,8 @@
             </section>
 
             <div class="detail-actions">
-              <button class="primary">View Full Review</button>
-              <button class="secondary">Edit Review</button>
+              <button class="primary" type="button" id="viewFullReviewBtn">View Full Review</button>
+              <button class="secondary" type="button" id="editReviewBtn">Edit Review</button>
             </div>
           </aside>
         </div>
@@ -816,7 +816,7 @@
         </div>
         <div class="modal-actions">
           <button class="secondary" type="button" id="cancelReviewBtn">Cancel</button>
-          <button class="primary" type="submit">Save Review</button>
+          <button class="primary" type="submit" id="saveReviewBtn">Save Review</button>
         </div>
       </form>
     </div>
@@ -889,7 +889,34 @@
     });
 
     let selectedReviewId = reviewData[0].id;
+    let editingReviewId = null;
     let charts = {};
+
+    // Populates the Add/Edit Review modal with an existing review's data.
+    // readOnly=true is used by "View Full Review" (fields disabled, no save).
+    function openReviewModal(review, { readOnly = false } = {}) {
+      editingReviewId = review.id;
+      elements.reviewModalTitle.textContent = readOnly
+        ? `Review — ${review.name}`
+        : `Edit Review — ${review.name}`;
+
+      document.getElementById('reviewEmployeeName').value = review.name || '';
+      document.getElementById('reviewDepartment').value = review.department || '';
+      document.getElementById('reviewPeriod').value = review.reviewPeriod || '';
+      document.getElementById('reviewReviewer').value = review.reviewer || '';
+      document.getElementById('reviewStatus').value = review.status || '';
+      document.getElementById('reviewScore').value = review.overallScore != null ? review.overallScore.toFixed(1) : '';
+      document.getElementById('reviewComments').value = review.comment || '';
+
+      elements.reviewForm.querySelectorAll('input, select, textarea').forEach((field) => {
+        field.disabled = readOnly;
+      });
+
+      elements.saveReviewBtn.style.display = readOnly ? 'none' : '';
+      elements.cancelReviewBtn.textContent = readOnly ? 'Close' : 'Cancel';
+
+      elements.reviewModal.classList.add('open');
+    }
 
     const elements = {
       reviewTableBody: document.getElementById('reviewTableBody'),
@@ -900,8 +927,12 @@
       appSidebar: document.getElementById('appSidebar'),
       newReviewBtn: document.getElementById('newReviewBtn'),
       reviewModal: document.getElementById('reviewModal'),
+      reviewModalTitle: document.getElementById('reviewModalTitle'),
       cancelReviewBtn: document.getElementById('cancelReviewBtn'),
-      reviewForm: document.getElementById('reviewForm')
+      saveReviewBtn: document.getElementById('saveReviewBtn'),
+      reviewForm: document.getElementById('reviewForm'),
+      viewFullReviewBtn: document.getElementById('viewFullReviewBtn'),
+      editReviewBtn: document.getElementById('editReviewBtn')
     };
 
     function updateDashboardMetrics() {
@@ -977,6 +1008,11 @@
     }
 
     function initCharts() {
+      if (typeof Chart === 'undefined') {
+        console.warn('Chart.js did not load (CDN may be blocked or offline) — skipping chart rendering.');
+        return;
+      }
+
       if (charts.rating) Object.values(charts).forEach(c => c.destroy());
 
       const rates = { Excellent: 0, Good: 0, Average: 0 };
@@ -1027,34 +1063,79 @@
       });
 
       elements.newReviewBtn.addEventListener('click', () => {
+        editingReviewId = null;
+        elements.reviewForm.reset();
+        elements.reviewModalTitle.textContent = 'Add a New Review';
+        elements.reviewForm.querySelectorAll('input, select, textarea').forEach((field) => {
+          field.disabled = false;
+        });
+        elements.saveReviewBtn.style.display = '';
+        elements.saveReviewBtn.textContent = 'Save Review';
+        elements.cancelReviewBtn.textContent = 'Cancel';
         elements.reviewModal.classList.add('open');
+      });
+
+      elements.viewFullReviewBtn.addEventListener('click', () => {
+        const review = reviewData.find(r => r.id === selectedReviewId);
+        if (!review) return;
+        openReviewModal(review, { readOnly: true });
+      });
+
+      elements.editReviewBtn.addEventListener('click', () => {
+        const review = reviewData.find(r => r.id === selectedReviewId);
+        if (!review) return;
+        elements.saveReviewBtn.textContent = 'Save Changes';
+        openReviewModal(review, { readOnly: false });
       });
 
       elements.cancelReviewBtn.addEventListener('click', () => {
         elements.reviewModal.classList.remove('open');
+        editingReviewId = null;
       });
 
       elements.reviewForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const fd = new FormData(elements.reviewForm);
         const score = parseFloat(fd.get('overallScore'));
-        const newRev = {
-          id: `emp-${Date.now()}`,
-          name: fd.get('employeeName'),
-          department: fd.get('department'),
-          position: 'Associate Staff',
-          contact: 'internal-portal@moderntech.com',
-          reviewPeriod: fd.get('reviewPeriod'),
-          reviewer: fd.get('reviewer'),
-          status: fd.get('status'),
-          overallScore: score,
-          rating: score >= 4.5 ? 'Excellent' : score >= 3.6 ? 'Good' : 'Average',
-          categoryScores: { quality: score, productivity: score, communication: score, teamwork: score },
-          comment: fd.get('comments') || 'No management notes attached.',
-          attendanceRate: 100, pendingLeave: 0, employmentHistory: 'Joined recently.'
-        };
-        reviewData.unshift(newRev);
-        selectedReviewId = newRev.id;
+        const rating = score >= 4.5 ? 'Excellent' : score >= 3.6 ? 'Good' : 'Average';
+        const categoryScores = { quality: score, productivity: score, communication: score, teamwork: score };
+
+        if (editingReviewId) {
+          // Update the existing review in place rather than adding a new row
+          const existing = reviewData.find(r => r.id === editingReviewId);
+          if (existing) {
+            existing.name = fd.get('employeeName');
+            existing.department = fd.get('department');
+            existing.reviewPeriod = fd.get('reviewPeriod');
+            existing.reviewer = fd.get('reviewer');
+            existing.status = fd.get('status');
+            existing.overallScore = score;
+            existing.rating = rating;
+            existing.categoryScores = categoryScores;
+            existing.comment = fd.get('comments') || existing.comment;
+          }
+          selectedReviewId = editingReviewId;
+        } else {
+          const newRev = {
+            id: `emp-${Date.now()}`,
+            name: fd.get('employeeName'),
+            department: fd.get('department'),
+            position: 'Associate Staff',
+            contact: 'internal-portal@moderntech.com',
+            reviewPeriod: fd.get('reviewPeriod'),
+            reviewer: fd.get('reviewer'),
+            status: fd.get('status'),
+            overallScore: score,
+            rating,
+            categoryScores,
+            comment: fd.get('comments') || 'No management notes attached.',
+            attendanceRate: 100, pendingLeave: 0, employmentHistory: 'Joined recently.'
+          };
+          reviewData.unshift(newRev);
+          selectedReviewId = newRev.id;
+        }
+
+        editingReviewId = null;
         elements.reviewModal.classList.remove('open');
         updateDashboardMetrics();
         renderTable();
