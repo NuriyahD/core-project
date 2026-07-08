@@ -211,7 +211,7 @@
                     </div>
                 </div>
 
-                <!-- Payslip Blueprint Sheet Card -->
+                <!-- Printed payslip outline -->
                 <div class="payslip-container mx-auto" style="max-width: 850px;">
                     
                     <!-- Top Branding Title Block -->
@@ -229,7 +229,7 @@
                         </div>
                     </div>
 
-                    <!-- Metadata Context Row -->
+                    <!-- Employee specification details -->
                     <div class="row g-3 mb-4">
                         <div class="col-6 col-md-3">
                             <small class="text-muted d-block text-uppercase small">Employee Name</small>
@@ -240,7 +240,7 @@
                             <span class="text-dark d-block" id="empPosition">--</span>
                         </div>
                         <div class="col-6 col-md-3">
-                            <small class="text-muted d-block text-uppercase small">Department Mapping</small>
+                            <small class="text-muted d-block text-uppercase small">Department</small>
                             <span class="text-dark d-block badge bg-light text-secondary border text-start align-middle mt-1" id="empDept">--</span>
                         </div>
                         <div class="col-6 col-md-3">
@@ -251,10 +251,10 @@
 
                     <!-- Spreadsheet Component Breakdown Layout Grid -->
                     <div class="row g-4 mb-4">
-                        <!-- Gross Earnings Ledger Section -->
+                        <!-- Gross Earnings Section -->
                         <div class="col-md-6">
                             <div class="border rounded-3 overflow-hidden">
-                                <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Gross Earnings Matrix</div>
+                                <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Gross Earnings</div>
                                 <table class="table table-sm table-borderless align-middle mb-0 font-monospace small">
                                     <tbody>
                                         <tr class="border-bottom">
@@ -262,13 +262,13 @@
                                             <td class="p-2 text-end pe-3 text-dark" id="earnBasic">R0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="p-2 ps-3 text-muted">Fixed Target Package Base</td>
+                                            <td class="p-2 ps-3 text-muted">Base Earnings Allowance</td>
                                             <td class="p-2 text-end pe-3 text-muted" id="earnLeave">--</td>
                                         </tr>
                                     </tbody>
                                     <tfoot class="table-light border-top">
                                         <tr class="fw-bold">
-                                            <td class="p-2 ps-3 text-dark">Total Gross Compensation</td>
+                                            <td class="p-2 ps-3 text-dark">Total Gross Salary</td>
                                             <td class="p-2 text-end pe-3 text-dark" id="earnTotal">R0.00</td>
                                         </tr>
                                     </tfoot>
@@ -276,7 +276,7 @@
                             </div>
                         </div>
 
-                        <!-- Statutory Reductions Ledger Block Section -->
+                        <!-- Statutory Reductions Section -->
                         <div class="col-md-6">
                             <div class="border rounded-3 overflow-hidden">
                                 <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Statutory Reductions</div>
@@ -313,7 +313,7 @@
                         </div>
                     </div>
 
-                    <!-- Footer Declaration -->
+                    <!-- Footer -->
                     <div class="row pt-2 text-muted small border-top" style="font-size: 0.72rem;">
                         <div class="col-sm-8">
                             <p class="mb-1"><i class="bi bi-info-circle me-1"></i> ModernTech Solutions payroll items are processed automatically via client-side code array indexing[cite: 1].</p>
@@ -335,6 +335,7 @@
     <!-- Data Array System & Control Script Logic -->
     <script>
         // Dummy data Arrays
+        // employee_info.jsom
         const employees = [
             { employeeId: 1, name: "Sibongile Nkosi", position: "Software Engineer", department: "Development", salary: 70000 },
             { employeeId: 2, name: "Lungile Moyo", position: "HR Manager", department: "HR", salary: 80000 },
@@ -348,6 +349,7 @@
             { employeeId: 10, name: "Fatima Patel", position: "Customer Support Lead", department: "Support", salary: 58000 }
         ];
 
+        // payroll_data.json
         const payrollData = [
             { employeeId: 1, hoursWorked: 160, leaveDeductions: 8, finalSalary: 69500 },
             { employeeId: 2, hoursWorked: 150, leaveDeductions: 10, finalSalary: 79000 },
@@ -361,7 +363,7 @@
             { employeeId: 10, hoursWorked: 162, leaveDeductions: 4, finalSalary: 57750 }
         ];
 
-        // 1. Initial configuration setup on window load
+        // 1. Initial setup on window load
         function setupDashboard() {
             const dropdown = document.getElementById("payslipEmployeeSelect");
             dropdown.innerHTML = ""; 
@@ -375,11 +377,11 @@
                 dropdown.appendChild(optionEl);
             }
 
-            // Fire initial content paint 
+            // Show initial content 
             loadEmployeeData();
         }
 
-        // 2. Fetch baseline data for selected employee and push to control boxes
+        // 2. Fetch dummy data for selected employee and push to boxes
         function loadEmployeeData() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
             
@@ -391,7 +393,7 @@
             }
 
             if (currentPayroll) {
-                // Approximate standard starter hourly rate based on total base pay / hours
+                // Hourly rate based on total base pay / hours
                 let estimatedHourly = Math.round(currentPayroll.finalSalary / currentPayroll.hoursWorked);
                 
                 // Update interactive controller input box numbers[cite: 1]
@@ -403,7 +405,7 @@
             updatePayslipCalculations();
         }
 
-        // 3. Formula math calculation engine that updates layout live
+        // 3. Formula math calculation that updates layout live
         function updatePayslipCalculations() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
             const chosenMonth = document.getElementById("payslipMonthSelect").value;
@@ -431,7 +433,7 @@
             // Currency formatting helper tool
             const formatZA = (amount) => "R" + amount.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // 4. Inject processed results live into UI elements
+            // 4. Insert processed results live into UI elements
             document.getElementById("slipPeriodLabel").textContent = chosenMonth;
             document.getElementById("empName").textContent = currentEmp.name;
             document.getElementById("empPosition").textContent = "MTech-00" + currentEmp.employeeId + " / " + currentEmp.position;
