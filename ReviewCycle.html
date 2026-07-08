@@ -151,6 +151,46 @@
             border-radius: 4px;
         }
 
+        /* Editable row state */
+        tr.row-editing td {
+            background-color: #f0f9ff;
+        }
+
+        tr.row-just-added {
+            animation: rowHighlight 2.4s ease-out;
+        }
+
+        @keyframes rowHighlight {
+            0% { background-color: #fff3cd; }
+            100% { background-color: transparent; }
+        }
+
+        .status-select {
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background-color: #fff;
+            color: var(--text);
+            max-width: 160px;
+        }
+        .status-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(4,150,199,0.15);
+        }
+
+        .inline-field-edit input, .inline-field-edit select {
+            font-size: 0.85rem;
+            padding: 3px 8px;
+        }
+
+        .row-actions button {
+            border: none;
+            background: transparent;
+            padding: 2px 4px;
+        }
+
         @media (max-width: 991px) {
             .top-navbar {
                 position: sticky;
@@ -229,11 +269,12 @@
                 <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
                 <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
                 <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
                 <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
-                <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
+                <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
             <hr class="sidebar-divider">
@@ -247,180 +288,463 @@
             </nav>
         </aside>
 
-        <div class="main-content">
-            <div class="container-fluid py-4">
+<div class="main-content">
+    <div class="container-fluid py-4">
 
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <span class="text-uppercase tracking-wider small fw-bold text-accent">Performance</span>
+                <h1 class="fw-bold h2 text-dark mb-0">Active Review Cycles</h1>
+            </div>
+            <button class="btn btn-coral btn-sm px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#newCycleModal">
+                <i class="bi bi-plus-lg me-1"></i> Start New Review
+            </button>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <!-- Card 1: Current Review Name (Editable Inline) -->
+            <div class="col-md-4">
+                <div class="card p-3 d-flex flex-row align-items-center gap-3 border shadow-sm rounded-3 h-100">
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 fs-4 flex-shrink-0">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                    <div class="w-100">
+                        <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Current Review</small>
+                        
+                        <div id="cycleDisplayContainer" class="d-flex align-items-center justify-content-between gap-2">
+                            <span class="fs-5 fw-bold text-dark" id="cycleTargetName">Q2 Mid-Year Review</span>
+                            <button class="btn btn-link p-0 text-secondary border-0" id="triggerEditBtn" title="Edit Cycle Name">
+                                <i class="bi bi-pencil-square fs-6"></i>
+                            </button>
+                        </div>
+
+                        <div id="cycleEditContainer" class="d-none mt-1">
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control form-control-sm border-primary" id="inlineCycleTitleInput">
+                                <button class="btn btn-primary btn-sm px-2" id="saveInlineEditBtn" type="button"><i class="bi bi-check-lg"></i></button>
+                                <button class="btn btn-outline-secondary btn-sm px-2" id="cancelInlineEditBtn" type="button"><i class="bi bi-x-lg"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 2: Progress Bar Card (now live) -->
+            <div class="col-md-4">
+                <div class="card p-3 d-flex flex-row align-items-center gap-3 border shadow-sm rounded-3 h-100">
+                    <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 fs-4 flex-shrink-0">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <div class="w-100 me-2">
+                        <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Progress</small>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fs-5 fw-bold text-dark" id="progressPercentLabel">0%</span>
+                            <small class="text-muted" id="progressCountLabel">0 / 0 Finished</small>
+                        </div>
+                        <div class="progress mt-1" style="height: 6px;">
+                            <div class="progress-bar bg-primary" id="progressBarFill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card 3: Deadline Counter -->
+            <div class="col-md-4">
+                <div class="card p-3 d-flex flex-row align-items-center gap-3 border shadow-sm rounded-3 h-100">
+                    <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 fs-4 flex-shrink-0">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
                     <div>
-                        <span class="text-uppercase tracking-wider small fw-bold text-accent">Performance</span>
-                        <h1 class="fw-bold h2 text-dark mb-0">Active Review Cycles</h1>
-                    </div>
-                    <button class="btn btn-coral btn-sm px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#newCycleModal">
-                        <i class="bi bi-plus-lg me-1"></i> Launch New Cycle
-                    </button>
-                </div>
-
-                <div class="row g-3 mb-4">
-                    <div class="col-md-4">
-                        <div class="corporate-card p-3 d-flex align-items-center gap-3">
-                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 fs-4">
-                                <i class="bi bi-arrow-repeat"></i>
-                            </div>
-                            <div>
-                                <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Current Target</small>
-                                <span class="fs-5 fw-bold text-dark" id="cycleTargetName">Q2 Mid-Year Review</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="corporate-card p-3 d-flex align-items-center gap-3">
-                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 fs-4">
-                                <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="w-100 me-2">
-                                <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Completion Progress</small>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span class="fs-5 fw-bold text-dark">68%</span>
-                                    <small class="text-muted">42 / 61 Signed</small>
-                                </div>
-                                <div class="progress mt-1">
-                                    <div class="progress-bar bg-primary" style="width: 68%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="corporate-card p-3 d-flex align-items-center gap-3">
-                            <div class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 fs-4">
-                                <i class="bi bi-hourglass-split"></i>
-                            </div>
-                            <div>
-                                <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Days Until Locked</small>
-                                <span class="fs-5 fw-bold text-dark">14 Days Remaining</span>
-                            </div>
-                        </div>
+                        <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem;">Time Left</small>
+                        <span class="fs-5 fw-bold text-dark">14 Days Remaining</span>
                     </div>
                 </div>
-
-                <div class="corporate-card p-4">
-                    <h6 class="fw-bold text-dark mb-3"><i class="bi bi-layer-forward me-2 text-muted"></i>Employee Review Status Logs</h6>
-                    <div class="table-responsive">
-                        <table class="table align-middle mb-0">
-                            <thead class="table-light">
-                                <tr class="text-muted small text-uppercase">
-                                    <th>Team Member</th>
-                                    <th>Department</th>
-                                    <th>Reviewer / Lead</th>
-                                    <th>Self Assessment</th>
-                                    <th>Manager Feedback</th>
-                                    <th class="text-end">Lifecycle Stage</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-dark">Alex Mercer</div>
-                                        <small class="text-muted">alex.m@moderntech.internal</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Development</span></td>
-                                    <td>Sarah Jenkins</td>
-                                        <td><span class="text-primary fw-medium"><i class="bi bi-check2-circle me-1"></i> Submitted</span></td>
-                                        <td><span class="text-primary fw-medium"><i class="bi bi-check2-circle me-1"></i> Completed</span></td>
-                                        <td class="text-end">
-                                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 px-3 py-1">Final Sign-off</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-dark">David Vance</div>
-                                        <small class="text-muted">david.v@moderntech.internal</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">QA Engineering</span></td>
-                                    <td>Sarah Jenkins</td>
-                                        <td><span class="text-primary fw-medium"><i class="bi bi-check2-circle me-1"></i> Submitted</span></td>
-                                    <td><span class="text-warning fw-medium"><i class="bi bi-clock me-1"></i> Under Review</span></td>
-                                    <td class="text-end">
-                                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-20 px-3 py-1">Manager Assessment</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold text-dark">Elena Rostova</div>
-                                        <small class="text-muted">elena.r@moderntech.internal</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Product UX</span></td>
-                                    <td>Marcus Brody</td>
-                                    <td><span class="text-secondary opacity-70"><i class="bi bi-dash-circle me-1"></i> Not Started</span></td>
-                                    <td><span class="text-secondary opacity-70"><i class="bi bi-dash-circle me-1"></i> Pending Self</span></td>
-                                    <td class="text-end">
-                                        <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-20 px-3 py-1">Employee Input</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </div>
 
-    <div class="modal fade" id="newCycleModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Launch New Review Cycle</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="card p-4 border shadow-sm rounded-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <h6 class="fw-bold text-dark mb-0"><i class="bi bi-layer-forward me-2 text-muted"></i>Employee Progress Logs</h6>
+                <small class="text-muted">Click the status dropdowns to move a review forward. Use the pencil to edit an entry.</small>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr class="text-muted small text-uppercase">
+                            <th>Employee</th>
+                            <th>Department</th>
+                            <th>Manager</th>
+                            <th>Self Assessment</th>
+                            <th>Manager Feedback</th>
+                            <th class="text-end">Current Status</th>
+                            <th class="text-end" style="width: 60px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewTableBody">
+                        <!-- Rows rendered by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="newCycleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Start New Review Cycle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="cycleTitleInput" class="form-label fw-semibold">Review Title</label>
+                    <input type="text" class="form-control" id="cycleTitleInput" value="Q3 Performance Review">
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="cycleTitleInput" class="form-label fw-semibold">Cycle Title</label>
-                        <input type="text" class="form-control" id="cycleTitleInput" value="Q3 Performance Review">
+                <hr class="my-3">
+                <p class="small text-muted mb-2">Add the first employee to this cycle — you'll be able to add more and update their progress right from the table afterward.</p>
+                <div class="mb-3">
+                    <label for="employeeNameInput" class="form-label fw-semibold">Employee Name</label>
+                    <input type="text" class="form-control" id="employeeNameInput" placeholder="e.g. Priya Sharma" required>
+                </div>
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <label for="employeeDeptInput" class="form-label fw-semibold">Department</label>
+                        <select class="form-select" id="employeeDeptInput">
+                            <option>Development</option>
+                            <option>QA Engineering</option>
+                            <option>Product UX</option>
+                            <option>Marketing</option>
+                            <option>Sales</option>
+                            <option>People Ops</option>
+                        </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="cycleOwnerInput" class="form-label fw-semibold">Owner</label>
+                    <div class="col-6">
+                        <label for="cycleOwnerInput" class="form-label fw-semibold">Assigned Manager</label>
                         <input type="text" class="form-control" id="cycleOwnerInput" value="Marcus Brody">
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="notifyCheck" checked>
-                        <label class="form-check-label" for="notifyCheck">Notify reviewers immediately</label>
-                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-coral" id="createCycleBtn">Create Cycle</button>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="notifyCheck" checked>
+                    <label class="form-check-label" for="notifyCheck">Send email notifications immediately</label>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-coral" id="createCycleBtn">Create Review</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-        <div id="pageToast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toastMessage">Action completed.</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+    <div id="pageToast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMessage">Done!</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const toastEl = document.getElementById('pageToast');
-        const toast = new bootstrap.Toast(toastEl);
+<!-- Bootstrap JavaScript Plugins -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-        document.getElementById('profileRefreshBtn')?.addEventListener('click', () => {
-            document.getElementById('toastMessage').textContent = 'Review cycle view refreshed.';
-            toast.show();
+<script>
+    const toastElement = document.getElementById('pageToast');
+    const notificationToast = new bootstrap.Toast(toastElement);
+
+    const cycleTargetName = document.getElementById('cycleTargetName');
+    const displayContainer = document.getElementById('cycleDisplayContainer');
+    const editContainer = document.getElementById('cycleEditContainer');
+    const inlineInput = document.getElementById('inlineCycleTitleInput');
+    const reviewTableBody = document.getElementById('reviewTableBody');
+
+    const SELF_OPTIONS = ["Not Started", "Submitted"];
+    const MANAGER_OPTIONS = ["Waiting", "Under Review", "Completed"];
+    const OVERALL_OPTIONS = ["Employee Input", "Manager Review", "Final Sign-off"];
+
+    // Setting the overall status directly also moves the underlying self/manager
+    // fields to a combination that matches it, so the two dropdowns never disagree.
+    function applyOverallStatus(row, label) {
+        if (label === "Final Sign-off") {
+            row.selfStatus = "Submitted";
+            row.managerStatus = "Completed";
+        } else if (label === "Manager Review") {
+            row.selfStatus = "Submitted";
+            row.managerStatus = row.managerStatus === "Completed" ? "Under Review" : row.managerStatus;
+            if (row.managerStatus === "Waiting") row.managerStatus = "Under Review";
+        } else {
+            row.selfStatus = "Not Started";
+            row.managerStatus = "Waiting";
+        }
+    }
+
+    let rowIdCounter = 0;
+    function nextRowId() {
+        rowIdCounter += 1;
+        return `row-${rowIdCounter}`;
+    }
+
+    // Seeded dataset matching the existing cycle
+    let reviewRows = [
+        { id: nextRowId(), name: "Alex Mercer", department: "Development", manager: "Sarah Jenkins", selfStatus: "Submitted", managerStatus: "Completed", editing: false, justAdded: false },
+        { id: nextRowId(), name: "David Vance", department: "QA Engineering", manager: "Sarah Jenkins", selfStatus: "Submitted", managerStatus: "Under Review", editing: false, justAdded: false },
+        { id: nextRowId(), name: "Elena Rostova", department: "Product UX", manager: "Marcus Brody", selfStatus: "Not Started", managerStatus: "Waiting", editing: false, justAdded: false }
+    ];
+
+    function launchToast(msg) {
+        document.getElementById('toastMessage').textContent = msg;
+        notificationToast.show();
+    }
+
+    function emailFor(name) {
+        return name.trim().toLowerCase().replace(/[^a-z\s]/g, "").split(/\s+/).join(".") + "@moderntech.internal";
+    }
+
+    function computeStatus(row) {
+        if (row.selfStatus === "Submitted" && row.managerStatus === "Completed") {
+            return { label: "Final Sign-off", cls: "primary", icon: "bi-patch-check-fill" };
+        }
+        if (row.selfStatus === "Submitted") {
+            return { label: "Manager Review", cls: "warning", icon: "bi-clock" };
+        }
+        return { label: "Employee Input", cls: "secondary", icon: "bi-person" };
+    }
+
+    function selfStatusIcon(status) {
+        return status === "Submitted"
+            ? '<i class="bi bi-check2-circle me-1"></i>'
+            : '<i class="bi bi-dash-circle me-1"></i>';
+    }
+
+    function managerStatusIcon(status) {
+        if (status === "Completed") return '<i class="bi bi-check2-circle me-1"></i>';
+        if (status === "Under Review") return '<i class="bi bi-clock me-1"></i>';
+        return '<i class="bi bi-dash-circle me-1"></i>';
+    }
+
+    function buildOptionList(options, selected) {
+        return options.map(opt => `<option value="${opt}" ${opt === selected ? "selected" : ""}>${opt}</option>`).join("");
+    }
+
+    function renderTable() {
+        reviewTableBody.innerHTML = "";
+
+        reviewRows.forEach(row => {
+            const status = computeStatus(row);
+            const tr = document.createElement("tr");
+            tr.dataset.rowId = row.id;
+            if (row.justAdded) tr.classList.add("row-just-added");
+
+            if (row.editing) {
+                tr.classList.add("row-editing");
+                tr.innerHTML = `
+                    <td class="inline-field-edit">
+                        <input type="text" class="form-control form-control-sm" data-field="name" value="${row.name}">
+                    </td>
+                    <td class="inline-field-edit">
+                        <select class="form-select form-select-sm" data-field="department">
+                            ${["Development", "QA Engineering", "Product UX", "Marketing", "Sales", "People Ops"]
+                                .map(d => `<option value="${d}" ${d === row.department ? "selected" : ""}>${d}</option>`).join("")}
+                        </select>
+                    </td>
+                    <td class="inline-field-edit">
+                        <input type="text" class="form-control form-control-sm" data-field="manager" value="${row.manager}">
+                    </td>
+                    <td colspan="2" class="text-muted small fst-italic">Save to update assessment status</td>
+                    <td class="text-end"><span class="badge bg-secondary bg-opacity-10 text-secondary border px-3 py-1">Editing…</span></td>
+                    <td class="text-end row-actions">
+                        <button class="text-success" data-action="save" title="Save"><i class="bi bi-check-lg"></i></button>
+                        <button class="text-secondary" data-action="cancel" title="Cancel"><i class="bi bi-x-lg"></i></button>
+                    </td>
+                `;
+            } else {
+                tr.innerHTML = `
+                    <td>
+                        <div class="fw-semibold text-dark">${row.name}</div>
+                        <small class="text-muted">${emailFor(row.name)}</small>
+                    </td>
+                    <td><span class="badge bg-light text-dark border">${row.department}</span></td>
+                    <td>${row.manager}</td>
+                    <td>
+                        <select class="status-select" data-field="selfStatus">
+                            ${buildOptionList(SELF_OPTIONS, row.selfStatus)}
+                        </select>
+                    </td>
+                    <td>
+                        <select class="status-select" data-field="managerStatus">
+                            ${buildOptionList(MANAGER_OPTIONS, row.managerStatus)}
+                        </select>
+                    </td>
+                    <td class="text-end">
+                        <select class="status-select fw-semibold text-${status.cls}" data-field="overallStatus" style="border-color: var(--border);">
+                            ${buildOptionList(OVERALL_OPTIONS, status.label)}
+                        </select>
+                    </td>
+                    <td class="text-end row-actions">
+                        <button class="text-secondary" data-action="edit" title="Edit entry"><i class="bi bi-pencil-square"></i></button>
+                    </td>
+                `;
+            }
+
+            reviewTableBody.appendChild(tr);
+            row.justAdded = false;
         });
 
-        document.getElementById('createCycleBtn')?.addEventListener('click', () => {
-            const title = document.getElementById('cycleTitleInput').value.trim() || 'New Review Cycle';
-            document.getElementById('cycleTargetName').textContent = title;
-            document.getElementById('toastMessage').textContent = `Cycle "${title}" created successfully.`;
-            bootstrap.Modal.getInstance(document.getElementById('newCycleModal'))?.hide();
-            toast.show();
+        updateProgressStats();
+    }
+
+    function updateProgressStats() {
+        const total = reviewRows.length;
+        const finished = reviewRows.filter(r => computeStatus(r).label === "Final Sign-off").length;
+        const percent = total === 0 ? 0 : Math.round((finished / total) * 100);
+
+        document.getElementById('progressPercentLabel').textContent = `${percent}%`;
+        document.getElementById('progressCountLabel').textContent = `${finished} / ${total} Finished`;
+        document.getElementById('progressBarFill').style.width = `${percent}%`;
+    }
+
+    function findRow(id) {
+        return reviewRows.find(r => r.id === id);
+    }
+
+    // Delegate all table interactions (status changes, edit, save, cancel)
+    reviewTableBody.addEventListener('change', function (event) {
+        const field = event.target.dataset.field;
+        if (!field) return;
+        const tr = event.target.closest('tr');
+        const row = findRow(tr.dataset.rowId);
+        if (!row) return;
+
+        if (field === "overallStatus") {
+            applyOverallStatus(row, event.target.value);
+        } else {
+            row[field] = event.target.value;
+        }
+
+        if (!row.editing) {
+            // Live status update for any of the three dropdowns
+            renderTable();
+            const updatedStatus = computeStatus(row);
+            launchToast(`${row.name}'s review is now "${updatedStatus.label}".`);
+        }
+    });
+
+    reviewTableBody.addEventListener('click', function (event) {
+        const button = event.target.closest('button[data-action]');
+        if (!button) return;
+        const tr = button.closest('tr');
+        const row = findRow(tr.dataset.rowId);
+        if (!row) return;
+
+        const action = button.dataset.action;
+
+        if (action === 'edit') {
+            row.editing = true;
+            renderTable();
+        } else if (action === 'cancel') {
+            row.editing = false;
+            renderTable();
+        } else if (action === 'save') {
+            const nameInput = tr.querySelector('[data-field="name"]');
+            const deptInput = tr.querySelector('[data-field="department"]');
+            const managerInput = tr.querySelector('[data-field="manager"]');
+
+            const newName = nameInput.value.trim();
+            if (newName) row.name = newName;
+            row.department = deptInput.value;
+            row.manager = managerInput.value.trim() || row.manager;
+            row.editing = false;
+
+            renderTable();
+            launchToast(`Updated details for ${row.name}.`);
+        }
+    });
+
+    // Modal: create a new review cycle + add its first employee as an active, editable row
+    const saveButton = document.getElementById('createCycleBtn');
+    if (saveButton) {
+        saveButton.addEventListener('click', function () {
+            const inputTitle = document.getElementById('cycleTitleInput').value.trim();
+            const employeeName = document.getElementById('employeeNameInput').value.trim();
+            const department = document.getElementById('employeeDeptInput').value;
+            const manager = document.getElementById('cycleOwnerInput').value.trim() || 'Unassigned';
+
+            if (!employeeName) {
+                document.getElementById('employeeNameInput').classList.add('is-invalid');
+                return;
+            }
+            document.getElementById('employeeNameInput').classList.remove('is-invalid');
+
+            const finalizedTitle = inputTitle || 'New Review Cycle';
+            cycleTargetName.textContent = finalizedTitle;
+
+            const newRow = {
+                id: nextRowId(),
+                name: employeeName,
+                department: department,
+                manager: manager,
+                selfStatus: "Not Started",
+                managerStatus: "Waiting",
+                editing: false,
+                justAdded: true
+            };
+            reviewRows.push(newRow);
+            renderTable();
+
+            launchToast(`"${finalizedTitle}" started — ${employeeName} added and ready to work on.`);
+
+            const modalElement = document.getElementById('newCycleModal');
+            const openModal = bootstrap.Modal.getInstance(modalElement);
+            if (openModal) {
+                openModal.hide();
+            }
+
+            // Reset the employee field for the next entry, keep title/manager as-is
+            document.getElementById('employeeNameInput').value = '';
+
+            // Scroll the new row into view so it's obvious it's ready to be worked on
+            requestAnimationFrame(() => {
+                const newTr = reviewTableBody.querySelector(`tr[data-row-id="${newRow.id}"]`);
+                if (newTr) newTr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
         });
-    </script>
+    }
+
+    // Toggle Inline Editing for the cycle title
+    document.getElementById('triggerEditBtn').addEventListener('click', function () {
+        inlineInput.value = cycleTargetName.textContent;
+        displayContainer.classList.add('d-none');
+        editContainer.classList.remove('d-none');
+        inlineInput.focus();
+    });
+
+    document.getElementById('saveInlineEditBtn').addEventListener('click', function () {
+        const updatedTitle = inlineInput.value.trim();
+        if (updatedTitle) {
+            cycleTargetName.textContent = updatedTitle;
+            launchToast(`Title changed to "${updatedTitle}".`);
+        }
+        displayContainer.classList.remove('d-none');
+        editContainer.classList.add('d-none');
+    });
+
+    document.getElementById('cancelInlineEditBtn').addEventListener('click', function () {
+        displayContainer.classList.remove('d-none');
+        editContainer.classList.add('d-none');
+    });
+
+    inlineInput.addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            document.getElementById('saveInlineEditBtn').click();
+        } else if (event.key === 'Escape') {
+            document.getElementById('cancelInlineEditBtn').click();
+        }
+    });
+
+    // Initial render
+    renderTable();
+</script>
 </body>
-
 </html>

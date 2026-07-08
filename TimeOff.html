@@ -207,11 +207,12 @@
                 <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
                 <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item active"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
                 <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
                 <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
-                <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
+                <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
             <hr class="sidebar-divider">
@@ -226,134 +227,137 @@
         </aside>
 
         <main class="main-content">
-            <div class="container-fluid">
-                
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-                    <div>
-                        <span class="text-uppercase text-muted small fw-bold">Time Allocation</span>
-                        <h1 class="h2 fw-bold text-dark m-0">Leave Request Management</h1>
-                    </div>
-                    <button class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#leaveModal">
-                        <i class="bi bi-plus-lg"></i> Request Time Off
-                    </button>
-                </div>
+<div class="container-fluid">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <span class="text-uppercase text-muted small fw-bold">Time Allocation</span>
+            <h1 class="h2 fw-bold text-dark m-0">Leave Request Management</h1>
+        </div>
+        <button class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#leaveModal">
+            <i class="bi bi-plus-lg"></i> Request Time Off
+        </button>
+    </div>
 
-                <div class="row g-3 mb-4">
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card border-success">
-                            <span class="text-muted small fw-bold">Approved</span>
-                            <h3 class="fw-bold m-0 text-dark" id="approvedCount">0</h3>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card border-warning">
-                            <span class="text-muted small fw-bold">Pending</span>
-                            <h3 class="fw-bold m-0 text-dark" id="pendingCount">0</h3>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card border-danger">
-                            <span class="text-muted small fw-bold">Denied</span>
-                            <h3 class="fw-bold m-0 text-dark" id="deniedCount">0</h3>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card border-info">
-                            <span class="text-muted small fw-bold">Total Requests</span>
-                            <h3 class="fw-bold m-0 text-dark" id="totalCount">0</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-4 rounded shadow-sm border">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
-                        <h5 class="fw-bold m-0 text-dark">Leave Request History</h5>
-                        
-                        <div class="d-flex gap-2 match-parent col-12 col-md-7 col-lg-5">
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0 text-secondary"><i class="bi bi-search"></i></span>
-                                <input type="text" id="searchInput" class="form-control bg-light border-start-0" placeholder="Search employee or reason...">
-                            </div>
-                            <select id="statusFilter" class="form-select bg-light w-auto" style="min-width: 140px;">
-                                <option value="ALL">All Statuses</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Denied">Denied</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle m-0">
-                            <thead class="table-light small text-uppercase">
-                                <tr>
-                                    <th>Employee</th>
-                                    <th>Reason / Leave Type</th>
-                                    <th>Date Requested</th>
-                                    <th class="text-end">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody">
-                                <tr>
-                                    <td colspan="4" class="text-center py-4 text-muted">
-                                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                        Loading database real-time entries...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-success">
+                <span class="text-muted small fw-bold">Approved</span>
+                <h3 class="fw-bold m-0 text-dark" id="approvedCount">0</h3>
             </div>
-        </main>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-warning">
+                <span class="text-muted small fw-bold">Pending</span>
+                <h3 class="fw-bold m-0 text-dark" id="pendingCount">0</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-danger">
+                <span class="text-muted small fw-bold">Denied</span>
+                <h3 class="fw-bold m-0 text-dark" id="deniedCount">0</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-info">
+                <span class="text-muted small fw-bold">Total Requests</span>
+                <h3 class="fw-bold m-0 text-dark" id="totalCount">0</h3>
+            </div>
+        </div>
+    </div>
 
-        <div class="modal fade" id="leaveModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Submit Leave Request</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form id="leaveForm">
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold">Employee Name</label>
-                                <input type="text" id="empNameInput" class="form-control" placeholder="e.g. Alice Johnson" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold">Leave Type</label>
-                                <select id="leaveTypeInput" class="form-select" required>
-                                    <option value="" disabled selected>Choose option...</option>
-                                    <option value="Sick Leave">Sick Leave</option>
-                                    <option value="Medical Appointment">Medical Appointment</option>
-                                    <option value="Personal">Personal Business</option>
-                                    <option value="Vacation">Vacation Leave</option>
-                                    <option value="Family Responsibility">Family Responsibility</option>
-                                    <option value="Bereavement">Bereavement</option>
-                                    <option value="Childcare">Childcare</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label small fw-bold">Date Description</label>
-                                <input type="text" id="datesInput" class="form-control" placeholder="e.g. 2026-07-10" required>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary px-4">Submit Application</button>
-                        </div>
-                    </form>
+    <div class="bg-white p-4 rounded shadow-sm border">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+            <h5 class="fw-bold m-0 text-dark">Leave Request History</h5>
+            
+            <!-- Fixed: Changed non-existent 'match-parent' to standard 'w-100' for clean scaling -->
+            <div class="d-flex gap-2 w-100 col-12 col-md-7 col-lg-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-secondary"><i class="bi bi-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control bg-light border-start-0" placeholder="Search employee or reason...">
                 </div>
+                <select id="statusFilter" class="form-select bg-light w-auto" style="min-width: 140px;">
+                    <option value="ALL">All Statuses</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Denied">Denied</option>
+                </select>
             </div>
         </div>
 
+        <div class="table-responsive">
+            <table class="table table-hover align-middle m-0">
+                <thead class="table-light small text-uppercase">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Reason / Leave Type</th>
+                        <th>Date Requested</th>
+                        <th class="text-end">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">
+                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                            Loading database real-time entries...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+</div>
+
+<!-- Leave Form Modal -->
+<div class="modal fade" id="leaveModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Submit Leave Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Fixed: Correctly wrapped fields and action items together inside the single form environment -->
+            <form id="leaveForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Employee Name</label>
+                        <input type="text" id="empNameInput" class="form-control" placeholder="e.g. Alice Johnson" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Leave Type</label>
+                        <select id="leaveTypeInput" class="form-select" required>
+                            <option value="" disabled selected>Choose option...</option>
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Medical Appointment">Medical Appointment</option>
+                            <option value="Personal">Personal Business</option>
+                            <option value="Vacation">Vacation Leave</option>
+                            <option value="Family Responsibility">Family Responsibility</option>
+                            <option value="Bereavement">Bereavement</option>
+                            <option value="Childcare">Childcare</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Date Description</label>
+                        <!-- Tip: Changing this to type="date" yields a cleaner browser UI than native free text -->
+                        <input type="date" id="datesInput" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Master data storage array
     let leaveRequestsArray = [];
 
+    // 1. Fetch initial entries from JSON file
     function loadLeaveData() {
         fetch("leave.json")
             .then(response => {
@@ -365,9 +369,9 @@
                 renderDashboard();
             })
             .catch(err => {
-                console.warn("Using local fallback array data schema.");
+                console.warn("Using sample fallback data because leave.json wasn't found.");
                 
-                // Complete 10 Employee Comprehensive Object Dataset
+                // Backup sample dataset if network or local data read fails
                 leaveRequestsArray = [
                     { "employeeId": 1, "name": "Sibongile Nkosi", "leaveRequests": [{ "date": "2025-07-22", "reason": "Sick Leave", "status": "Approved" }, { "date": "2024-12-01", "reason": "Personal", "status": "Pending" }] },
                     { "employeeId": 2, "name": "Lungile Moyo", "leaveRequests": [{ "date": "2025-07-15", "reason": "Family Responsibility", "status": "Denied" }, { "date": "2024-12-02", "reason": "Vacation", "status": "Approved" }] },
@@ -384,17 +388,23 @@
             });
     }
 
+    // 2. Clear, filter, and rebuild rows on screen
     function renderDashboard() {
         const tableBody = document.getElementById('tableBody');
         tableBody.innerHTML = ''; 
 
-        // Get filter metrics values safely
+        // Gather latest configuration criteria settings from UI elements
         const searchKeyword = document.getElementById('searchInput').value.toLowerCase();
         const statusCriterion = document.getElementById('statusFilter').value;
 
-        let approved = 0, pending = 0, denied = 0, totalRequestsCount = 0;
+        // Counter initial positions
+        let approved = 0;
+        let pending = 0;
+        let denied = 0;
+        let totalRequestsCount = 0;
         let visibleRowsCount = 0;
 
+        // Build list arrays
         leaveRequestsArray.forEach(emp => {
             const employeeName = emp.name || "Unknown";
             const requests = emp.leaveRequests || [];
@@ -405,12 +415,11 @@
                 if (request.status === 'Pending') pending++;
                 if (request.status === 'Denied') denied++;
 
-                // Evaluation parameters matching filters
+                // Evaluation expressions matching criteria rules
                 const matchesSearch = employeeName.toLowerCase().includes(searchKeyword) || 
                                       (request.reason && request.reason.toLowerCase().includes(searchKeyword));
                 const matchesStatus = (statusCriterion === 'ALL' || request.status === statusCriterion);
 
-                // Render dynamic item row only if filter criteria returns positive
                 if (matchesSearch && matchesStatus) {
                     visibleRowsCount++;
                     let badgeClass = '';
@@ -436,26 +445,28 @@
             });
         });
 
-        // Display safe state feedback message if zero match rows remain active
+        // Safe Fallback messaging for dynamic empty results states
         if (visibleRowsCount === 0) {
             tableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">No records match your current filter selection.</td></tr>`;
         }
 
-        // Static Counter Element value synchronizers
+        // Element target synchronization updater calls
         if (document.getElementById('approvedCount')) document.getElementById('approvedCount').innerText = approved;
         if (document.getElementById('pendingCount')) document.getElementById('pendingCount').innerText = pending;
         if (document.getElementById('deniedCount')) document.getElementById('deniedCount').innerText = denied;
         if (document.getElementById('totalCount')) document.getElementById('totalCount').innerText = totalRequestsCount;
     }
 
-    // Attach immediate event hooks to filter elements
+    // 3. Attach standard operational event hooks 
     document.getElementById('searchInput').addEventListener('input', renderDashboard);
     document.getElementById('statusFilter').addEventListener('change', renderDashboard);
 
+    // 4. Form Submission and Input Handling
     document.getElementById('leaveForm').addEventListener('submit', function (event) {
         event.preventDefault(); 
 
-        const inputName = document.getElementById('empNameInput').value;
+        // Fixed: Added trim handler logic to ensure clean string matching inputs
+        const inputName = document.getElementById('empNameInput').value.trim();
         const newRequestObj = {
             date: document.getElementById('datesInput').value || new Date().toISOString().split('T')[0],
             reason: document.getElementById('leaveTypeInput').value,
@@ -479,6 +490,7 @@
         renderDashboard();
         this.reset();
 
+        // Safely close Bootstrap active Modal viewport window instance 
         const modalElement = document.getElementById('leaveModal');
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         if (modalInstance) modalInstance.hide();
@@ -486,6 +498,3 @@
 
     document.addEventListener('DOMContentLoaded', loadLeaveData);
 </script>
-
-</body>
-</html>

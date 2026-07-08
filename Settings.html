@@ -203,17 +203,18 @@
         </div>
     </header>
 
-    <div class="dashboard-container">
+ <div class="dashboard-container">
         <aside class="sidebar">
             <nav class="sidebar-menu main-menu">
                 <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
                 <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
                 <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
                 <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
-                <a href="setting.html" class="menu-item active"><i class="bi bi-gear"></i> Settings</a>
+                <a href="Settings.html" class="menu-item active"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
             <hr class="sidebar-divider">
@@ -230,12 +231,10 @@
         <div class="main-content">
             <div class="container-fluid py-4">
 
-
                 <div class="mb-4">
                     <span class="text-uppercase tracking-wider small fw-bold text-secondary">Global System Controls</span>
                     <h1 class="fw-bold h2 text-dark mb-0">Platform Settings</h1>
                 </div>
-
 
                 <div class="corporate-card p-4 mb-5" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-left: 4px solid #6f42c1;">
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -254,6 +253,54 @@
                     </div>
                 </div>
 
+                <!-- Display & Accessibility Preferences Section -->
+                <div class="mb-5">
+                    <h3 class="settings-section-title"><i class="bi bi-eye me-2 text-muted"></i>Display & Accessibility</h3>
+                    <div class="row g-3">
+                        
+                        <!-- Dark Mode Toggle -->
+                        <div class="col-md-6">
+                            <div class="corporate-card p-4 settings-card h-100 d-flex flex-column justify-content-between border">
+                                <div>
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="bi bi-moon-stars-fill settings-icon text-indigo" style="color: #6f42c1;"></i>
+                                            <h6 class="fw-bold mb-0 text-dark">Interface Theme</h6>
+                                        </div>
+                                        <div class="form-check form-switch fs-5">
+                                            <input class="form-check-input" type="checkbox" id="darkModeToggle" role="switch">
+                                        </div>
+                                    </div>
+                                    <p class="text-muted small mb-0">Switch between light and dark modes to reduce eye strain in low-light environments.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Font Size Adjuster  -->
+                        <div class="col-md-6">
+                            <div class="corporate-card p-4 settings-card h-100 d-flex flex-column justify-content-between border">
+                                <div>
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="bi bi-text-size settings-icon text-primary"></i>
+                                            <h6 class="fw-bold mb-0 text-dark">Text Scale Settings</h6>
+                                        </div>
+                                        <span class="badge bg-light text-dark border px-2 py-1 small fw-medium" id="fontSizeLabel">100% (Normal)</span>
+                                    </div>
+                                    <div class="px-2">
+                                        <input type="range" class="form-range" min="80" max="140" step="10" value="100" id="fontSizeSlider">
+                                        <div class="d-flex justify-content-between text-muted small mt-1" style="font-size: 0.75rem;">
+                                            <span>Compact (80%)</span>
+                                            <span>Default</span>
+                                            <span>Large (140%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
 
                 <div class="mb-5">
                     <h3 class="settings-section-title"><i class="bi bi-sliders2-vertical me-2 text-muted"></i>Platform Management</h3>
@@ -379,7 +426,42 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
-</body>
+    <!-- JavaScript instant functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const fontSizeSlider = document.getElementById('fontSizeSlider');
+            const fontSizeLabel = document.getElementById('fontSizeLabel');
 
-</html>s
+            // Dark Mode
+            darkModeToggle.addEventListener('change', function () {
+                if (this.checked) {
+                    document.body.classList.add('dark-mode');
+
+
+                    //  Bootstrap - native theme utility
+                    document.body.setAttribute('data-bs-theme', 'dark');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.body.setAttribute('data-bs-theme', 'light');
+                }
+            });
+
+            // Functional Text Scaling layer via dynamic document style manipulation
+            fontSizeSlider.addEventListener('input', function () {
+                const scaleValue = this.value;
+                
+                // badge UI text dynamically
+                if(scaleValue == 100) {
+                    fontSizeLabel.textContent = "100% (Default)";
+                } else {
+                    fontSizeLabel.textContent = scaleValue + "%";
+                }
+                
+                // Updates base scaling on the main document level
+                document.documentElement.style.fontSize = scaleValue + '%';
+            });
+        });
+    </script>
+</body>
+</html>
