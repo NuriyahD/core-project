@@ -879,9 +879,14 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.js-trigger-terms').forEach(el => {
     el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('termsModal')); });
   });
+  
+  document.querySelectorAll('.js-trigger-compliance').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('complianceModal')); });
+  });
 
   document.querySelectorAll('.modal-overlay').forEach(modal => {
-    modal.querySelector('.modal-close').addEventListener('click', () => closeModal(modal));
+    const closeBtn = modal.querySelector('.modal-close');
+    if(closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
   });
 
