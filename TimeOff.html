@@ -209,7 +209,6 @@
                 <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item active"><i class="bi bi-calendar-check"></i> Time Off</a>
                 <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
-                <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
                 <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
                 <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
@@ -442,7 +441,7 @@
         if (document.getElementById('totalCount')) document.getElementById('totalCount').innerText = totalRequestsCount;
     }
 
-    // Attach standard operational event hooks 
+    // operational event hooks 
     document.getElementById('searchInput').addEventListener('input', renderDashboard);
     document.getElementById('statusFilter').addEventListener('change', renderDashboard);
 

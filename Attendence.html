@@ -115,26 +115,6 @@
     padding-top: 5.5rem;
   }
 
-  @media (max-width: 991px) {
-    .top-navbar {
-      position: sticky;
-      top: 0;
-    }
-    .sidebar {
-      width: 100%;
-      min-height: auto;
-      position: relative;
-      padding-top: 1.5rem;
-      border-right: none;
-      border-bottom: 1px solid #93c5fd;
-    }
-    .main-content {
-      margin-left: 0;
-      padding: 1rem;
-      padding-top: 1.5rem;
-    }
-  }
-
   body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #f4f6f8;
@@ -302,6 +282,75 @@
     background-color: #fbdada;
     color: #941d1d;
   }
+
+    @media (max-width: 991px) {
+    .top-navbar {
+      position: sticky;
+      top: 0;
+    }
+    .sidebar {
+      width: 100%;
+      min-height: auto;
+      position: relative;
+      padding-top: 1.5rem;
+      border-right: none;
+      border-bottom: 1px solid #93c5fd;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 1rem;
+      padding-top: 1.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .filters {
+      flex-direction: column;
+    }
+    .filters input,
+    .filters select {
+      width: 100%;
+    }
+    .stats {
+      flex-direction: column;
+    }
+    .stat-box {
+      width: 100%;
+    }
+    .card {
+      width: 100%;
+    }
+    #addFormBox {
+      width: 100%;
+    }
+    #addFormBox input,
+    #addFormBox select,
+    #addFormBox textarea {
+      width: 100%;
+    }
+    table {
+      width: 100%;
+    }
+    #timesheetTable th,
+    #timesheetTable td {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .sidebar {
+      width: 100%;
+      min-height: auto;
+      position: relative;
+      border-right: none;
+      border-bottom: 1px solid #93c5fd;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 1rem;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -341,7 +390,6 @@
             <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
             <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
             <a href="Attendence.html" class="menu-item active"><i class="bi bi-person-check"></i> Attendance</a>
-            <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
             <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
             <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
             <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
