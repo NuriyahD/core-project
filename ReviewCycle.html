@@ -24,10 +24,11 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background-color: var(--page-bg);
-            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            color: #222;
             margin: 0;
+            padding: 0;
         }
 
         .top-navbar {
@@ -151,7 +152,6 @@
             border-radius: 4px;
         }
 
-        /* Editable row state */
         tr.row-editing td {
             background-color: #f0f9ff;
         }
@@ -272,7 +272,10 @@
                 <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
                 <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
+<<<<<<< HEAD
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
+=======
+>>>>>>> a47bddf4b7cd0cd6cb327065c14eb246a667906e
                 <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
@@ -301,7 +304,7 @@
         </div>
 
         <div class="row g-3 mb-4">
-            <!-- Card 1: Current Review Name (Editable Inline) -->
+            <!-- Card 1: Current Review Name -->
             <div class="col-md-4">
                 <div class="card p-3 d-flex flex-row align-items-center gap-3 border shadow-sm rounded-3 h-100">
                     <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 fs-4 flex-shrink-0">
@@ -328,7 +331,7 @@
                 </div>
             </div>
             
-            <!-- Card 2: Progress Bar Card (now live) -->
+            <!-- Card 2: Progress Bar Card -->
             <div class="col-md-4">
                 <div class="card p-3 d-flex flex-row align-items-center gap-3 border shadow-sm rounded-3 h-100">
                     <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 fs-4 flex-shrink-0">
@@ -380,7 +383,6 @@
                         </tr>
                     </thead>
                     <tbody id="reviewTableBody">
-                        <!-- Rows rendered by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -463,8 +465,6 @@
     const MANAGER_OPTIONS = ["Waiting", "Under Review", "Completed"];
     const OVERALL_OPTIONS = ["Employee Input", "Manager Review", "Final Sign-off"];
 
-    // Setting the overall status directly also moves the underlying self/manager
-    // fields to a combination that matches it, so the two dropdowns never disagree.
     function applyOverallStatus(row, label) {
         if (label === "Final Sign-off") {
             row.selfStatus = "Submitted";
@@ -485,12 +485,68 @@
         return `row-${rowIdCounter}`;
     }
 
-    // Seeded dataset matching the existing cycle
-    let reviewRows = [
-        { id: nextRowId(), name: "Alex Mercer", department: "Development", manager: "Sarah Jenkins", selfStatus: "Submitted", managerStatus: "Completed", editing: false, justAdded: false },
-        { id: nextRowId(), name: "David Vance", department: "QA Engineering", manager: "Sarah Jenkins", selfStatus: "Submitted", managerStatus: "Under Review", editing: false, justAdded: false },
-        { id: nextRowId(), name: "Elena Rostova", department: "Product UX", manager: "Marcus Brody", selfStatus: "Not Started", managerStatus: "Waiting", editing: false, justAdded: false }
-    ];
+    let reviewRows = [];
+
+    function getManagerForDepartment(department) {
+        const managers = {
+            "Development": "Sarah Jenkins",
+            "QA": "Sarah Jenkins",
+            "Product UX": "Marcus Brody",
+            "Marketing": "Nina Patel",
+            "Sales": "Carl Peters",
+            "People Ops": "Lungile Moyo",
+            "Support": "Lena Ford",
+            "Design": "Marina Bell",
+            "Finance": "James Park",
+            "HR": "Lungile Moyo",
+            "IT": "Naledi Moeketsi"
+        };
+        return managers[department] || "Team Lead";
+    }
+
+    function createReviewRowsFromEmployees(employeeList) {
+        return employeeList.map(emp => ({
+            id: nextRowId(),
+            name: emp.name || "Unknown",
+            department: emp.department || "General",
+            manager: getManagerForDepartment(emp.department),
+            selfStatus: "Not Started",
+            managerStatus: "Waiting",
+            editing: false,
+            justAdded: false
+        }));
+    }
+
+    function loadReviewData() {
+        fetch("./Employee_info.json")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Could not load review data.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const employees = Array.isArray(data)
+                    ? data
+                    : data.employeeInformation || data.employees || [];
+
+                if (employees.length === 0) {
+                    throw new Error("No employee records found in JSON.");
+                }
+
+                reviewRows = createReviewRowsFromEmployees(employees);
+                renderTable();
+            })
+            .catch(error => {
+                console.error(error);
+                reviewTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-danger py-4">
+                            Unable to load review data from Employee_info.json.
+                        </td>
+                    </tr>`;
+            });
+    }
 
     function launchToast(msg) {
         document.getElementById('toastMessage').textContent = msg;
@@ -661,7 +717,6 @@
         }
     });
 
-    // Modal: create a new review cycle + add its first employee as an active, editable row
     const saveButton = document.getElementById('createCycleBtn');
     if (saveButton) {
         saveButton.addEventListener('click', function () {
@@ -700,10 +755,10 @@
                 openModal.hide();
             }
 
-            // Reset the employee field for the next entry, keep title/manager as-is
+            // Reset the employee field for the next entry
             document.getElementById('employeeNameInput').value = '';
 
-            // Scroll the new row into view so it's obvious it's ready to be worked on
+            // Scroll the new row into view
             requestAnimationFrame(() => {
                 const newTr = reviewTableBody.querySelector(`tr[data-row-id="${newRow.id}"]`);
                 if (newTr) newTr.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -743,7 +798,7 @@
     });
 
     // Initial render
-    renderTable();
+    loadReviewData();
 </script>
 </body>
 </html>

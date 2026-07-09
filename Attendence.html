@@ -1,686 +1,706 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ModernTech Solutions - Attendance Management</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModernTech Solutions - Attendance Management</title>
 
-    <!-- UI Component Framework & Font Stylesheets -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
-    <style>
-        :root {
-            --page-bg: #f8f9fa;
-            --panel-bg: #ffffff;
-            --sidebar-start: #e0f2fe;
-            --sidebar-end: #bae6fd;
-            --accent: #0496c7;
-            --accent-dark: #0369a1;
-            --text: #111827;
-            --muted: #6b7280;
-            --border: #e5e7eb;
-            --success-light: #f0fdf4;
-            --success-border: #bbf7d0;
-            --success-text: #166534;
-        }
+<style>
+  :root {
+    --page-bg: #f8f9fa;
+    --panel-bg: #ffffff;
+    --sidebar-start: #e0f2fe;
+    --sidebar-end: #bae6fd;
+    --accent: #0496c7;
+    --accent-dark: #0369a1;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+  }
 
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background-color: var(--page-bg);
-            color: var(--text);
-            margin: 0;
-        }
+  .top-navbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 60px;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border);
+    z-index: 101;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
 
-        .top-navbar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            left: 0;
-            height: 60px;
-            background-color: var(--panel-bg);
-            border-bottom: 1px solid var(--border);
-            z-index: 101;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 1.5rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
+  .sidebar {
+    width: 250px;
+    background: linear-gradient(135deg, var(--sidebar-start) 0%, var(--sidebar-end) 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    padding: 1.5rem;
+    z-index: 100;
+    overflow-y: auto;
+    border-right: 1px solid #bae6fd;
+    padding-top: 5.5rem;
+  }
 
-        .sidebar {
-            width: 250px;
-            background: linear-gradient(135deg, var(--sidebar-start) 0%, var(--sidebar-end) 100%);
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            padding: 1.5rem;
-            z-index: 100;
-            overflow-y: auto;
-            border-right: 1px solid #bae6fd;
-            padding-top: 5.5rem;
-        }
+  .sidebar-brand {
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
-        .sidebar-brand {
-            white-space: nowrap;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+  .sidebar-brand .brand-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+  }
 
-        .sidebar-brand .brand-icon {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.6);
-            border-radius: 8px;
-        }
+  .sidebar-brand .brand-icon svg {
+    width: 22px;
+    height: 22px;
+  }
 
-        .sidebar-brand .brand-icon svg {
-            width: 22px;
-            height: 22px;
-        }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent-dark);
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
 
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--accent-dark);
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 5px;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
+  .menu-item:hover, .menu-item.active {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: var(--accent-dark);
+  }
 
-        .menu-item:hover, .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.7);
-            color: var(--accent-dark);
-        }
+  .sidebar-divider {
+    border-top: 1px solid rgba(3, 105, 161, 0.2);
+    margin: 1.5rem 0;
+  }
 
-        .sidebar-divider {
-            border-top: 1px solid rgba(3, 105, 161, 0.2);
-            margin: 1.5rem 0;
-        }
+  .sub-menu-title {
+    color: var(--accent-dark);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+  }
 
-        .sub-menu-title {
-            color: var(--accent-dark);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            padding-left: 15px;
-            margin-bottom: 5px;
-            letter-spacing: 0.05em;
-            opacity: 0.8;
-        }
+  .main-content {
+    margin-left: 250px;
+    padding: 2rem;
+    padding-top: 5.5rem;
+  }
 
-        .main-content {
-            margin-left: 250px;
-            padding: 2rem;
-            padding-top: 5.5rem;
-        }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #222;
+    margin: 0;
+    padding: 0;
+  }
 
-        .text-accent {
-            color: var(--accent) !important;
-        }
+  h1 {
+    margin-bottom: 5px;
+  }
 
-        .stat-card {
-            background: var(--panel-bg);
-            border-radius: 8px;
-            padding: 1.25rem;
-            border-left: 4px solid var(--accent);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            height: 100%;
-        }
+  .subtitle {
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
 
-        .filter-bar {
-            background: var(--panel-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        }
+  .filters {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
 
-        @media (max-width: 991px) {
-            .top-navbar {
-                position: sticky;
-                top: 0;
-            }
-            .sidebar {
-                width: 100%;
-                min-height: auto;
-                position: relative;
-                padding-top: 1.5rem;
-                border-right: none;
-                border-bottom: 1px solid #93c5fd;
-            }
-            .main-content {
-                margin-left: 0;
-                padding: 1rem;
-                padding-top: 1.5rem;
-            }
-        }
-    </style>
+  .filters input,
+  .filters select {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 6px 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #eee;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  button.primary {
+    background-color: #2b7de9;
+    color: #fff;
+    border: none;
+  }
+
+  button:hover {
+    opacity: 0.9;
+  }
+
+  .helper-text {
+    color: #4a5568;
+    font-size: 13px;
+    margin-top: 6px;
+    display: block;
+  }
+
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .stat-box {
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 6px;
+    padding: 15px 25px;
+    text-align: center;
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .stat-box h2 {
+    margin: 0;
+    font-size: 26px;
+  }
+
+  .stat-box p {
+    margin: 5px 0 0 0;
+    color: #666;
+    font-size: 13px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .card h2 {
+    margin-top: 0;
+    font-size: 18px;
+  }
+
+  #addFormBox {
+    display: none;
+  }
+
+  #addFormBox label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  #addFormBox input,
+  #addFormBox select {
+    width: 100%;
+    max-width: 300px;
+    padding: 6px 8px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  #addFormBox .form-buttons {
+    margin-top: 15px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #attendanceTable th, #attendanceTable td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+
+  .status-pill {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .status-pill.ontime {
+    background-color: #d5f2df;
+    color: #1a6b34;
+  }
+
+  .status-pill.late {
+    background-color: #fdecd0;
+    color: #92500b;
+  }
+
+  .status-pill.remote {
+    background-color: #d9edfb;
+    color: #0b5f92;
+  }
+
+  .status-pill.absent {
+    background-color: #fbdada;
+    color: #941d1d;
+  }
+
+    @media (max-width: 991px) {
+    .top-navbar {
+      position: sticky;
+      top: 0;
+    }
+    .sidebar {
+      width: 100%;
+      min-height: auto;
+      position: relative;
+      padding-top: 1.5rem;
+      border-right: none;
+      border-bottom: 1px solid #93c5fd;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 1rem;
+      padding-top: 1.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .filters {
+      flex-direction: column;
+    }
+    .filters input,
+    .filters select {
+      width: 100%;
+    }
+    .stats {
+      flex-direction: column;
+    }
+    .stat-box {
+      width: 100%;
+    }
+    .card {
+      width: 100%;
+    }
+    #addFormBox {
+      width: 100%;
+    }
+    #addFormBox input,
+    #addFormBox select,
+    #addFormBox textarea {
+      width: 100%;
+    }
+    table {
+      width: 100%;
+    }
+    #timesheetTable th,
+    #timesheetTable td {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .sidebar {
+      width: 100%;
+      min-height: auto;
+      position: relative;
+      border-right: none;
+      border-bottom: 1px solid #93c5fd;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 1rem;
+    }
+  }
+
+</style>
 </head>
-
 <body>
-    <header class="top-navbar">
-        <div class="d-flex align-items-center gap-3">
-            <div class="sidebar-brand">
-                <div class="brand-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"></path>
-                        <path d="M12 22v-6"></path>
-                        <path d="M8 22v-3"></path>
-                        <path d="M16 22v-3"></path>
-                    </svg>
-                </div>
-                <div class="d-none d-sm-block ms-1">
-                    <h5 class="text-dark fw-bold m-0 fs-6" style="letter-spacing: 0.5px;">ModernTech</h5>
-                    <small class="text-primary small fw-semibold opacity-75">Solutions</small>
-                </div>
-            </div>
-        </div>
 
-        <div class="d-flex align-items-center gap-3">
-            <span class="text-muted small d-none d-md-inline-block"><i class="bi bi-shield-check text-success me-1"></i> Secure Session Gateway</span>
-            <div class="dropdown">
-                <button class="btn btn-light btn-sm rounded-circle" type="button" aria-label="User Profile">
-                    <i class="bi bi-person-circle fs-5 text-secondary"></i>
-                </button>
+<header class="top-navbar">
+    <div class="d-flex align-items-center gap-3">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"></path>
+                    <path d="M12 22v-6"></path>
+                    <path d="M8 22v-3"></path>
+                    <path d="M16 22v-3"></path>
+                </svg>
+            </div>
+            <div class="d-none d-sm-block ms-1">
+                <h5 class="text-dark fw-bold m-0 fs-6" style="letter-spacing: 0.5px;">ModernTech</h5>
+                <small class="text-primary small fw-semibold opacity-75">Solutions</small>
             </div>
         </div>
-    </header>
+    </div>
+
+    <div class="d-flex align-items-center gap-3">
+        <span class="text-muted small d-none d-md-inline-block"><i class="bi bi-shield-check text-success me-1"></i> Secure Session Gateway</span>
+        <div class="dropdown">
+            <button class="btn btn-light btn-sm rounded-circle" type="button" aria-label="User Profile">
+                <i class="bi bi-person-circle fs-5 text-secondary"></i>
+            </button>
+        </div>
+    </div>
+</header>
 
     <div class="dashboard-container">
         <aside class="sidebar">
             <nav class="sidebar-menu main-menu">
                 <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                <a href="EmployeeRecords.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
+                <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
-                <a href="Attendence.html" class="menu-item active"><i class="bi bi-person-check"></i> Attendance</a>
-                <a href="Timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
-                <a href="performance_reviews.html" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
+                <a href="attendance.html" class="menu-item active"><i class="bi bi-person-check"></i> Attendance</a>
+                <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
+                <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
                 <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
                 <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
-            <hr class="sidebar-divider">
+        <hr class="sidebar-divider">
 
             <div class="sub-menu-title">Management Logs</div>
             <nav class="sidebar-menu sub-menu">
-                <a href="TimeSheet.html" class="menu-item">Time Sheet</a>
-                <a href="TimeTracker.html" class="menu-item">Time Tracker</a>
-                <a href="Scheduling.html" class="menu-item">Scheduling</a>
-                <a href="Reviewcycle.html" class="menu-item">Review Cycle</a>
+                <a href="timesheet.html" class="menu-item">Time Sheet</a>
+                <a href="timetracker.html" class="menu-item">Time Tracker</a>
+                <a href="scheduling.html" class="menu-item">Scheduling</a>
+                <a href="reviewcycle.html" class="menu-item">Review Cycle</a>
             </nav>
         </aside>
 
-        <div class="main-content">
-            <div class="container-fluid py-4">
+    <main class="main-content">
 
-                <!-- Page Header Area -->
-                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                    <div>
-                        <span class="text-uppercase tracking-wider small fw-bold text-secondary">Workforce Logs</span>
-                        <h1 class="fw-bold h2 text-dark mb-0">Attendance Tracker</h1>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary btn-sm px-3 bg-white" onclick="window.print()">
-                            <i class="bi bi-printer me-1"></i> Export Log
-                        </button>
-                        <button class="btn btn-primary btn-sm px-3 shadow-sm" style="background-color: var(--accent-dark); border: none;" data-bs-toggle="modal" data-bs-target="#clockInModal">
-                            <i class="bi bi-clock me-1"></i> Manual Clock-In
-                        </button>
-                    </div>
-                </div>
+<h1>Attendance Tracker</h1>
+<p class="subtitle">Keep track of who is present, late, remote, or absent each day.</p>
+<p class="helper-text">Use the search box or filters below to find records fast.</p>
 
-                <!-- Personal Gateway Console Widget -->
-                <div class="card p-4 mb-4" style="background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-left: 4px solid var(--accent-dark);">
-                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="p-3 bg-white rounded-circle shadow-sm text-primary">
-                                <i class="bi bi-geo-alt-fill fs-3 text-accent"></i>
-                            </div>
-                            <div>
-                                <h5 class="fw-bold text-dark mb-1">Personal Terminal Hub</h5>
-                                <p class="text-muted small mb-0">
-                                    Current User: <strong>Sibongile Nkosi</strong> <span class="mx-2">•</span> Status: <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-0.5" id="liveStatusBadge">Active Clocked-In</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="text-end d-none d-sm-block">
-                                <small class="text-muted d-block font-monospace">Shift Accumulation</small>
-                                <strong class="fs-5 font-monospace text-dark" id="liveSessionClock">04:22:15</strong>
-                            </div>
-                            <button class="btn btn-danger px-4 fw-medium shadow-sm" id="terminalActionBtn" onclick="toggleTerminalClock()">Clock Out Now</button>
-                        </div>
-                    </div>
-                </div>
+<div class="filters">
+  <input type="text" id="searchInput" placeholder="Search by employee name...">
 
-                <!-- Executive Insight Ribbon Counters -->
-                <div class="row g-3 mb-4">
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="stat-card" style="border-left-color: #0284c7;">
-                            <small class="text-muted d-block text-uppercase fw-bold small mb-1">Present Today</small>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <h3 class="fw-bold text-dark m-0" id="statPresentCount">8 <span class="fs-6 fw-normal text-muted">/ 10 total</span></h3>
-                                <span class="badge bg-success-subtle text-success border px-2 py-1 small">80% Rate</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="stat-card" style="border-left-color: #ea580c;">
-                            <small class="text-muted d-block text-uppercase fw-bold small mb-1">Late Arrivals</small>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <h3 class="fw-bold text-dark m-0">1</h3>
-                                <span class="text-warning small"><i class="bi bi-exclamation-triangle"></i> Action Flag</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="stat-card" style="border-left-color: #dc2626;">
-                            <small class="text-muted d-block text-uppercase fw-bold small mb-1">Absent Employees</small>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <h3 class="fw-bold text-dark m-0">1</h3>
-                                <span class="badge bg-light text-secondary border px-2 py-1 small">On Leave</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-xl-3">
-                        <div class="stat-card" style="border-left-color: #16a34a;">
-                            <small class="text-muted d-block text-uppercase fw-bold small mb-1">Remote Mode</small>
-                            <div class="d-flex justify-content-between align-items-end">
-                                <h3 class="fw-bold text-dark m-0">3</h3>
-                                <span class="text-muted small"><i class="bi bi-cloud-check"></i> Connected</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <select id="departmentFilter">
+    <option value="all">All Departments</option>
+    <option value="Development">Development</option>
+    <option value="HR">HR</option>
+    <option value="QA">QA</option>
+    <option value="Sales">Sales</option>
+    <option value="Marketing">Marketing</option>
+    <option value="Design">Design</option>
+    <option value="IT">IT</option>
+    <option value="Finance">Finance</option>
+    <option value="Support">Support</option>
+  </select>
 
-                <!-- Unified Filter Framework Bar -->
-                <div class="filter-bar mb-4">
-                    <div class="row g-3 align-items-center">
-                        <div class="col-12 col-md-4">
-                            <div class="input-group input-group-sm">
-                                <span class="input-group-text bg-light text-muted border-end-0"><i class="bi bi-search"></i></span>
-                                <input type="text" id="attendanceSearchInput" class="form-control border-start-0" placeholder="Search name or ID..." onkeyup="filterAttendanceTable()">
-                            </div>
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-3">
-                            <select id="filterDeptSelect" class="form-select form-select-sm" onchange="filterAttendanceTable()">
-                                <option value="ALL">All Departments</option>
-                                <option value="Development">Development</option>
-                                <option value="HR">HR</option>
-                                <option value="QA">QA</option>
-                                <option value="Sales">Sales</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Design">Design</option>
-                                <option value="IT">IT</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Support">Support</option>
-                            </select>
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-3">
-                            <select id="filterStatusSelect" class="form-select form-select-sm" onchange="filterAttendanceTable()">
-                                <option value="ALL">All Statuses</option>
-                                <option value="On Time">On Time</option>
-                                <option value="Late">Late</option>
-                                <option value="Remote">Remote</option>
-                                <option value="Absent">Absent</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-4 col-md-2 text-sm-end">
-                            <button class="btn btn-light btn-sm w-100 border text-secondary" onclick="resetAttendanceFilters()">Clear Filter</button>
-                        </div>
-                    </div>
-                </div>
+  <select id="statusFilter">
+    <option value="all">All Statuses</option>
+    <option value="On Time">On Time</option>
+    <option value="Late">Late</option>
+    <option value="Remote">Remote</option>
+    <option value="Absent">Absent</option>
+  </select>
 
-                <!-- Log Ledger Visualization Table Card -->
-                <div class="card p-0 border shadow-sm rounded-3 overflow-hidden">
-                    <div class="p-3 bg-white border-bottom">
-                        <h6 class="fw-bold text-dark mb-0"><i class="bi bi-list-stars me-2 text-muted"></i>Operational Roster Manifest</h6>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table align-middle mb-0" id="attendanceMainTable">
-                            <thead class="table-light">
-                                <tr class="text-muted small text-uppercase" style="font-size: 0.75rem;">
-                                    <th class="ps-3">Employee</th>
-                                    <th>Department</th>
-                                    <th>Clock In Time</th>
-                                    <th>Clock Out Time</th>
-                                    <th>Work Mode</th>
-                                    <th class="text-end pe-3">Current Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="attendanceTableBody">
-                                <!-- Employee 1 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Sibongile Nkosi</div>
-                                        <small class="text-muted">ID: MTech-0001 • Software Engineer</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Development</span></td>
-                                    <td class="font-monospace text-secondary">08:22:15 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-building me-1 text-muted"></i> On-Site HQ</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">On Time</span></td>
-                                </tr>
-                                <!-- Employee 2 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Lungile Moyo</div>
-                                        <small class="text-muted">ID: MTech-0002 • HR Manager</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">HR</span></td>
-                                    <td class="font-monospace text-secondary">08:15:30 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-building me-1 text-muted"></i> On-Site HQ</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">On Time</span></td>
-                                </tr>
-                                <!-- Employee 3 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Thabo Molefe</div>
-                                        <small class="text-muted">ID: MTech-0003 • Quality Analyst</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">QA</span></td>
-                                    <td class="font-monospace text-secondary">09:12:44 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-building me-1 text-muted"></i> On-Site HQ</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-warning-subtle text-warning border border-warning-subtle px-3 py-1">Late</span></td>
-                                </tr>
-                                <!-- Employee 4 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Keshav Naidoo</div>
-                                        <small class="text-muted">ID: MTech-0004 • Sales Representative</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Sales</span></td>
-                                    <td class="font-monospace text-secondary">08:45:12 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-cloud text-accent"></i> Remote</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-1">Remote</span></td>
-                                </tr>
-                                <!-- Employee 5 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Zanele Khumalo</div>
-                                        <small class="text-muted">ID: MTech-0005 • Marketing Specialist</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Marketing</span></td>
-                                    <td class="font-monospace text-secondary">08:30:00 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-building me-1 text-muted"></i> On-Site HQ</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">On Time</span></td>
-                                </tr>
-                                <!-- Employee 6 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Sipho Zulu</div>
-                                        <small class="text-muted">ID: MTech-0006 • UI/UX Designer</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Design</span></td>
-                                    <td class="font-monospace text-secondary">08:50:22 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-cloud text-accent"></i> Remote</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-1">Remote</span></td>
-                                </tr>
-                                <!-- Employee 7 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Naledi Moeketsi</div>
-                                        <small class="text-muted">ID: MTech-0007 • DevOps Engineer</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">IT</span></td>
-                                    <td class="font-monospace text-secondary">08:11:05 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-building me-1 text-muted"></i> On-Site HQ</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">On Time</span></td>
-                                </tr>
-                                <!-- Employee 8 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Farai Gumbo</div>
-                                        <small class="text-muted">ID: MTech-0008 • Content Strategist</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Marketing</span></td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small text-muted"><i class="bi bi-dash-circle"></i> Offline</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1">Absent</span></td>
-                                </tr>
-                                <!-- Employee 9 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Karabo Dlamini</div>
-                                        <small class="text-muted">ID: MTech-0009 • Accountant</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Finance</span></td>
-                                    <td class="font-monospace text-secondary">08:25:40 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-building me-1 text-muted"></i> On-Site HQ</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1">On Time</span></td>
-                                </tr>
-                                <!-- Employee 10 -->
-                                <tr>
-                                    <td class="ps-3">
-                                        <div class="fw-semibold text-dark">Fatima Patel</div>
-                                        <small class="text-muted">ID: MTech-0010 • Customer Support Lead</small>
-                                    </td>
-                                    <td><span class="badge bg-light text-dark border">Support</span></td>
-                                    <td class="font-monospace text-secondary">08:35:14 AM</td>
-                                    <td class="font-monospace text-muted">--:--:--</td>
-                                    <td><span class="small fw-medium"><i class="bi bi-cloud text-accent"></i> Remote</span></td>
-                                    <td class="text-end pe-3"><span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-1">Remote</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+  <button id="clearBtn">Clear filters</button>
+  <button class="primary" id="showAddFormBtn">Add Entry</button>
+</div>
+<div class="filters"><small class="helper-text">Use these tools to search or update attendance records.</small></div>
 
-            </div>
-        </div>
+<div class="card" id="addFormBox">
+  <h2>Add Attendance Entry</h2>
+  <p class="helper-text">Enter the employee details and click Save to add a record.</p>
+  <form id="attendanceForm">
+    <label for="entryName">Employee Full Name</label>
+    <input type="text" id="entryName" required placeholder="e.g. Sipho Zulu">
+
+    <label for="entryDepartment">Department</label>
+    <select id="entryDepartment" required>
+      <option value="Development">Development</option>
+      <option value="HR">HR</option>
+      <option value="QA">QA</option>
+      <option value="Sales">Sales</option>
+      <option value="Marketing">Marketing</option>
+      <option value="Design">Design</option>
+      <option value="IT">IT</option>
+      <option value="Finance">Finance</option>
+      <option value="Support">Support</option>
+    </select>
+
+    <label for="entryDate">Date</label>
+    <input type="date" id="entryDate" required value="2026-07-09">
+
+    <label for="entryTime">Clock In Time</label>
+    <input type="time" id="entryTime" required value="08:30">
+
+    <label for="entryStatus">Status</label>
+    <select id="entryStatus" required>
+      <option value="On Time">On Time</option>
+      <option value="Late">Late</option>
+      <option value="Remote">Remote</option>
+      <option value="Absent">Absent</option>
+    </select>
+
+    <div class="form-buttons">
+      <button type="submit" class="primary">Save</button>
+      <button type="button" id="cancelAddBtn">Cancel</button>
     </div>
+  </form>
+</div>
 
-    <!-- Manual Registration Modal -->
-    <div class="modal fade" id="clockInModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header border-bottom bg-light">
-                    <h5 class="modal-title fw-bold text-dark">Manual Entry Adjustment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="manualAttendanceForm" onsubmit="submitManualEntry(event)">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="modalEmployeeName" class="form-label fw-semibold small text-dark">Employee Name</label>
-                            <input type="text" class="form-control" id="modalEmployeeName" placeholder="e.g. Sipho Zulu" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modalDeptSelect" class="form-label fw-semibold small text-dark">Department Assigned</label>
-                            <select id="modalDeptSelect" class="form-select" required>
-                                <option value="Development">Development</option>
-                                <option value="HR">HR</option>
-                                <option value="QA">QA</option>
-                                <option value="Sales">Sales</option>
-                                <option value="Marketing">Marketing</option>
-                                <option value="Design">Design</option>
-                                <option value="IT">IT</option>
-                                <option value="Finance">Finance</option>
-                                <option value="Support">Support</option>
-                            </select>
-                        </div>
-                        <div class="row g-2 mb-3">
-                            <div class="col-6">
-                                <label for="modalTimeInput" class="form-label fw-semibold small text-dark">Clock In Time</label>
-                                <input type="time" class="form-control font-monospace" id="modalTimeInput" value="08:30" required>
-                            </div>
-                            <div class="col-6">
-                                <label for="modalStatusSelect" class="form-label fw-semibold small text-dark">Status Classification</label>
-                                <select id="modalStatusSelect" class="form-select" required>
-                                    <option value="On Time">On Time</option>
-                                    <option value="Late">Late</option>
-                                    <option value="Remote">Remote</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-check bg-light p-3 rounded border border-opacity-50">
-                            <input class="form-check-input ms-1" type="checkbox" id="modalAuditCheck" checked required>
-                            <label class="form-check-label small text-secondary ms-2" for="modalAuditCheck">
-                                Authorize changes into the system transaction ledger
-                            </label>
-                        </div>
-                    </div>
-                    <div class="modal-footer border-top">
-                        <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary btn-sm px-4" style="background-color: var(--accent-dark); border: none;">Commit Log Entry</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="stats">
+  <div class="stat-box">
+    <h2 id="statPresent">0</h2>
+    <p>Present Today</p>
+  </div>
+  <div class="stat-box">
+    <h2 id="statLate">0</h2>
+    <p>Late Arrivals</p>
+  </div>
+  <div class="stat-box">
+    <h2 id="statAbsent">0</h2>
+    <p>Absent Employees</p>
+  </div>
+  <div class="stat-box">
+    <h2 id="statRemote">0</h2>
+    <p>Remote Employees</p>
+  </div>
+</div>
 
-    <!-- Toast Feedback System -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-        <div id="pageToast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toastMessage">Done!</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
+<div class="card">
+  <h2>Attendance Records</h2>
+  <table id="attendanceTable">
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Department</th>
+        <th>Date</th>
+        <th>Clock In Time</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </main>
+</div>
 
-    <script>
-        const toastElement = document.getElementById('pageToast');
-        const notificationToast = new bootstrap.Toast(toastElement);
-        let userIsClockedIn = true;
+<script>
+  let attendanceRecords = [];
 
-        function launchToast(msg) {
-            document.getElementById('toastMessage').textContent = msg;
-            notificationToast.show();
+  // Convert status to a badge class name
+  function statusToClass(status) {
+    if (status === "On Time") return "ontime";
+    if (status === "Late") return "late";
+    if (status === "Remote") return "remote";
+    return "absent";
+  }
+
+  function loadAttendanceData() {
+    Promise.all([
+      fetch("Attendence.json").then(function(response) {
+        if (!response.ok) throw new Error("Could not read Attendence.json.");
+        return response.json();
+      }),
+      fetch("Employee_info.json").then(function(response) {
+        if (!response.ok) throw new Error("Could not read Employee_info.json.");
+        return response.json();
+      })
+    ])
+    .then(function(results) {
+      const attendanceData = results[0].attendanceAndLeave || results[0] || [];
+      const profiles = results[1].employeeInformation || results[1] || [];
+      const profileMap = {};
+
+      profiles.forEach(function(profile) {
+        if (profile.employeeId != null) {
+          profileMap[profile.employeeId] = profile;
         }
+      });
 
-        function toggleTerminalClock() {
-            const statusBadge = document.getElementById('liveStatusBadge');
-            const actionBtn = document.getElementById('terminalActionBtn');
-            const liveClock = document.getElementById('liveSessionClock');
+      attendanceRecords = [];
+      attendanceData.forEach(function(emp) {
+        const profile = profileMap[emp.employeeId] || {};
+        const department = profile.department || "Unknown";
 
-            userIsClockedIn = !userIsClockedIn;
+        (emp.attendance || []).forEach(function(record) {
+          attendanceRecords.push({
+            name: emp.name || "Unknown",
+            department: department,
+            date: record.date || "N/A",
+            time: record.time || "--:--",
+            status: record.status || "Absent"
+          });
+        });
+      });
 
-            if (userIsClockedIn) {
-                statusBadge.textContent = "Active Clocked-In";
-                statusBadge.className = "badge bg-success-subtle text-success border border-success-subtle px-2 py-0.5";
-                actionBtn.textContent = "Clock Out Now";
-                actionBtn.className = "btn btn-danger px-4 fw-medium shadow-sm";
-                liveClock.style.opacity = "1";
-                launchToast("Successfully reconnected system session framework gateway.");
-            } else {
-                statusBadge.textContent = "Offline Session Terminated";
-                statusBadge.className = "badge bg-secondary-subtle text-secondary border border-secondary-subtle px-2 py-0.5";
-                actionBtn.textContent = "Clock In Now";
-                actionBtn.className = "btn btn-success px-4 fw-medium shadow-sm";
-                liveClock.style.opacity = "0.5";
-                launchToast("Clock-Out event logged. Secure gateway disconnected.");
-            }
-        }
+      refreshPage();
+    })
+    .catch(function(error) {
+      console.error("Unable to load attendance data:", error.message);
+      attendanceRecords = [];
+      refreshPage();
+    });
+  }
 
-        function submitManualEntry(e) {
-            e.preventDefault();
-            const name = document.getElementById('modalEmployeeName').value.trim();
-            const dept = document.getElementById('modalDeptSelect').value;
-            const timeRaw = document.getElementById('modalTimeInput').value;
-            const status = document.getElementById('modalStatusSelect').value;
+  // Find entries that match the current filters
+  function getFilteredEntries() {
+    var searchText = document.getElementById("searchInput").value.toLowerCase();
+    var departmentValue = document.getElementById("departmentFilter").value;
+    var statusValue = document.getElementById("statusFilter").value;
 
-            let timeSplit = timeRaw.split(':');
-            let hourInt = parseInt(timeSplit[0], 10);
-            let suffixStr = hourInt >= 12 ? "PM" : "AM";
-            let formattedHour = hourInt % 12 || 12;
-            let finalTimeStr = `${formattedHour}:${timeSplit[1]}:00 ${suffixStr}`;
+    var result = [];
+    for (var i = 0; i < attendanceRecords.length; i++) {
+      var entry = attendanceRecords[i];
+      var matchesSearch = entry.name.toLowerCase().indexOf(searchText) !== -1;
+      var matchesDepartment = (departmentValue === "all" || entry.department === departmentValue);
+      var matchesStatus = (statusValue === "all" || entry.status === statusValue);
 
-            let badgeConfigClass = "bg-success-subtle text-success border-success-subtle";
-            if (status === "Late") badgeConfigClass = "bg-warning-subtle text-warning border-warning-subtle";
-            if (status === "Remote") badgeConfigClass = "bg-info-subtle text-info border-info-subtle";
+      if (matchesSearch && matchesDepartment && matchesStatus) {
+        result.push(entry);
+      }
+    }
+    return result;
+  }
 
-            let iconConfigStr = `<i class="bi bi-building me-1 text-muted"></i> On-Site HQ`;
-            if (status === "Remote") iconConfigStr = `<i class="bi bi-cloud text-accent"></i> Remote`;
+  // Redraws the stat boxes and the table
+  function refreshPage() {
+    var filteredEntries = getFilteredEntries();
+    updateStats(filteredEntries);
+    updateTable(filteredEntries);
+  }
 
-            const tableBody = document.getElementById('attendanceTableBody');
-            const markupRow = document.createElement('tr');
+  function updateStats(filteredEntries) {
+    var presentCount = 0;
+    var lateCount = 0;
+    var absentCount = 0;
+    var remoteCount = 0;
 
-            markupRow.innerHTML = `
-                <td class="ps-3">
-                    <div class="fw-semibold text-dark">${name}</div>
-                    <small class="text-muted">ID: MTech-0${Math.floor(100 + Math.random() * 899)} • Manual Entry</small>
-                </td>
-                <td><span class="badge bg-light text-dark border">${dept}</span></td>
-                <td class="font-monospace text-secondary">${finalTimeStr}</td>
-                <td class="font-monospace text-muted">--:--:--</td>
-                <td><span class="small fw-medium">${iconConfigStr}</span></td>
-                <td class="text-end pe-3">
-                    <span class="badge ${badgeConfigClass} border px-3 py-1">${status}</span>
-                </td>
-            `;
+    for (var i = 0; i < filteredEntries.length; i++) {
+      var status = filteredEntries[i].status;
+      if (status === "On Time") {
+        presentCount++;
+      } else if (status === "Late") {
+        lateCount++;
+        presentCount++;
+      } else if (status === "Remote") {
+        remoteCount++;
+        presentCount++;
+      } else if (status === "Absent") {
+        absentCount++;
+      }
+    }
 
-            tableBody.prepend(markupRow);
+    document.getElementById("statPresent").textContent = presentCount;
+    document.getElementById("statLate").textContent = lateCount;
+    document.getElementById("statAbsent").textContent = absentCount;
+    document.getElementById("statRemote").textContent = remoteCount;
+  }
 
-            const currentPresentStat = document.getElementById('statPresentCount');
-            let baseCount = parseInt(currentPresentStat.textContent, 10);
-            currentPresentStat.innerHTML = `${baseCount + 1} <span class="fs-6 fw-normal text-muted">/ 11 total</span>`;
+  function updateTable(filteredEntries) {
+    var tableBody = document.getElementById("tableBody");
+    var rowsHtml = "";
 
-            document.getElementById('manualAttendanceForm').reset();
-            const instanceModal = bootstrap.Modal.getInstance(document.getElementById('clockInModal'));
-            if (instanceModal) instanceModal.hide();
+    for (var i = 0; i < filteredEntries.length; i++) {
+      var entry = filteredEntries[i];
+      var pillClass = statusToClass(entry.status);
+      var timeDisplay = entry.time ? entry.time : "--:--";
 
-            launchToast(`Attendance record stored successfully for ${name}.`);
-        }
+      rowsHtml += "<tr>" +
+        "<td>" + entry.name + "</td>" +
+        "<td>" + entry.department + "</td>" +
+        "<td>" + entry.date + "</td>" +
+        "<td>" + timeDisplay + "</td>" +
+        "<td><span class='status-pill " + pillClass + "'>" + entry.status + "</span></td>" +
+        "</tr>";
+    }
 
-        function filterAttendanceTable() {
-            const queryValue = document.getElementById('attendanceSearchInput').value.toUpperCase();
-            const deptFilter = document.getElementById('filterDeptSelect').value.toUpperCase();
-            const statusFilter = document.getElementById('filterStatusSelect').value.toUpperCase();
-            const gridLines = document.getElementById('attendanceMainTable').getElementsByTagName('tr');
+    if (rowsHtml === "") {
+      rowsHtml = "<tr><td colspan='5'>No attendance entries match your filters.</td></tr>";
+    }
 
-            for (let idx = 1; idx < gridLines.length; idx++) {
-                let columns = gridLines[idx].getElementsByTagName('td');
-                if (columns.length >= 6) {
-                    let textMatchName = columns[0].textContent || columns[0].innerText;
-                    let textMatchDept = columns[1].textContent || columns[1].innerText;
-                    let textMatchStatus = columns[5].textContent || columns[5].innerText;
+    tableBody.innerHTML = rowsHtml;
+  }
 
-                    let evaluationMatchesQuery = textMatchName.toUpperCase().indexOf(queryValue) > -1;
-                    let evaluationMatchesDept = (deptFilter === "ALL" || textMatchDept.toUpperCase().trim() === deptFilter);
-                    let evaluationMatchesStatus = (statusFilter === "ALL" || textMatchStatus.toUpperCase().trim() === statusFilter);
+  // Button and input event listeners
+  document.getElementById("searchInput").addEventListener("input", refreshPage);
+  document.getElementById("departmentFilter").addEventListener("change", refreshPage);
+  document.getElementById("statusFilter").addEventListener("change", refreshPage);
 
-                    if (evaluationMatchesQuery && evaluationMatchesDept && evaluationMatchesStatus) {
-                        gridLines[idx].style.display = "";
-                    } else {
-                        gridLines[idx].style.display = "none";
-                    }
-                }
-            }
-        }
+  document.getElementById("clearBtn").addEventListener("click", function () {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("departmentFilter").value = "all";
+    document.getElementById("statusFilter").value = "all";
+    refreshPage();
+  });
 
-        function resetAttendanceFilters() {
-            document.getElementById('attendanceSearchInput').value = "";
-            document.getElementById('filterDeptSelect').value = "ALL";
-            document.getElementById('filterStatusSelect').value = "ALL";
-            filterAttendanceTable();
-            launchToast("Search filtering matrices cleared.");
-        }
-    </script>
+  document.getElementById("showAddFormBtn").addEventListener("click", function () {
+    document.getElementById("addFormBox").style.display = "block";
+  });
+
+  document.getElementById("cancelAddBtn").addEventListener("click", function () {
+    document.getElementById("attendanceForm").reset();
+    document.getElementById("addFormBox").style.display = "none";
+  });
+
+  document.getElementById("attendanceForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    var newEntry = {
+      name: document.getElementById("entryName").value,
+      department: document.getElementById("entryDepartment").value,
+      date: document.getElementById("entryDate").value,
+      time: document.getElementById("entryTime").value,
+      status: document.getElementById("entryStatus").value
+    };
+
+    attendanceRecords.push(newEntry);
+
+    this.reset();
+    document.getElementById("addFormBox").style.display = "none";
+
+    refreshPage();
+  });
+
+  loadAttendanceData();
+</script>
+
 </body>
-
 </html>
