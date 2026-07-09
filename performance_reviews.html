@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Review Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --surface: #fbf9f9;
+      --surface-dim: #dbdad9;
+      --surface-bright: #fbf9f9;
+      --surface-container-lowest: #ffffff;
+      --surface-container-low: #f5f3f3;
+      --surface-container: #efeded;
+      --surface-container-high: #e9e8e7;
+      --surface-container-highest: #e3e2e2;
+      --on-surface: #1b1c1c;
+      --on-surface-variant: #4c4546;
+      --outline: #7e7576;
+      --outline-variant: #cfc4c5;
+      --surface-tint: #5e5e5e;
+      --primary: #2563eb;
+      --on-primary: #ffffff;
+      --secondary: #5e5e5e;
+      --on-secondary: #ffffff;
+      --secondary-container: #e3e2e2;
+      --on-secondary-container: #646464;
+      --background: var(--surface);
+      --on-background: var(--on-surface);
+      --surface-variant: var(--surface-container-highest);
+      --bg: #f8fafc;
+      --card: var(--surface-container-lowest);
+      --text: var(--on-surface);
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --radius-sm: 0.25rem;
+      --radius: 0.5rem;
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --radius-xl: 1.5rem;
+      --radius-full: 9999px;
+      --space-lg: 24px;
+      --space-md: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* Top Nav Styling */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .top-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 240px;
+    }
+
+    .top-nav-logo {
+      color: #2563eb;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-text h2 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .brand-text p {
+      margin: 0;
+      font-size: 11px;
+      color: #3b82f6;
+      font-weight: 500;
+    }
+
+    .top-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .secure-gateway {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #10b981;
+      font-weight: 500;
+    }
+
+    .user-profile-btn {
+      font-size: 22px;
+      color: #64748b;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Page Layout Shell */
+    .page-shell {
+      display: flex;
+      padding-top: 60px;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Gradient Design */
+    .sidebar {
+      width: 240px;
+      background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
+      border-right: 1px solid #cbd5e1;
+      padding: 24px 16px;
+      position: fixed;
+      top: 60px;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      z-index: 90;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar h4 {
+      margin: 24px 0 8px 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #0369a1;
+      font-weight: 700;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      color: #0369a1;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar a i {
+      font-size: 16px;
+    }
+
+    .sidebar a:hover {
+      background: rgba(255, 255, 255, 0.4);
+      color: #0284c7;
+    }
+
+    .sidebar a.active {
+      background: #ffffff;
+      color: #2563eb;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* Workspace Panel */
+    .main-panel {
+      flex: 1;
+      margin-left: 240px;
+      padding: 32px;
+      min-width: 0;
+      transition: margin-left 0.3s ease;
+    }
+
+    header.main-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #1e293b;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .top-actions input {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      background: #ffffff;
+      color: var(--text);
+      width: 240px;
+    }
+
+    .top-actions button {
+      cursor: pointer;
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-full);
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #1e293b;
+      cursor: pointer;
+    }
+
+    /* Summary Metrics Row */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .summary-card {
+      padding: 20px;
+      border-radius: var(--radius-lg);
+      background: #ffffff;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .summary-card small {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 11px;
+    }
+
+    .summary-card .value {
+      font-size: 28px;
+      margin: 0;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .summary-card .meta {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .efficiency-card {
+      background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+      border: none;
+    }
+
+    .efficiency-card small, .efficiency-card .value, .efficiency-card .meta {
+      color: #ffffff;
+    }
+
+    .efficiency-card small { opacity: 0.8; }
+    .efficiency-card .meta { opacity: 0.9; font-weight: 500; }
+
+    .efficiency-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Main Table Split Layout Grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 24px;
+      margin-bottom: var(--space-lg);
+    }
+
+    .panel {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2 {
+      margin: 0 0 20px;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .toolbar label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .toolbar select, .toolbar input {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 12px;
+      font-size: 14px;
+      background: #ffffff;
+      color: var(--text);
+    }
+
+    .table-shell {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 14px;
+    }
+
+    th {
+      color: #64748b;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    tr:hover {
+      background: #f8fafc;
+      cursor: pointer;
+    }
+
+    tr.selected {
+      background: #f0fdf4 !important;
+    }
+
+    /* Review Status Pill Configuration Specifications */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--radius-full);
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .status-pill.completed {
+      background-color: #dcfce7;
+      color: #16a34a;
+    }
+
+    .status-pill.in-progress {
+      background-color: #ffedd5;
+      color: #ea580c;
+    }
+
+    .status-pill.upcoming {
+      background-color: #dbeafe;
+      color: #2563eb;
+    }
+
+    /* Detail Inspector View Layout */
+    .detail-card {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: #f1f5f9;
+      color: #475569;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .profile-block {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #f8fafc;
+    }
+
+    .profile-block h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      color: #1e293b;
+    }
+
+    .profile-list div {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .profile-label { color: #64748b; }
+    .profile-list div span:last-child { font-weight: 600; color: #1e293b; }
+
+    .score-card {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .score-value {
+      font-size: 36px;
+      margin: 8px 0;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .score-meta {
+      display: flex;
+      justify-content: space-between;
+      color: #64748b;
+      font-size: 12px;
+    }
+
+    .bar-group { display: grid; gap: 10px; }
+    .bar-row { display: grid; grid-template-columns: 120px 1fr; gap: 10px; align-items: center; }
+    .bar-label { font-size: 12px; color: #475569; font-weight: 500; }
+    .bar-track { height: 8px; background: #e2e8f0; border-radius: var(--radius-full); overflow: hidden; }
+    .bar-fill { height: 100%; background: #2563eb; }
+
+    .detail-actions { display: flex; gap: 10px; margin-top: 10px; }
+    .detail-actions button {
+      flex: 1; padding: 10px; border-radius: var(--radius); font-weight: 600; font-size: 13px; cursor: pointer;
+    }
+    .detail-actions .primary { background: #2563eb; color: #ffffff; border: none; }
+    .detail-actions .secondary { background: #ffffff; border: 1px solid var(--border); color: #475569; }
+
+    /* Modal Contextual Blocks */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 200;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      width: min(540px, 100%);
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .full-width { grid-column: span 2; }
+    .field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 500; }
+    .field input, .field select, .field textarea {
+      padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-family: inherit;
+    }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+    .modal-actions button { padding: 8px 16px; border-radius: var(--radius-full); font-weight: 600; cursor: pointer; border: none; }
+    .modal-actions .secondary { background: #f1f5f9; }
+    .modal-actions .primary { background: #2563eb; color: white; }
+
+    /* Analytical Metrics Display Arrays */
+    .charts-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .chart-panel { background: #ffffff; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); }
+    .chart-panel h3 { margin: 0 0 16px; font-size: 15px; font-weight: 700; color: #1e293b; }
+    .chart-container { position: relative; height: 240px; }
+
+    /* Media Responsive Layouts */
+    @media (max-width: 1200px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-toggle { display: block; }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-panel {
+        margin-left: 0;
+        padding: 16px;
+      }
+      .top-nav-left { width: auto; }
+      .brand-text { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <div class="top-nav-left">
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation Menu">
+        <i class="bx bx-menu"></i>
+      </button>
+      <div class="top-nav-logo">
+        <i class="bi bi-person-workspace"></i>
+      </div>
+      <div class="brand-text">
+        <h2>ModernTech</h2>
+        <p>Solutions</p>
+      </div>
+    </div>
+    <div class="top-nav-right">
+      <span class="secure-gateway">
+        <i class="bx bx-shield-quarter"></i> Secure Session Gateway
+      </span>
+      <button class="user-profile-btn" aria-label="User Account">
+        <i class="bi bi-person-circle"></i>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-shell">
+    <nav class="sidebar" id="appSidebar">
+      <ul>
+        <li><a href=""><i class="bi bi-house-door"></i>Dashboard</a></li>
+        <li><a href="employees.html"><i class="bi bi-person-circle"></i>Employees</a></li>
+        <li><a href="TimeOff.html"><i class="bi bi-calendar-check"></i>Time Off</a></li>
+        <li><a href=""><i class="bi bi-clock"></i>Attendance</a></li>
+        <li><a href="payslip.html"><i class="bi bi-wallet"></i>Payroll</a></li>
+        <li><a href="performance_reviews.html" class="active"><i class="bi bi-bar-chart"></i>Performance</a></li>
+        <li><a href="#"><i class="bi bi-clipboard-data-fill"></i>Reports</a></li>
+        <li><a href="Settings.html"><i class="bi bi-gear"></i>Settings</a></li>
+      </ul>
+      
+      <h4>Management Logs</h4>
+      <ul>
+        <li><a href="TimeSheet.html"><i class="bi bi-file-earmark-text"></i>Time Sheet</a></li>
+        <li><a href="TimeTracker.html"><i class="bi bi-stopwatch"></i>Time Tracker</a></li>
+        <li><a href="Scheduling.html"><i class="bi bi-calendar-range"></i>Scheduling</a></li>
+        <li><a href="ReviewCycle.html"><i class="bi bi-arrow-repeat"></i>Review Cycle</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-panel">
+      <header class="main-header">
+        <div class="brand">
+          <h1>Performance Reviews</h1>
+          <p>Manage, track and evaluate employee performance reviews.</p>
+        </div>
+        <div class="top-actions">
+          <input id="globalSearch" type="search" placeholder="Search employee name..." />
+          <button id="newReviewBtn">+ New Review</button>
+        </div>
+      </header>
+
+      <div class="main-content">
+        <section class="summary-grid">
+          <article class="summary-card efficiency-card">
+            <div class="efficiency-card-header">
+              <small>Workforce Efficiency</small>
+            </div>
+            <div>
+              <p class="value" id="globalEfficiency">0%</p>
+              <p class="meta" id="efficiencyDelta">+3.9% from previous cycle</p>
+            </div>
+          </article>
+          <article class="summary-card">
+            <small>Completed</small>
+            <p class="value" id="completedReviews">0</p>
+            <p class="meta">% of total</p>
+          </article>
+          <article class="summary-card">
+            <small>In Progress</small>
+            <p class="value" id="inProgressReviews">0</p>
+            <p class="meta">Active reviews</p>
+          </article>
+          <article class="summary-card">
+            <small>Upcoming</small>
+            <p class="value" id="upcomingReviews">0</p>
+            <p class="meta">Planned reviews</p>
+          </article>
+        </section>
+
+        <div class="content-grid">
+          <section class="panel table-panel">
+            <div class="toolbar">
+              <label>
+                Department
+                <select id="departmentFilter">
+                  <option value="all">All Departments</option>
+                </select>
+              </label>
+              <label>
+                Status
+                <select id="statusFilter">
+                  <option value="all">All Statuses</option>
+                  <option value="completed">Completed</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="upcoming">Upcoming</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="table-shell">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Employee</th>
+                    <th>Department</th>
+                    <th>Review Period</th>
+                    <th>Reviewer</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody id="reviewTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside class="panel detail-card">
+            <div>
+              <h2>Review Details</h2>
+              <span class="badge" id="detailStatus">Select a review</span>
+            </div>
+
+            <div class="profile-block">
+              <h3 id="detailName">No employee selected</h3>
+              <div class="profile-list">
+                <div><span class="profile-label">Position</span><span id="detailPosition">—</span></div>
+                <div><span class="profile-label">Department</span><span id="detailDepartment">—</span></div>
+                <div><span class="profile-label">Contact</span><span id="detailContact">—</span></div>
+                <div><span class="profile-label">Attendance Rate</span><span id="detailAttendance">—</span></div>
+                <div><span class="profile-label">Pending leave</span><span id="detailLeave">—</span></div>
+                <div><span class="profile-label">History</span><span id="detailHistory" style="text-align: right; max-width: 60%;">—</span></div>
+              </div>
+            </div>
+
+            <section class="score-card">
+              <div class="score-meta">
+                <span>Overall Score</span>
+                <span id="detailRatingLabel">—</span>
+              </div>
+              <p class="score-value" id="detailScore">—</p>
+              <div class="score-meta">
+                <span>Review Period</span>
+                <span id="detailReviewPeriod">—</span>
+              </div>
+              <div class="score-meta">
+                <span>Reviewer</span>
+                <span id="detailReviewer">—</span>
+              </div>
+            </section>
+
+            <section>
+              <h3 style="font-size:14px; margin-bottom:12px;">Category Scores</h3>
+              <div class="bar-group" id="detailCategoryBars"></div>
+            </section>
+
+            <section>
+              <h3 style="font-size:14px; margin-bottom:8px;">Comments</h3>
+              <p id="detailComments" style="font-size:13px; color:#475569; margin:0;">Select an employee row to view specific review details.</p>
+            </section>
+
+            <div class="detail-actions">
+              <button class="primary" type="button" id="viewFullReviewBtn">View Full Review</button>
+              <button class="secondary" type="button" id="editReviewBtn">Edit Review</button>
+            </div>
+          </aside>
+        </div>
+
+        <section class="charts-section">
+          <article class="chart-panel">
+            <h3>Performance Rating Distribution</h3>
+            <div class="chart-container">
+              <canvas id="ratingChart"></canvas>
+            </div>
+          </article>
+          <article class="chart-panel">
+            <h3>Average Category Scores</h3>
+            <div class="chart-container">
+              <canvas id="categoryChart"></canvas>
+            </div>
+          </article>
+          <article class="chart-panel">
+            <h3>Attendance Rate by Employee</h3>
+            <div class="chart-container">
+              <canvas id="attendanceChart"></canvas>
+            </div>
+          </article>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="reviewModal" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
+      <h3 id="reviewModalTitle" style="margin-top:0;">Add a New Review</h3>
+      <form id="reviewForm">
+        <div class="form-grid">
+          <label class="field">
+            Employee Name
+            <input id="reviewEmployeeName" name="employeeName" required />
+          </label>
+          <label class="field">
+            Department
+            <select id="reviewDepartment" name="department" required>
+              <option value="Development">Development</option>
+              <option value="HR">HR</option>
+              <option value="QA">QA</option>
+              <option value="Sales">Sales</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Design">Design</option>
+              <option value="IT">IT</option>
+              <option value="Finance">Finance</option>
+              <option value="Support">Support</option>
+            </select>
+          </label>
+          <label class="field">
+            Review Period
+            <input id="reviewPeriod" name="reviewPeriod" placeholder="Jan 2026 - Jun 2026" required />
+          </label>
+          <label class="field">
+            Reviewer
+            <input id="reviewReviewer" name="reviewer" required />
+          </label>
+          <label class="field">
+            Status
+            <select id="reviewStatus" name="status" required>
+              <option value="completed">Completed</option>
+              <option value="in-progress">In Progress</option>
+              <option value="upcoming">Upcoming</option>
+            </select>
+          </label>
+          <label class="field">
+            Overall Score (1-5)
+            <input id="reviewScore" name="overallScore" type="number" min="1" max="5" step="0.1" required />
+          </label>
+          <label class="field full-width">
+            Comments
+            <textarea id="reviewComments" name="comments" rows="3"></textarea>
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary" type="button" id="cancelReviewBtn">Cancel</button>
+          <button class="primary" type="submit" id="saveReviewBtn">Save Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Complete Dataset Arrays Integration Layer
+    const payrollData = [
+      { employeeId: 1, name: 'Sibongile Nkosi', position: 'Software Engineer', department: 'Development', salary: 70000, employmentHistory: 'Joined in 2015, promoted to Senior in 2018', contact: 'sibongile.nkosi@moderntech.com' },
+      { employeeId: 2, name: 'Lungile Moyo', position: 'HR Manager', department: 'HR', salary: 80000, employmentHistory: 'Joined in 2013, promoted to Manager in 2017', contact: 'lungile.moyo@moderntech.com' },
+      { employeeId: 3, name: 'Thabo Molefe', position: 'Quality Analyst', department: 'QA', salary: 55000, employmentHistory: 'Joined in 2018', contact: 'thabo.molefe@moderntech.com' },
+      { employeeId: 4, name: 'Keshav Naidoo', position: 'Sales Representative', department: 'Sales', salary: 60000, employmentHistory: 'Joined in 2020', contact: 'keshav.naidoo@moderntech.com' },
+      { employeeId: 5, name: 'Zanele Khumalo', position: 'Marketing Specialist', department: 'Marketing', salary: 58000, employmentHistory: 'Joined in 2019', contact: 'zanele.khumalo@moderntech.com' },
+      { employeeId: 6, name: 'Sipho Zulu', position: 'UI/UX Designer', department: 'Design', salary: 65000, employmentHistory: 'Joined in 2016', contact: 'sipho.zulu@moderntech.com' },
+      { employeeId: 7, name: 'Naledi Moeketsi', position: 'DevOps Engineer', department: 'IT', salary: 72000, employmentHistory: 'Joined in 2017', contact: 'naledi.moeketsi@moderntech.com' },
+      { employeeId: 8, name: 'Farai Gumbo', position: 'Content Strategist', department: 'Marketing', salary: 56000, employmentHistory: 'Joined in 2021', contact: 'farai.gumbo@moderntech.com' },
+      { employeeId: 9, name: 'Karabo Dlamini', position: 'Accountant', department: 'Finance', salary: 62000, employmentHistory: 'Joined in 2018', contact: 'karabo.dlamini@moderntech.com' },
+      { employeeId: 10, name: 'Fatima Patel', position: 'Customer Support Lead', department: 'Support', salary: 58000, employmentHistory: 'Joined in 2016', contact: 'fatima.patel@moderntech.com' }
+    ];
+
+    const attendanceData = [
+      { employeeId: 1, attendance: 4, absent: 1, pendingLeave: 1 },
+      { employeeId: 2, attendance: 4, absent: 1, pendingLeave: 0 },
+      { employeeId: 3, attendance: 4, absent: 1, pendingLeave: 1 },
+      { employeeId: 4, attendance: 4, absent: 1, pendingLeave: 0 },
+      { employeeId: 5, attendance: 5, absent: 0, pendingLeave: 1 },
+      { employeeId: 6, attendance: 4, absent: 1, pendingLeave: 0 },
+      { employeeId: 7, attendance: 4, absent: 1, pendingLeave: 1 },
+      { employeeId: 8, attendance: 4, absent: 1, pendingLeave: 0 },
+      { employeeId: 9, attendance: 3, absent: 2, pendingLeave: 0 },
+      { employeeId: 10, attendance: 4, absent: 1, pendingLeave: 1 }
+    ];
+
+    const statusMap = ['completed', 'in-progress', 'upcoming'];
+    const reviewPeriods = ['Jan 2026 - Jun 2026', 'Feb 2026 - Jul 2026', 'Mar 2026 - Aug 2026'];
+    const reviewers = ['Sarah Johnson', 'Michael Brown', 'Emily Davis', 'Jessica Taylor', 'David Kim'];
+    const comments = [
+      'Consistently exceeds project expectations and supports team collaboration.',
+      'Approaches tasks with strong discipline and communicates clearly with peers.',
+      'Needs to improve time management while maintaining quality output.',
+      'Demonstrates leadership potential and supports process improvements.',
+      'Shows commitment to work and is open to constructive feedback.'
+    ];
+
+    // Compute Balanced Multi-Variant Array Sets mapping the exact parameters
+    let reviewData = attendanceData.map((att, index) => {
+      const base = payrollData.find(p => p.employeeId === att.employeeId);
+      const score = 3.5 + ((index * 7) % 15) * 0.1; 
+      return {
+        id: `emp-${att.employeeId}`,
+        ...base,
+        attendanceDays: att.attendance,
+        absentDays: att.absent,
+        pendingLeave: att.pendingLeave,
+        reviewPeriod: reviewPeriods[index % reviewPeriods.length],
+        reviewer: reviewers[index % reviewers.length],
+        status: statusMap[index % statusMap.length],
+        overallScore: score,
+        rating: score >= 4.5 ? 'Excellent' : score >= 3.6 ? 'Good' : 'Average',
+        categoryScores: {
+          quality: score,
+          productivity: Math.max(1, score - 0.3),
+          communication: Math.min(5, score + 0.2),
+          teamwork: Math.min(5, score + 0.1)
+        },
+        comment: comments[index % comments.length],
+        attendanceRate: Math.round((att.attendance / (att.attendance + att.absent)) * 100)
+      };
+    });
+
+    let selectedReviewId = reviewData[0].id;
+    let editingReviewId = null;
+    let charts = {};
+
+    // Populates the Add/Edit Review modal with an existing review's data.
+    // readOnly=true is used by "View Full Review" (fields disabled, no save).
+    function openReviewModal(review, { readOnly = false } = {}) {
+      editingReviewId = review.id;
+      elements.reviewModalTitle.textContent = readOnly
+        ? `Review — ${review.name}`
+        : `Edit Review — ${review.name}`;
+
+      document.getElementById('reviewEmployeeName').value = review.name || '';
+      document.getElementById('reviewDepartment').value = review.department || '';
+      document.getElementById('reviewPeriod').value = review.reviewPeriod || '';
+      document.getElementById('reviewReviewer').value = review.reviewer || '';
+      document.getElementById('reviewStatus').value = review.status || '';
+      document.getElementById('reviewScore').value = review.overallScore != null ? review.overallScore.toFixed(1) : '';
+      document.getElementById('reviewComments').value = review.comment || '';
+
+      elements.reviewForm.querySelectorAll('input, select, textarea').forEach((field) => {
+        field.disabled = readOnly;
+      });
+
+      elements.saveReviewBtn.style.display = readOnly ? 'none' : '';
+      elements.cancelReviewBtn.textContent = readOnly ? 'Close' : 'Cancel';
+
+      elements.reviewModal.classList.add('open');
+    }
+
+    const elements = {
+      reviewTableBody: document.getElementById('reviewTableBody'),
+      departmentFilter: document.getElementById('departmentFilter'),
+      statusFilter: document.getElementById('statusFilter'),
+      globalSearch: document.getElementById('globalSearch'),
+      mobileMenuToggle: document.getElementById('mobileMenuToggle'),
+      appSidebar: document.getElementById('appSidebar'),
+      newReviewBtn: document.getElementById('newReviewBtn'),
+      reviewModal: document.getElementById('reviewModal'),
+      reviewModalTitle: document.getElementById('reviewModalTitle'),
+      cancelReviewBtn: document.getElementById('cancelReviewBtn'),
+      saveReviewBtn: document.getElementById('saveReviewBtn'),
+      reviewForm: document.getElementById('reviewForm'),
+      viewFullReviewBtn: document.getElementById('viewFullReviewBtn'),
+      editReviewBtn: document.getElementById('editReviewBtn')
+    };
+
+    function updateDashboardMetrics() {
+      const total = reviewData.length;
+      const comp = reviewData.filter(r => r.status === 'completed').length;
+      const prog = reviewData.filter(r => r.status === 'in-progress').length;
+      const upc = reviewData.filter(r => r.status === 'upcoming').length;
+
+      document.getElementById('completedReviews').textContent = `${comp} (${Math.round(comp / total * 100)}%)`;
+      document.getElementById('inProgressReviews').textContent = prog;
+      document.getElementById('upcomingReviews').textContent = upc;
+      
+      const avgScore = reviewData.reduce((acc, r) => acc + r.overallScore, 0) / total;
+      document.getElementById('globalEfficiency').textContent = `${Math.round((avgScore / 5) * 100)}%`;
+    }
+
+    function renderTable() {
+      const dept = elements.departmentFilter.value;
+      const stat = elements.statusFilter.value;
+      const query = elements.globalSearch.value.toLowerCase();
+
+      const filtered = reviewData.filter(r => {
+        if (dept !== 'all' && r.department !== dept) return false;
+        if (stat !== 'all' && r.status !== stat) return false;
+        if (query && !r.name.toLowerCase().includes(query)) return false;
+        return true;
+      });
+
+      elements.reviewTableBody.innerHTML = filtered.map(r => `
+        <tr data-id="${r.id}" class="${r.id === selectedReviewId ? 'selected' : ''}">
+          <td><strong>${r.name}</strong><br><small style="color:#64748b">${r.position}</small></td>
+          <td>${r.department}</td>
+          <td>${r.reviewPeriod}</td>
+          <td>${r.reviewer}</td>
+          <td><span class="status-pill ${r.status}">${r.status.charAt(0).toUpperCase() + r.status.slice(1)}</span></td>
+          <td><strong>${r.overallScore.toFixed(1)}</strong></td>
+        </tr>
+      `).join('');
+
+      Array.from(elements.reviewTableBody.querySelectorAll('tr')).forEach(row => {
+        row.addEventListener('click', () => {
+          selectedReviewId = row.dataset.id;
+          renderTable();
+          renderDetails();
+        });
+      });
+    }
+
+    function renderDetails() {
+      const item = reviewData.find(r => r.id === selectedReviewId);
+      if (!item) return;
+
+      document.getElementById('detailStatus').textContent = item.status.toUpperCase();
+      document.getElementById('detailName').textContent = item.name;
+      document.getElementById('detailPosition').textContent = item.position;
+      document.getElementById('detailDepartment').textContent = item.department;
+      document.getElementById('detailContact').textContent = item.contact;
+      document.getElementById('detailAttendance').textContent = `${item.attendanceRate}% Logged Rate`;
+      document.getElementById('detailLeave').textContent = `${item.pendingLeave} Days`;
+      document.getElementById('detailHistory').textContent = item.employmentHistory || 'N/A';
+      document.getElementById('detailScore').textContent = item.overallScore.toFixed(1);
+      document.getElementById('detailRatingLabel').textContent = item.rating;
+      document.getElementById('detailReviewPeriod').textContent = item.reviewPeriod;
+      document.getElementById('detailReviewer').textContent = item.reviewer;
+      document.getElementById('detailComments').textContent = item.comment;
+
+      document.getElementById('detailCategoryBars').innerHTML = Object.entries(item.categoryScores).map(([k, v]) => `
+        <div class="bar-row">
+          <div class="bar-label">${k.toUpperCase()} (${v.toFixed(1)})</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(v / 5) * 100}%;"></div></div>
+        </div>
+      `).join('');
+    }
+
+    function initCharts() {
+      if (typeof Chart === 'undefined') {
+        console.warn('Chart.js did not load (CDN may be blocked or offline) — skipping chart rendering.');
+        return;
+      }
+
+      if (charts.rating) Object.values(charts).forEach(c => c.destroy());
+
+      const rates = { Excellent: 0, Good: 0, Average: 0 };
+      reviewData.forEach(r => rates[r.rating] = (rates[r.rating] || 0) + 1);
+      
+      charts.rating = new Chart(document.getElementById('ratingChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(rates),
+          datasets: [{ data: Object.values(rates), backgroundColor: ['#16a34a', '#2563eb', '#ea580c'] }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      charts.category = new Chart(document.getElementById('categoryChart').getContext('2d'), {
+        type: 'radar',
+        data: {
+          labels: ['Quality', 'Productivity', 'Communication', 'Teamwork'],
+          datasets: [{ label: 'Operational Performance Metrics', data: [4.1, 3.8, 4.3, 4.2], borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.1)' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      charts.attendance = new Chart(document.getElementById('attendanceChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: reviewData.map(r => r.name.split(' ')[0]),
+          datasets: [{ label: 'Attendance Rate %', data: reviewData.map(r => r.attendanceRate), backgroundColor: '#10b981' }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 50, max: 100 } } }
+      });
+    }
+
+    function setupFilters() {
+      const depts = [...new Set(payrollData.map(r => r.department))];
+      depts.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d; opt.textContent = d;
+        elements.departmentFilter.appendChild(opt);
+      });
+
+      elements.departmentFilter.addEventListener('change', renderTable);
+      elements.statusFilter.addEventListener('change', renderTable);
+      elements.globalSearch.addEventListener('input', renderTable);
+
+      elements.mobileMenuToggle.addEventListener('click', () => {
+        elements.appSidebar.classList.toggle('open');
+      });
+
+      elements.newReviewBtn.addEventListener('click', () => {
+        editingReviewId = null;
+        elements.reviewForm.reset();
+        elements.reviewModalTitle.textContent = 'Add a New Review';
+        elements.reviewForm.querySelectorAll('input, select, textarea').forEach((field) => {
+          field.disabled = false;
+        });
+        elements.saveReviewBtn.style.display = '';
+        elements.saveReviewBtn.textContent = 'Save Review';
+        elements.cancelReviewBtn.textContent = 'Cancel';
+        elements.reviewModal.classList.add('open');
+      });
+
+      elements.viewFullReviewBtn.addEventListener('click', () => {
+        const review = reviewData.find(r => r.id === selectedReviewId);
+        if (!review) return;
+        openReviewModal(review, { readOnly: true });
+      });
+
+      elements.editReviewBtn.addEventListener('click', () => {
+        const review = reviewData.find(r => r.id === selectedReviewId);
+        if (!review) return;
+        elements.saveReviewBtn.textContent = 'Save Changes';
+        openReviewModal(review, { readOnly: false });
+      });
+
+      elements.cancelReviewBtn.addEventListener('click', () => {
+        elements.reviewModal.classList.remove('open');
+        editingReviewId = null;
+      });
+
+      elements.reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fd = new FormData(elements.reviewForm);
+        const score = parseFloat(fd.get('overallScore'));
+        const rating = score >= 4.5 ? 'Excellent' : score >= 3.6 ? 'Good' : 'Average';
+        const categoryScores = { quality: score, productivity: score, communication: score, teamwork: score };
+
+        if (editingReviewId) {
+          // Update the existing review in place rather than adding a new row
+          const existing = reviewData.find(r => r.id === editingReviewId);
+          if (existing) {
+            existing.name = fd.get('employeeName');
+            existing.department = fd.get('department');
+            existing.reviewPeriod = fd.get('reviewPeriod');
+            existing.reviewer = fd.get('reviewer');
+            existing.status = fd.get('status');
+            existing.overallScore = score;
+            existing.rating = rating;
+            existing.categoryScores = categoryScores;
+            existing.comment = fd.get('comments') || existing.comment;
+          }
+          selectedReviewId = editingReviewId;
+        } else {
+          const newRev = {
+            id: `emp-${Date.now()}`,
+            name: fd.get('employeeName'),
+            department: fd.get('department'),
+            position: 'Associate Staff',
+            contact: 'internal-portal@moderntech.com',
+            reviewPeriod: fd.get('reviewPeriod'),
+            reviewer: fd.get('reviewer'),
+            status: fd.get('status'),
+            overallScore: score,
+            rating,
+            categoryScores,
+            comment: fd.get('comments') || 'No management notes attached.',
+            attendanceRate: 100, pendingLeave: 0, employmentHistory: 'Joined recently.'
+          };
+          reviewData.unshift(newRev);
+          selectedReviewId = newRev.id;
+        }
+
+        editingReviewId = null;
+        elements.reviewModal.classList.remove('open');
+        updateDashboardMetrics();
+        renderTable();
+        renderDetails();
+        initCharts();
+      });
+    }
+
+    setupFilters();
+    updateDashboardMetrics();
+    renderTable();
+    renderDetails();
+    initCharts();
+  </script>
+</body>
+</html>
