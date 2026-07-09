@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModernTech Solutions | Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#0F1B3D;
+    --navy-800:#1A2A52;
+    --navy-700:#3A4666;
+    --blue-600:#2E6FF2;
+    --blue-700:#2158D6;
+    --blue-050:#EEF3FC;
+    --teal-400:#22C1DC;
+    --green-500:#3DBE7A;
+    --surface:#FFFFFF;
+    --line:#E3E8F1;
+    --ink-mute:#6B7688;
+    --ink-faint:#98A2B5;
+    --danger:#E4483C;
+    --radius-lg:20px;
+    --radius-md:12px;
+    --radius-sm:9px;
+    --shadow-card: 0 30px 60px -20px rgba(15,27,61,0.18), 0 4px 20px -4px rgba(15,27,61,0.08);
+    --shadow-focus: 0 0 0 4px rgba(46,111,242,0.14);
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+  }
+
+  body{
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(circle at 15% 15%, #eef2fb 0%, transparent 45%),
+      radial-gradient(circle at 85% 85%, #eaf3f0 0%, transparent 45%),
+      #F3F5F9;
+    color:var(--navy-950);
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+  }
+
+  h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+  .page{
+    width:100%;
+    padding:32px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .auth-card{
+    width:100%;
+    max-width:1000px;
+    min-height:640px;
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .panel-left{
+    position:relative;
+    background:linear-gradient(160deg,#EEF3FC 0%, #E4ECFB 55%, #E7F2EE 100%);
+    padding:56px 48px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .grid-overlay{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(to right, rgba(46,111,242,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(46,111,242,0.06) 1px, transparent 1px);
+    background-size:34px 34px;
+    mask-image:radial-gradient(circle at 30% 35%, rgba(0,0,0,0.9), transparent 70%);
+  }
+
+  .glow{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(60px);
+    opacity:0.35;
+    pointer-events:none;
+  }
+  .glow-1{
+    width:260px;
+    height:260px;
+    background:#22C1DC;
+    top:-60px;
+    left:-60px;
+    }
+
+  .glow-2{
+    width:220px;
+    height:220px;
+    background:#3DBE7A;
+    bottom:-40px;
+    right:-20px;
+  }
+
+  .panel-left-content{
+    position:relative;
+    z-index:1;
+  }
+
+  .panel-heading{
+    font-size:29px;
+    line-height:1.22;
+    font-weight:800;
+    color:var(--navy-950);
+    letter-spacing:-0.01em;
+    margin:0 0 16px;
+  }
+
+  .panel-subtext{
+    font-size:15px;
+    line-height:1.6;
+    color:var(--navy-700);
+    max-width:400px;
+    margin:0 0 32px;
+  }
+
+  .feature-cards{
+    display:flex;
+    gap:12px;
+  }
+
+  .feature-card{
+    flex:1;
+    background:rgba(255,255,255,0.75);
+    border:1px solid rgba(255,255,255,0.9);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    backdrop-filter:blur(6px);
+  }
+
+  .feature-icon{
+    width:30px; height:30px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--blue-600);
+    background:rgba(46,111,242,0.1);
+  }
+
+  .feature-icon[data-icon="chart"]{
+    color:var(--green-500);
+    background:rgba(61,190,122,0.12);
+  }
+
+  .feature-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.35;
+  }
+
+  .feature-text strong{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--navy-950);
+  }
+
+  .feature-text span{
+    font-size:12px;
+    color:var(--ink-mute);
+  }
+
+  .panel-right{
+    padding:56px 48px;
+    display:flex;
+    align-items:center;
+  }
+
+  .panel-right-inner{
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+  }
+
+  .form-header h2{
+    font-size:26px;
+    font-weight:800;
+    margin:0 0 8px;
+    color:var(--navy-950);
+  }
+
+  .form-header p{
+    font-size:14px;
+    color:var(--ink-mute);
+    margin:0 0 28px;
+  }
+
+  .login-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
+
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+  }
+
+  .field label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--navy-800);
+  }
+
+  .field-label-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .link-inline{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--blue-600);
+    text-decoration:none;
+  }
+
+  .link-inline:hover{
+    text-decoration:underline;
+  }
+
+  .input-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    background:#F8F9FC;
+    border:1.5px solid var(--line);
+    border-radius:var(--radius-sm);
+    transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+
+  .input-wrap:hover{
+    border-color:#C9D3E6;
+  }
+
+  .input-wrap[data-state="focus"]{
+    border-color:var(--blue-600);
+    box-shadow:var(--shadow-focus);
+    background:#FFFFFF;
+  }
+
+  .input-wrap[data-state="error"]{
+    border-color:var(--danger);
+    background:#FDF4F3;
+  }
+
+  .input-wrap[data-state="error"]:focus-within,
+  .input-wrap[data-state="error"].focus{
+    box-shadow:0 0 0 4px rgba(228,72,60,0.12);
+  }
+
+  .input-icon{
+    color:var(--ink-faint);
+    margin-left:14px;
+    flex-shrink:0;
+  }
+
+  .input-wrap[data-state="focus"] .input-icon{
+    color:var(--blue-600);
+  }
+
+  .input-wrap[data-state="error"] .input-icon{
+    color:var(--danger);
+  }
+
+  .input-wrap input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:14.5px;
+    color:var(--navy-950);
+    padding:13px 14px;
+  }
+
+  .input-wrap input::placeholder{ color:var(--ink-faint); }
+
+  .toggle-visibility{
+    border:none;
+    background:none;
+    color:var(--ink-faint);
+    cursor:pointer;
+    padding:8px 14px 8px 8px;
+    display:flex;
+    align-items:center;
+  }
+
+  .toggle-visibility:hover{ color:var(--navy-700); }
+
+  .field-error{
+    font-size:12px;
+    color:var(--danger);
+    min-height:0;
+    display:none;
+    font-weight:500;
+  }
+
+  .field-error.visible{
+    display:block;
+  }
+
+  .checkbox-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    user-select:none;
+    margin-top:-2px;
+  }
+
+  .checkbox-row input{
+    position:absolute;
+    opacity:0;
+    width:18px;
+    height:18px;
+    margin:0;
+    cursor:pointer;
+  }
+
+  .checkbox-box{
+    width:18px;
+    height:18px;
+    border-radius:5px;
+    border:1.5px solid #C9D3E6;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    transition:background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+
+  .checkbox-box svg{
+    opacity:0;
+    transform:scale(0.6);
+    transition:opacity .12s ease, transform .12s ease;
+  }
+
+  .checkbox-row input:checked + .checkbox-box{
+    background:var(--blue-600);
+    border-color:var(--blue-600);
+  }
+
+  .checkbox-row input:checked + .checkbox-box svg{
+    opacity:1;
+    transform:scale(1);
+  }
+
+  .checkbox-label{
+    font-size:13.5px;
+    color:var(--navy-700);
+  }
+
+  .btn-primary{
+    position:relative;
+    border:none;
+    border-radius:var(--radius-sm);
+    background:linear-gradient(135deg, var(--blue-600), var(--blue-700));
+    color:#fff;
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:15px;
+    font-weight:700;
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .15s ease, filter .15s ease;
+    box-shadow:0 10px 24px -8px rgba(46,111,242,0.55);
+    margin-top:4px;
+  }
+
+  .btn-primary:hover{ 
+    filter:brightness(1.06); 
+  }
+
+  .btn-primary:active{
+    transform:translateY(1px) scale(0.99);
+  }
+
+  .btn-arrow{
+    transition:transform .15s ease;
+  }
+
+  .btn-primary:hover .btn-arrow{
+    transform:translateX(3px);
+  }
+
+  .btn-spinner{
+    display:none;
+    width:16px; height:16px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,0.4);
+    border-top-color:#fff;
+  }
+
+  .btn-primary.is-loading .btn-label,
+  .btn-primary.is-loading .btn-arrow{ display:none; }
+  .btn-primary.is-loading .btn-spinner{
+    display:inline-block;
+    animation:spin .7s linear infinite;
+  }
+
+  .btn-primary.is-loading{
+    cursor:default;
+    opacity:0.92;
+  }
+
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:6px 0 2px;
+  }
+  .divider::before,
+  .divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  .divider span{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+
+  .signup-line{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-mute);
+    margin:6px 0 0;
+  }
+
+  .form-footer{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:30px;
+  }
+  .form-footer a{
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    text-decoration:none;
+    transition:color .15s ease;
+  }
+  .form-footer a:hover{ color:var(--navy-700); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 27, 61, 0.45);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    padding: 20px;
+  }
+
+  .modal-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-container {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    transform: translateY(15px);
+    transition: transform 0.25s cubic-bezier(.16,.84,.44,1);
+  }
+
+  .modal-overlay.is-visible .modal-container {
+    transform: translateY(0);
+  }
+
+  .modal-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy-950);
+  }
+
+  .modal-close {
+    border: none;
+    background: none;
+    color: var(--ink-faint);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+
+  .modal-close:hover {
+    color: var(--navy-950);
+    background: var(--blue-050);
+  }
+
+  .modal-body {
+    padding: 28px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy-700);
+  }
+
+  .legal-meta {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .legal-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy-950);
+    margin: 24px 0 10px;
+  }
+  
+  .legal-text { 
+    margin: 0 0 14px;
+  }
+
+  .legal-list {
+    margin: 0 0 16px;
+    padding-left: 20px;
+  }
+
+  .legal-list li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 868px) {
+    .auth-card {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      max-width: 520px;
+    }
+    .panel-left {
+      padding: 44px 32px;
+      align-items: center;
+      text-align: center;
+    }
+    .panel-subtext { margin: 0 auto 28px; }
+    .feature-cards { width: 100%; max-width: 400px; }
+    .panel-right { padding: 44px 32px; }
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 16px 12px; }
+    .panel-left { padding: 32px 20px; }
+    .panel-heading { font-size: 24px; }
+    .feature-cards { flex-direction: column; gap: 10px; }
+    .panel-right { padding: 32px 20px; }
+    .form-header h2 { font-size: 22px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="auth-card" role="main">
+
+    <section class="panel-left">
+      <div class="grid-overlay"></div>
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
+
+      <div class="panel-left-content">
+        <h1 class="panel-heading">Precision in Personnel<br>Management</h1>
+        <p class="panel-subtext">
+          The clinical standard for high-performance HR operations.
+          Secure, reliable, and empathetic technology for modern healthcare teams.
+        </p>
+
+        <div class="feature-cards">
+          <div class="feature-card">
+            <div class="feature-icon" data-icon="shield">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="feature-text">
+              <strong>Secure Access</strong>
+              <span>HIPAA Compliant</span>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" data-icon="chart">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+            </div>
+            <div class="feature-text">
+              <strong>Live Analytics</strong>
+              <span>Real-time Sync</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-right">
+      <div class="panel-right-inner">
+        <header class="form-header">
+          <h2>Welcome Back</h2>
+          <p>Please enter your credentials to continue.</p>
+        </header>
+
+        <form class="login-form" id="loginForm" novalidate>
+
+          <div class="field">
+            <label for="email">Work Email Address</label>
+            <div class="input-wrap" data-state="default">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><path d="M2 6h20v12H2z"/></svg>
+              <input type="email" id="email" name="email" placeholder="john.doe@moderntech.solutions" autocomplete="username" required>
+            </div>
+            <span class="field-error" id="emailError"></span>
+          </div>
+
+          <div class="field">
+            <label for="job">Department/Role</label>
+            <div class="input-wrap" data-state="default">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="job" name="Job" placeholder="e.g. HR, Engineering, Sales" autocomplete="job" required>
+            </div>
+            <span class="field-error" id="jobError"></span>
+          </div>
+
+          <div class="field">
+            <div class="field-label-row">
+              <label for="password">Security Password</label>
+              <a href="#" class="link-inline" id="forgotLink">Forgot password?</a>
+            </div>
+            <div class="input-wrap" data-state="default">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+              <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required minlength="8">
+              <button type="button" class="toggle-visibility" id="toggleVisibility" aria-label="Show password" aria-pressed="false">
+                <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 4.22-5.06M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+              </button>
+            </div>
+            <span class="field-error" id="passwordError"></span>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="rememberMe" name="rememberMe">
+            <span class="checkbox-box" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-6"/></svg>
+            </span>
+            <span class="checkbox-label">Remember this workstation for 30 days</span>
+          </label>
+
+          <button type="submit" class="btn-primary" id="signInBtn">
+            <span class="btn-label">Sign In</span>
+            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+
+          <p class="signup-line">New to the platform? <a href="signup.html" class="link-inline">Create an account</a></p>
+        </form>
+
+        <footer class="form-footer">
+          <a href="#" class="js-trigger-privacy">Privacy</a>
+          <a href="#" class="js-trigger-terms">Terms</a>
+          <a href="#" class="js-trigger-compliance">Compliance</a>
+        </footer>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="modal-overlay" id="accountNotFoundModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Account Not Found</h3>
+      <button type="button" class="modal-close" id="closeNotFoundModal" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>The system could not identify any workspace account registered with that configuration.</p>
+      <p>Please check your workspace credentials or click "Create an account" below to establish a new identity entry.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Privacy Policy</h3>
+      <button type="button" class="modal-close" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="legal-meta">Last Updated: July 2026</div>
+      <p class="legal-text">At ModernTech Solutions, we prioritize the protection and confidentiality of clinical administration, operational workflows, and employee directories. This Comprehensive Privacy Policy establishes the dynamic framework under which administrative profiles, authorization metrics, and diagnostic log histories are protected.</p>
+      
+      <div class="legal-section-title">1. Data Types and Collection Vectors</div>
+      <p class="legal-text">To maintain continuity across multi-tenant enterprise configurations, our application infrastructure indexes specific structural identities:</p>
+      <ul class="legal-list">
+        <li><strong>Identity Metadata:</strong> Full names, certified operational work emails, and systemic access roles assigned within your healthcare division.</li>
+        <li><strong>Authentication Hashes:</strong> Advanced structural password representations processed entirely locally or safely translated through secure Single Sign-On integrations.</li>
+        <li><strong>Session Signatures:</strong> Time-stamps, machine configurations, browser user-agents, and network location logs required to fulfill deep audit capabilities.</li>
+      </ul>
+
+      <div class="legal-section-title">2. Functional Framework of Processing</div>
+      <p class="legal-text">Collected directory information is isolated from commercial exploitation filters. Elements are processed entirely to ensure workspace initialization safety, cross-department scheduling sync routines, role-based visibility configurations, and active intrusion mitigation profiles.</p>
+
+      <div class="legal-section-title">3. Structural Retention Strategies</div>
+      <p class="legal-text">Identity data layers remain persistent within the application's runtime sandboxes (`localStorage` / centralized vaults) until a formal deletion directive is issued by an authorized corporate administrator or workspace coordinator.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Terms of Service</h3>
+      <button type="button" class="modal-close" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="legal-meta">Effective Date: July 2026</div>
+      <p class="legal-text">These Terms of Service govern the access rules, architectural use boundaries, and directory configurations provided through the ModernTech Solutions enterprise suite. Finalizing an active identity or administrative channel establishes a legally binding contract framework.</p>
+      
+      <div class="legal-section-title">1. Acceptable Use Safeguards</div>
+      <p class="legal-text">Administrators and authorized clinical platform actors must strictly adhere to the following baseline structural provisions:</p>
+      <ul class="legal-list">
+        <li>Profiles must represent actual clinical agents containing real credential alignments.</li>
+        <li>Users must maintain strict isolation of local password strings from outside elements.</li>
+        <li>Malicious injection sweeps, reverse engineering of dashboard states, or systematic scrapers are strictly banned.</li>
+      </ul>
+
+      <div class="legal-section-title">2. Infrastructure Liability & Allocation</div>
+      <p class="legal-text">ModernTech Solutions delivers this identity portal configuration framework on an "as-is" basis. We refuse all explicit warranties concerning server uptime stability during unforeseen network dropouts, or data alterations resulting from browser configuration adjustments.</p>
+
+      <div class="legal-section-title">3. Account Breach Mandates</div>
+      <p class="legal-text">Should a workspace agent discover credential leak scenarios, they are mandated to instantly reset authorization passwords locally and alert security coordinates within exactly twenty-four (24) hours.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="complianceModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Compliance & Security Mandates</h3>
+      <button type="button" class="modal-close" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="legal-meta">Framework Version: 4.2-2026</div>
+      <p class="legal-text">ModernTech Solutions runs active multi-layer guardrails to ensure user data remains fully aligned with strict medical and organizational platform rules. This application layout implements specific system filters designed to support high-level compliance goals.</p>
+      
+      <div class="legal-section-title">1. Regulatory Framework Alignments</div>
+      <p class="legal-text">Our identity systems are custom-engineered to align with complex technological and statutory mandates, including:</p>
+      <ul class="legal-list">
+        <li><strong>HIPAA Security Rule:</strong> Enforcing automated access locks, cryptographic payload wrapping, and clean session termination rules.</li>
+        <li><strong>HITECH Act Provisions:</strong> Running deep infrastructure monitoring and comprehensive tracking logs across all active personnel data changes.</li>
+        <li><strong>SOC 2 Type II Standards:</strong> Following strict rules for processing isolation, protecting entry vectors, and keeping audit pathways readable at all times.</li>
+      </ul>
+
+      <div class="legal-section-title">2. Active Cryptographic Blueprints</div>
+      <p class="legal-text">Data strings at rest utilize military-grade advanced block ciphers, paired with industry-standard secure transport paths during network travel. No raw identity matrices or cleartext structural strings are allowed into standard analytics channels.</p>
+    </div>
+  </div>
+</div>
+
+<script src="employees-data.js"></script>
+<script src="auth.js"></script>
+<script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Safeguard: Extract emails cleanly into registered array
+  if (!localStorage.getItem('registeredUsers')) {
+    let baseUsers = ["sibongile.nkosi@moderntech.com", "lungile.moyo@moderntech.com", "thabo.molefe@moderntech.com"];
+    if (typeof typeofData !== 'undefined' && typeofData.employeeInformation) {
+      baseUsers = typeofData.employeeInformation.map(emp => {
+        return typeof emp.contact === 'string' ? emp.contact.trim() : (emp.contact?.email || '');
+      }).filter(email => email !== '');
+    }
+    localStorage.setItem('registeredUsers', JSON.stringify(baseUsers));
+  }
+
+  const existingSession = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+  if (existingSession){
+    const savedRole = localStorage.getItem('last_user_role') || '';
+    window.location.href = savedRole.toUpperCase() === 'HR' ? 'index.html' : 'dashboard.html';
+    return;
+  }
+
+  const form = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const jobInput = document.getElementById('job'); 
+  const passwordInput = document.getElementById('password');
+  const emailError = document.getElementById('emailError');
+  const jobError = document.getElementById('jobError');
+  const passwordError = document.getElementById('passwordError');
+  const signInBtn = document.getElementById('signInBtn');
+  const toggleBtn = document.getElementById('toggleVisibility');
+  const notFoundModal = document.getElementById('accountNotFoundModal');
+  const closeNotFoundBtn = document.getElementById('closeNotFoundModal');
+
+  const wrapOf = (input) => input.closest('.input-wrap');
+
+  function setState(input, state){
+    wrapOf(input).dataset.state = state;
+  }
+
+  function showError(input, errorEl, message){
+    setState(input, 'error');
+    errorEl.textContent = message;
+    errorEl.classList.add('visible');
+  }
+
+  function clearError(input, errorEl){
+    errorEl.classList.remove('visible');
+    errorEl.textContent = '';
+    if (wrapOf(input).dataset.state === 'error'){
+      setState(input, document.activeElement === input ? 'focus' : 'default');
+    }
+  }
+
+  function isValidEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  [emailInput, jobInput, passwordInput].forEach((input) => {
+    input.addEventListener('focus', () => {
+      if (wrapOf(input).dataset.state !== 'error') setState(input, 'focus');
+    });
+    input.addEventListener('blur', () => {
+      if (wrapOf(input).dataset.state !== 'error') setState(input, 'default');
+    });
+  });
+
+  emailInput.addEventListener('input', () => {
+    if (emailInput.value.trim() === '' || isValidEmail(emailInput.value.trim())){
+      clearError(emailInput, emailError);
+    }
+  });
+
+  passwordInput.addEventListener('input', () => {
+    if (passwordInput.value.length === 0 || passwordInput.value.length >= 8){
+      clearError(passwordInput, passwordError);
+    }
+  });
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = passwordInput.type === 'password';
+    passwordInput.type = isHidden ? 'text' : 'password';
+    toggleBtn.querySelector('.icon-eye').style.display = isHidden ? 'none' : 'block';
+    toggleBtn.querySelector('.icon-eye-off').style.display = isHidden ? 'block' : 'none';
+    toggleBtn.setAttribute('aria-pressed', String(isHidden));
+    passwordInput.focus();
+  });
+
+  function openModal(modal) { modal.classList.add('is-visible'); }
+  function closeModal(modal) { modal.classList.remove('is-visible'); }
+
+  closeNotFoundBtn.addEventListener('click', () => closeModal(notFoundModal));
+  notFoundModal.addEventListener('click', (e) => { if(e.target === notFoundModal) closeModal(notFoundModal); });
+
+  document.querySelectorAll('.js-trigger-privacy').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('privacyModal')); });
+  });
+  document.querySelectorAll('.js-trigger-terms').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('termsModal')); });
+  });
+  document.querySelectorAll('.js-trigger-compliance').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('complianceModal')); });
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    const closeBtn = modal.querySelector('.modal-close');
+    if(closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let valid = true;
+    const emailVal = emailInput.value.trim();
+    const jobVal = jobInput.value.trim();
+    const passVal = passwordInput.value;
+
+    if (emailVal === ''){
+      showError(emailInput, emailError, 'Enter your work email address.');
+      valid = false;
+    } else if (!isValidEmail(emailVal)){
+      showError(emailInput, emailError, 'Enter a valid email address.');
+      valid = false;
+    }
+
+    if (jobVal === ''){
+      showError(jobInput, jobError, 'Enter your department or role position.');
+      valid = false;
+    } else {
+      clearError(jobInput, jobError);
+    }
+
+    if (passVal === ''){
+      showError(passwordInput, passwordError, 'Enter your password.');
+      valid = false;
+    } else if (passVal.length < 8) {
+      showError(passwordInput, passwordError, 'Password must be at least 8 characters.');
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    signInBtn.classList.add('is-loading');
+    signInBtn.disabled = true;
+
+    setTimeout(() => {
+      const usersArray = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+      const accountFound = usersArray.some(email => email.toLowerCase() === emailVal.toLowerCase());
+
+      if (!accountFound) {
+        signInBtn.classList.remove('is-loading');
+        signInBtn.disabled = false;
+        openModal(notFoundModal);
+        return;
+      }
+
+      localStorage.setItem('last_user_role', jobVal);
+
+      if (jobVal.toUpperCase() === 'HR') {
+        window.location.href = 'index.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    }, 700);
+  });
+
+});
+</script>
+</body>
+</html>

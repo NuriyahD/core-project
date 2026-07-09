@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModernTech Solutions | Employee Dashboard</title>
+
+<!-- Clean & Working Bootstrap 5 + Icons Links -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+<style>
+    :root {
+    --navy-950: #0F1B3D;
+    --navy-800: #1A2A52;
+    --navy-700: #3A4666;
+    --blue-600: #2E6FF2;
+    --blue-700: #2158D6;
+    --blue-050: #EEF3FC;
+    --amber-500: #F59E0B;
+    --amber-050: #FEF3C7;
+    --danger: #E4483C;
+    --danger-050: #FDF4F3;
+    --surface: #FFFFFF;
+    --line: #E3E8F1;
+    --bg-main: #F8F9FC;
+    --ink-mute: #6B7688;
+    --ink-faint: #98A2B5;
+    --radius-lg: 20px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    --shadow-sm: 0 2px 8px rgba(15,27,61,0.04);
+    --shadow-card: 0 12px 30px rgba(15,27,61,0.05);
+    --border: #E2E8F0;
+    }
+
+    * { 
+        box-sizing: border-box; 
+    }
+
+    body, html { 
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+        background-color: var(--bg-main);
+        color: var(--navy-950);
+        min-height: 100vh;
+    }
+
+    h1, h2, h3 {
+         font-family: sans-serif;
+         margin: 0; 
+    }
+
+    #wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    .navbar {
+        position: sticky;
+        top: 0;
+        height: 73px;
+        background-color: #ffffff;
+        border-bottom: 1px solid var(--border);
+        z-index: 1050;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .brand-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .custom-logo-mark {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 36px;
+        position: relative;
+    }
+
+    .custom-logo-mark .logo-circle {
+        width: 20px;
+        height: 20px;
+        border: 3px solid #0284C7;
+        border-radius: 50%;
+        background: transparent;
+    }
+
+    .custom-logo-mark .logo-lines {
+        display: flex;
+        justify-content: space-between;
+        width: 16px;
+        height: 10px;
+        margin-top: -2px;
+    }
+
+    .custom-logo-mark .logo-line {
+        width: 2.5px;
+        background-color: #0284C7;
+        border-radius: 1px;
+    }
+
+    .custom-logo-mark .logo-line.center {
+        height: 12px;
+        margin-top: -3px;
+    }
+
+    .custom-logo-mark .logo-line.side {
+        height: 7px;
+        margin-top: 2px;
+    }
+
+    .brand-title-container {
+        line-height: 1.1;
+    }
+
+    .brand-main {
+        font-weight: 700;
+        color: #1E293B; 
+        font-size: 1.25rem;
+    }
+
+    .brand-sub {
+        color: #3B82F6;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .main-content { 
+        flex: 1;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .welcome-section h1 {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--navy-950);
+    }
+
+    .welcome-section p {
+        color: var(--ink-mute);
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 32px;
+    }
+
+    @media (max-width: 1024px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .card { 
+        background: var(--surface);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-sm);
+        padding: 28px;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--navy-950);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form-grid { 
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    @media (max-width: 600px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .field.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .field label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--navy-800);
+    }
+
+    .field input, .field select, .field textarea {
+        padding: 12px;
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 14.5px;
+        color: var(--navy-950);
+        background: #F8F9FC;
+        outline: none;
+        transition: all 0.2s;
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+        border-color: var(--blue-600);
+        background: #fff;
+    }
+
+    /* Custom error validation styling matching the required design layout */
+    .was-validated .field input:invalid,
+    .was-validated .field select:invalid,
+    .was-validated .field textarea:invalid {
+        border-color: var(--danger) !important;
+        background-color: var(--danger-050) !important;
+    }
+
+    .error-msg {
+        display: none;
+        font-size: 13.5px;
+        font-weight: 500;
+        color: var(--danger);
+        margin-top: 2px;
+    }
+
+    .was-validated .field input:invalid ~ .error-msg,
+    .was-validated .field select:invalid ~ .error-msg,
+    .was-validated .field textarea:invalid ~ .error-msg {
+        display: block;
+    }
+
+    .submit-btn { 
+        background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 14px 24px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        transition: filter 0.2s;
+        box-shadow: 0 4px 12px rgba(46,111,242,0.2);
+    }
+
+    .submit-btn:hover {
+        filter: brightness(1.08);
+    }
+
+    .notifications-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .notification-item {
+        display: flex;
+        gap: 14px;
+        padding: 16px;
+        border-radius: var(--radius-sm);
+        border-left: 4px solid transparent;
+    }
+
+    .notification-item.warning { 
+        background: var(--amber-050);
+        border-left-color: var(--amber-500);
+    }
+
+    .notification-item.danger { 
+        background: var(--danger-050);
+        border-left-color: var(--danger);
+    }
+
+    .notification-icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+    }
+
+    .notification-icon.warning {
+        color: var(--amber-500);
+    }
+
+    .notification-icon.danger {
+        color: var(--danger);
+    }
+
+    .notification-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .notification-msg {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--navy-950);
+        line-height: 1.4;
+    }
+
+    .notification-time {
+        font-size: 11px;
+        color: var(--ink-mute);
+        font-weight: 500;
+    }
+
+    .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--navy-950);
+        color: #fff;
+        padding: 16px 24px;
+        border-radius: var(--radius-sm);
+        font-size: 14px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        transform: translateY(100px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 3000;
+    }
+
+    .toast.show {
+         transform: translateY(0); opacity: 1;
+    }
+
+    .toast svg {
+         color: var(--blue-600);
+    }
+
+    .logout-direct-btn {
+        background-color: transparent;
+        border: 1px solid var(--danger);
+        color: var(--danger);
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: var(--radius-sm);
+        transition: all 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .logout-direct-btn:hover {
+        background-color: var(--danger);
+        color: #ffffff;
+    }
+</style>
+</head>
+<body>
+
+<div id="wrapper">
+    <nav class="navbar navbar-light bg-white py-2 px-4">
+        <div class="container-fluid p-0 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <div class="brand-container">
+                    <div class="custom-logo-mark">
+                        <div class="logo-circle"></div>
+                        <div class="logo-lines">
+                            <div class="logo-line side"></div>
+                            <div class="logo-line center"></div>
+                            <div class="logo-line side"></div>
+                        </div>
+                    </div>
+                    <div class="brand-title-container d-none d-sm-block">
+                        <div class="brand-main">ModernTech</div>
+                        <div class="brand-sub">Solutions</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <button id="logoutBtn" class="logout-direct-btn" type="button">
+                    <i class="bi bi-box-arrow-right"></i> Log out
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="header-wrapper">
+          <div class="welcome-section">
+            <h1 id="userGreeting">Welcome Back</h1>
+            <p>Manage your operational assignments and schedule variations.</p>
+          </div>
+        </header>
+
+        <div class="dashboard-grid">
+          <section class="card">
+            <h2 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Request Formal Leave
+            </h2>
+            <form id="leaveForm" class="form-grid" novalidate>
+              <div class="field">
+                <label for="leaveType">Absence Category</label>
+                <select id="leaveType" required>
+                  <option value="" disabled selected>Select absence type...</option>
+                  <option value="Annual Leave">Annual General Leave</option>
+                  <option value="Sick Leave">Sick / Medical Leave</option>
+                  <option value="Family Responsibility">Family Responsibility</option>
+                  <option value="Maternity/Paternity">Parental / Maternity Leave</option>
+                  <option value="Other">Other / Special Circumstances</option>
+                </select>
+                <div class="error-msg">Select a valid absence category.</div>
+              </div>
+              <div class="field">
+                <label for="backupEmployee">Designated Backup Colleague</label>
+                <input type="text" id="backupEmployee" placeholder="Full Name" required>
+                <div class="error-msg">Enter your designated backup colleague.</div>
+              </div>
+              <div class="field">
+                <label for="startDate">Effective Commencement Date</label>
+                <input type="date" id="startDate" required>
+                <div class="error-msg">Select your effective commencement date.</div>
+              </div>
+              <div class="field">
+                <label for="endDate">Expected Return Date</label>
+                <input type="date" id="endDate" required>
+                <div class="error-msg">Select your expected return date.</div>
+              </div>
+              <div class="field full-width">
+                <label for="reason">Operational Context / Explanation</label>
+                <textarea id="reason" rows="4" placeholder="Provide necessary breakdown context for administrative visibility..." required></textarea>
+                <div class="error-msg">Provide operational context or breakdown explanation.</div>
+              </div>
+              <div class="field full-width">
+                <button type="submit" class="submit-btn">
+                  <span>Submit Application</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="card">
+            <h2 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+              System Alerts
+            </h2>
+            <div class="notifications-panel">
+                <div class="notification-item warning">
+                <div class="notification-icon warning">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <div class="notification-content">
+                  <span class="notification-msg">Pending Requests Reminder:" “You currently have 2 other leave requests awaiting manager approval.</span>
+                  <span class="notification-time">just now</span>
+                </div>
+              </div>
+              <div class="notification-item warning">
+                <div class="notification-icon warning">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <div class="notification-content">
+                  <span class="notification-msg">Upcoming Holiday Reminder:" “Note: July 3rd is an upcoming company holiday and does not need to be requested as a leave day.</span>
+                  <span class="notification-time">2 hours ago</span>
+                </div>
+              </div>
+              <div class="notification-item warning">
+                <div class="notification-icon warning">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </div>
+                <div class="notification-content">
+                  <span class="notification-msg">System Maintenance:" “The HR portal will be offline for scheduled updates tonight from 10 PM to 12 AM EST.</span>
+                  <span class="notification-time">3 days ago</span>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+    </main>
+</div>
+
+<div class="toast" id="successToast">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+  <span>Leave request submitted successfully to HR.</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Pulls user name if present, otherwise defaults gracefully
+  const storedName = localStorage.getItem('last_user_name') || 'Team Member';
+  document.getElementById('userGreeting').textContent = `Hello, ${storedName}`;
+
+  const leaveForm = document.getElementById('leaveForm');
+  const toast = document.getElementById('successToast');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  leaveForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    leaveForm.classList.add('was-validated');
+
+    if (!leaveForm.checkValidity()) {
+        return;
+    }
+    
+    const leaveData = {
+      type: document.getElementById('leaveType').value,
+      backup: document.getElementById('backupEmployee').value,
+      start: document.getElementById('startDate').value,
+      end: document.getElementById('endDate').value,
+      reason: document.getElementById('reason').value,
+      submittedAt: new Date().toISOString()
+    };
+
+    const existingRequests = JSON.parse(localStorage.getItem('timeOffRequests') || '[]');
+    existingRequests.push(leaveData);
+    localStorage.setItem('timeOffRequests', JSON.stringify(existingRequests));
+
+    toast.classList.add('show');
+    leaveForm.reset();
+    leaveForm.classList.remove('was-validated');
+
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 4000);
+  });
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('last_user_role');
+      localStorage.removeItem('last_user_name');
+      window.location.href = 'signin.html';
+    });
+  }
+});
+</script>
+</body>
+</html>
