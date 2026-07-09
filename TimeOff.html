@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Management - ModernTech Solutions</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --page-bg: #f8f9fa;
+            --panel-bg: #ffffff;
+            --sidebar-start: #e0f2fe;
+            --sidebar-end: #bae6fd;
+            --accent: #0496c7;
+            --accent-dark: #0369a1;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            color: #222;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 60px;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border);
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, var(--sidebar-start) 0%, var(--sidebar-end) 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            padding: 1.5rem;
+            z-index: 100;
+            overflow-y: auto;
+            border-right: 1px solid #bae6fd;
+            padding-top: 5.5rem;
+        }
+
+        .sidebar-brand {
+            white-space: nowrap;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-brand .brand-icon {
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+        }
+
+        .sidebar-brand .brand-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-dark);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.7);
+            color: var(--accent-dark);
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid rgba(3, 105, 161, 0.2);
+            margin: 1.5rem 0;
+        }
+
+        .sub-menu-title {
+            color: var(--accent-dark);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding-left: 15px;
+            margin-bottom: 5px;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            padding-top: 5.5rem;
+        }
+
+        .text-accent {
+            color: var(--accent) !important;
+        }
+
+        .stat-card {
+            background: var(--panel-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border-left: 5px solid;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 991px) {
+            .top-navbar {
+                position: sticky;
+                top: 0;
+            }
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+                padding-top: 1.5rem;
+                border-right: none;
+                border-bottom: 1px solid #93c5fd;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: 1.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #93c5fd;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <header class="top-navbar">
+        <div class="d-flex align-items-center gap-3">
+            <div class="sidebar-brand">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"></path>
+                        <path d="M12 22v-6"></path>
+                        <path d="M8 22v-3"></path>
+                        <path d="M16 22v-3"></path>
+                    </svg>
+                </div>
+                <div class="d-none d-sm-block ms-1">
+                    <h5 class="text-dark fw-bold m-0 fs-6" style="letter-spacing: 0.5px;">ModernTech</h5>
+                    <small class="text-primary small fw-semibold opacity-75">Solutions</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted small d-none d-md-inline-block"><i class="bi bi-shield-check text-success me-1"></i> Secure Session Gateway</span>
+            <div class="dropdown">
+                <button class="btn btn-light btn-sm rounded-circle" type="button" aria-label="User Profile">
+                    <i class="bi bi-person-circle fs-5 text-secondary"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <nav class="sidebar-menu main-menu">
+                <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
+                <a href="TimeOff.html" class="menu-item active"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
+                <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
+                <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
+                <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
+            </nav>
+
+            <hr class="sidebar-divider">
+
+            <div class="sub-menu-title">Management Logs</div>
+            <nav class="sidebar-menu sub-menu">
+                <a href="timesheet.html" class="menu-item">Time Sheet</a>
+                <a href="timetracker.html" class="menu-item">Time Tracker</a>
+                <a href="scheduling.html" class="menu-item">Scheduling</a>
+                <a href="reviewcycle.html" class="menu-item">Review Cycle</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+<div class="container-fluid">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <span class="text-uppercase text-muted small fw-bold">Time Allocation</span>
+            <h1 class="h2 fw-bold text-dark m-0">Leave Request Management</h1>
+        </div>
+        <button class="btn btn-primary px-4 py-2" data-bs-toggle="modal" data-bs-target="#leaveModal">
+            <i class="bi bi-plus-lg"></i> Request Time Off
+        </button>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-success">
+                <span class="text-muted small fw-bold">Approved</span>
+                <h3 class="fw-bold m-0 text-dark" id="approvedCount">0</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-warning">
+                <span class="text-muted small fw-bold">Pending</span>
+                <h3 class="fw-bold m-0 text-dark" id="pendingCount">0</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-danger">
+                <span class="text-muted small fw-bold">Denied</span>
+                <h3 class="fw-bold m-0 text-dark" id="deniedCount">0</h3>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card border-info">
+                <span class="text-muted small fw-bold">Total Requests</span>
+                <h3 class="fw-bold m-0 text-dark" id="totalCount">0</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow-sm border">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+            <h5 class="fw-bold m-0 text-dark">Leave Request History</h5>
+            
+            <div class="d-flex gap-2 w-100 col-12 col-md-7 col-lg-5">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-secondary"><i class="bi bi-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control bg-light border-start-0" placeholder="Search employee or reason...">
+                </div>
+                <select id="statusFilter" class="form-select bg-light w-auto" style="min-width: 140px;">
+                    <option value="ALL">All Statuses</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Denied">Denied</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle m-0">
+                <thead class="table-light small text-uppercase">
+                    <tr>
+                        <th>Employee</th>
+                        <th>Reason / Leave Type</th>
+                        <th>Date Requested</th>
+                        <th class="text-end">Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="4" class="text-center py-4 text-muted">
+                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                            Loading database real-time entries...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Leave Form Modal -->
+<div class="modal fade" id="leaveModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">Submit Leave Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="leaveForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Employee Name</label>
+                        <input type="text" id="empNameInput" class="form-control" placeholder="e.g. Alice Johnson" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Leave Type</label>
+                        <select id="leaveTypeInput" class="form-select" required>
+                            <option value="" disabled selected>Choose option...</option>
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Medical Appointment">Medical Appointment</option>
+                            <option value="Personal">Personal Business</option>
+                            <option value="Vacation">Vacation Leave</option>
+                            <option value="Family Responsibility">Family Responsibility</option>
+                            <option value="Bereavement">Bereavement</option>
+                            <option value="Childcare">Childcare</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold">Date Description</label>
+                        <input type="date" id="datesInput" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Master data storage array
+    let leaveRequestsArray = [];
+
+    // Fetch initial entries from JSON file
+    function loadLeaveData() {
+        fetch("Attendence.json")
+            .then(response => {
+                if (!response.ok) throw new Error("Could not read Attendence.json.");
+                return response.json();
+            })
+            .then(data => {
+                leaveRequestsArray = data.attendanceAndLeave || data;
+                renderDashboard();
+            })
+            .catch(err => {
+                console.error("Unable to load Time Off data:", err.message);
+                leaveRequestsArray = [];
+                renderDashboard();
+            });
+    }
+
+    // Clear, filter, and rebuild rows on screen
+    function renderDashboard() {
+        const tableBody = document.getElementById('tableBody');
+        tableBody.innerHTML = ''; 
+
+        // Gather latest configuration criteria settings
+        const searchKeyword = document.getElementById('searchInput').value.toLowerCase();
+        const statusCriterion = document.getElementById('statusFilter').value;
+
+        // Counter initial positions
+        let approved = 0;
+        let pending = 0;
+        let denied = 0;
+        let totalRequestsCount = 0;
+        let visibleRowsCount = 0;
+
+        // Build list arrays
+        leaveRequestsArray.forEach(emp => {
+            const employeeName = emp.name || "Unknown";
+            const requests = emp.leaveRequests || [];
+
+            requests.forEach(request => {
+                totalRequestsCount++;
+                if (request.status === 'Approved') approved++;
+                if (request.status === 'Pending') pending++;
+                if (request.status === 'Denied') denied++;
+
+                // Evaluation expressions matching criteria rules
+                const matchesSearch = employeeName.toLowerCase().includes(searchKeyword) || 
+                                      (request.reason && request.reason.toLowerCase().includes(searchKeyword));
+                const matchesStatus = (statusCriterion === 'ALL' || request.status === statusCriterion);
+
+                if (matchesSearch && matchesStatus) {
+                    visibleRowsCount++;
+                    let badgeClass = '';
+                    if (request.status === 'Approved') {
+                        badgeClass = 'bg-success-subtle text-success border border-success-subtle';
+                    } else if (request.status === 'Pending') {
+                        badgeClass = 'bg-warning-subtle text-warning border border-warning-subtle';
+                    } else {
+                        badgeClass = 'bg-danger-subtle text-danger border border-danger-subtle';
+                    }
+
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td class="fw-semibold text-dark">${employeeName}</td>
+                        <td>${request.reason || "Leave Request"}</td>
+                        <td><small class="text-secondary">${request.date || "N/A"}</small></td>
+                        <td class="text-end">
+                            <span class="badge ${badgeClass} px-3 py-1">${request.status || "Pending"}</span>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            });
+        });
+
+        // Safe Fallback messaging for dynamic empty results states
+        if (visibleRowsCount === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-muted">No records match your current filter selection.</td></tr>`;
+        }
+
+        // Element target synchronization updater calls
+        if (document.getElementById('approvedCount')) document.getElementById('approvedCount').innerText = approved;
+        if (document.getElementById('pendingCount')) document.getElementById('pendingCount').innerText = pending;
+        if (document.getElementById('deniedCount')) document.getElementById('deniedCount').innerText = denied;
+        if (document.getElementById('totalCount')) document.getElementById('totalCount').innerText = totalRequestsCount;
+    }
+
+    // operational event hooks 
+    document.getElementById('searchInput').addEventListener('input', renderDashboard);
+    document.getElementById('statusFilter').addEventListener('change', renderDashboard);
+
+    // Form Submission and Input Handling
+    document.getElementById('leaveForm').addEventListener('submit', function (event) {
+        event.preventDefault(); 
+
+        // trim handler to ensure clean string matching inputs
+        const inputName = document.getElementById('empNameInput').value.trim();
+        const newRequestObj = {
+            date: document.getElementById('datesInput').value || new Date().toISOString().split('T')[0],
+            reason: document.getElementById('leaveTypeInput').value,
+            status: 'Pending'
+        };
+
+        let existingEmp = leaveRequestsArray.find(emp => emp.name.toLowerCase() === inputName.toLowerCase());
+
+        if (existingEmp) {
+            if (!existingEmp.leaveRequests) existingEmp.leaveRequests = [];
+            existingEmp.leaveRequests.push(newRequestObj);
+        } else {
+            leaveRequestsArray.push({
+                employeeId: leaveRequestsArray.length + 1,
+                name: inputName,
+                attendance: [],
+                leaveRequests: [newRequestObj]
+            });
+        }
+
+        renderDashboard();
+        this.reset();
+
+        // Safely close Bootstrap active Modal viewport window instance 
+        const modalElement = document.getElementById('leaveModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) modalInstance.hide();
+    });
+
+    document.addEventListener('DOMContentLoaded', loadLeaveData);
+</script>
