@@ -103,7 +103,6 @@
         }
 
         .payslip-container {
-            background: var(--panel-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 2.5rem;
@@ -115,6 +114,14 @@
             font-weight: 700;
             font-size: 0.7rem;
             letter-spacing: 1px;
+        }
+
+        #slip{
+          margin-top: 30px;
+        }
+
+        #earnTotal, #deductTotal{
+          font-size: large;
         }
 
         @media print {
@@ -133,7 +140,7 @@
 </head>
 
 <body>
-    <!-- Top Navigation Framework Bar -->
+    <!-- Top NavBar -->
     <header class="top-navbar">
         <div class="d-flex align-items-center gap-3">
             <div class="d-flex align-items-center gap-2">
@@ -152,10 +159,10 @@
         </div>
     </header>
 
-    <div class="dashboard-container">
-        <!-- Sidebar Menu Elements -->
+    <div>
+        <!-- Sidbar -->
         <aside class="sidebar">
-            <nav class="sidebar-menu main-menu">
+            <nav>
                 <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
                 <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
@@ -167,27 +174,26 @@
             </nav>
             <hr class="sidebar-divider">
             <div class="sub-menu-title">Management Logs</div>
-            <nav class="sidebar-menu sub-menu">
+            <nav>
                 <a href="timesheet.html" class="menu-item">Time Sheet</a>
                 <a href="timetracker.html" class="menu-item">Time Tracker</a>
             </nav>
         </aside>
 
-        <!-- Workspace App Layout Wrapper -->
         <div class="main-content">
             <div class="container-fluid py-2">
                 
-                <!-- System Action Header Row (Hidden during printing) -->
-                <div class="card p-3 mb-4 border no-print shadow-sm">
+                <!-- Employee Input Row (Hidden during printing) -->
+                <div>
                     <div class="row g-3 align-items-end">
                         <div class="col-md-3">
-                            <label class="form-label small fw-bold text-secondary">1. Choose Staff Member</label>
+                            <label class="form-label small fw-bold text-secondary">Choose Employee</label>
                             <select class="form-select" id="payslipEmployeeSelect" onchange="loadEmployeeData()">
-                                <!-- Built dynamically by JS loop -->
                             </select>
                         </div>
+
                         <div class="col-6 col-md-2">
-                            <label class="form-label small fw-bold text-secondary">2. Select Period Month</label>
+                            <label class="form-label small fw-bold text-secondary">Select Month</label>
                             <select class="form-select" id="payslipMonthSelect" onchange="updatePayslipCalculations()">
                                 <option value="July 2026" selected>July 2026 (Current)</option>
                                 <option value="June 2026">June 2026 (Previous)</option>
@@ -195,35 +201,37 @@
                                 <option value="April 2026">April 2026</option>
                             </select>
                         </div>
+
                         <div class="col-6 col-md-2">
-                            <label class="form-label small fw-bold text-secondary">3. Hourly Rate (ZAR)</label>
+                            <label class="form-label small fw-bold text-secondary">Hourly Rate (ZAR)</label>
                             <input type="number" class="form-control" id="customHourlyRate" value="400" oninput="updatePayslipCalculations()">
                         </div>
+
                         <div class="col-6 col-md-2">
-                            <label class="form-label small fw-bold text-secondary">4. Hours Worked</label>
+                            <label class="form-label small fw-bold text-secondary">Hours Worked</label>
                             <input type="number" class="form-control" id="customHoursWorked" value="160" oninput="updatePayslipCalculations()">
                         </div>
+
                         <div class="col-6 col-md-3 text-end">
                             <button class="btn btn-primary w-100 shadow-sm" style="background-color: var(--accent-dark); border: none;" onclick="window.print()">
-                                <i class="bi bi-printer me-1"></i> Print / Save PDF
+                                <i class="bi bi-printer me-1"></i> Save as PDF
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Printed payslip outline -->
-                <div class="payslip-container mx-auto" style="max-width: 850px;">
+                <div id="slip" class="payslip-container mx-auto" style="max-width: 850px;">
                     
-                    <!-- Top Branding Title Block -->
+                    <!-- Payslip Header -->
                     <div class="row align-items-center border-bottom pb-4 mb-4">
                         <div class="col-sm-6">
                             <h4 class="fw-bold text-dark mb-0" style="letter-spacing: 0.5px;">ModernTech Solutions</h4>
-                            <p class="text-muted small mb-0">Custom Telemedicine Platforms & Secure Healthcare Systems</p>
-                            <small class="text-secondary block">Reg No: 2010/084251/07</small>
+                            <small class="text-secondary d-block">Reg No: 2010/084251/07</small>
                         </div>
+
                         <div class="col-sm-6 text-sm-end mt-3 mt-sm-0">
-                            <div class="p-2 border rounded d-inline-block bg-light text-start">
-                                <small class="text-uppercase text-muted fw-bold d-block font-monospace" style="font-size: 0.65rem;">Pay Period Reference</small>
+                            <div>
                                 <strong class="text-dark text-uppercase" id="slipPeriodLabel">July 2026</strong>
                             </div>
                         </div>
@@ -241,15 +249,11 @@
                         </div>
                         <div class="col-6 col-md-3">
                             <small class="text-muted d-block text-uppercase small">Department</small>
-                            <span class="text-dark d-block badge bg-light text-secondary border text-start align-middle mt-1" id="empDept">--</span>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <small class="text-muted d-block text-uppercase small">Calculated Metrics</small>
-                            <span class="text-dark d-block font-monospace small" id="empMetrics">--</span>
+                            <span id="empDept">--</span>
                         </div>
                     </div>
 
-                    <!-- Spreadsheet Component Breakdown Layout Grid -->
+                    <!-- Payslip details -->
                     <div class="row g-4 mb-4">
                         <!-- Gross Earnings Section -->
                         <div class="col-md-6">
@@ -276,10 +280,10 @@
                             </div>
                         </div>
 
-                        <!-- Statutory Reductions Section -->
+                        <!-- Deductions Section -->
                         <div class="col-md-6">
                             <div class="border rounded-3 overflow-hidden">
-                                <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Statutory Reductions</div>
+                                <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Deductions</div>
                                 <table class="table table-sm table-borderless align-middle mb-0 font-monospace small">
                                     <tbody>
                                         <tr class="border-bottom">
@@ -293,7 +297,7 @@
                                     </tbody>
                                     <tfoot class="table-light border-top">
                                         <tr class="fw-bold">
-                                            <td class="p-2 ps-3 text-dark">Total Deductions Package</td>
+                                            <td class="p-2 ps-3 text-dark">Total Deductions</td>
                                             <td class="p-2 text-end pe-3 text-danger" id="deductTotal">R0.00</td>
                                         </tr>
                                     </tfoot>
@@ -305,8 +309,7 @@
                     <!-- Net Pay Area -->
                     <div class="p-3 border rounded-3 d-flex justify-content-between align-items-center mb-4" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-color: #bbf7d0 !important;">
                         <div>
-                            <strong class="text-success-text fw-bold text-uppercase small d-block">Net Disbursal Remuneration</strong>
-                            <small class="text-muted">Cleared transaction securely authorized into bank gateway</small>
+                            <strong class="text-success fw-bold text-uppercase small d-block">Net Pay</strong>
                         </div>
                         <div class="text-end font-monospace">
                             <h3 class="fw-bold text-success m-0" id="netPayLabel">R0.00</h3>
@@ -316,7 +319,6 @@
                     <!-- Footer -->
                     <div class="row pt-2 text-muted small border-top" style="font-size: 0.72rem;">
                         <div class="col-sm-8">
-                            <p class="mb-1"><i class="bi bi-info-circle me-1"></i> ModernTech Solutions payroll items are processed automatically via client-side code array indexing[cite: 1].</p>
                             <span class="watermark text-success font-monospace"><i class="bi bi-patch-check"></i> Electronically Verified Ledger Signature Record</span>
                         </div>
                         <div class="col-sm-4 text-sm-end d-none d-sm-block mt-2 mt-sm-0">
@@ -332,43 +334,35 @@
         </div>
     </div>
 
-    <!-- Data Array System & Control Script Logic -->
     <script>
-        // Dummy data Arrays
-        // employee_info.jsom
-        const employees = [
-            { employeeId: 1, name: "Sibongile Nkosi", position: "Software Engineer", department: "Development", salary: 70000 },
-            { employeeId: 2, name: "Lungile Moyo", position: "HR Manager", department: "HR", salary: 80000 },
-            { employeeId: 3, name: "Thabo Molefe", position: "Quality Analyst", department: "QA", salary: 55000 },
-            { employeeId: 4, name: "Keshav Naidoo", position: "Sales Representative", department: "Sales", salary: 60000 },
-            { employeeId: 5, name: "Zanele Khumalo", position: "Marketing Specialist", department: "Marketing", salary: 58000 },
-            { employeeId: 6, name: "Sipho Zulu", position: "UI/UX Designer", department: "Design", salary: 65000 },
-            { employeeId: 7, name: "Naledi Moeketsi", position: "DevOps Engineer", department: "IT", salary: 72000 },
-            { employeeId: 8, name: "Farai Gumbo", position: "Content Strategist", department: "Marketing", salary: 56000 },
-            { employeeId: 9, name: "Karabo Dlamini", position: "Accountant", department: "Finance", salary: 62000 },
-            { employeeId: 10, name: "Fatima Patel", position: "Customer Support Lead", department: "Support", salary: 58000 }
-        ];
+        let employees = []
+        let payrollData = []
 
-        // payroll_data.json
-        const payrollData = [
-            { employeeId: 1, hoursWorked: 160, leaveDeductions: 8, finalSalary: 69500 },
-            { employeeId: 2, hoursWorked: 150, leaveDeductions: 10, finalSalary: 79000 },
-            { employeeId: 3, hoursWorked: 170, leaveDeductions: 4, finalSalary: 54800 },
-            { employeeId: 4, hoursWorked: 165, leaveDeductions: 6, finalSalary: 59700 },
-            { employeeId: 5, hoursWorked: 158, leaveDeductions: 5, finalSalary: 57850 },
-            { employeeId: 6, hoursWorked: 168, leaveDeductions: 2, finalSalary: 64800 },
-            { employeeId: 7, hoursWorked: 175, leaveDeductions: 3, finalSalary: 71800 },
-            { employeeId: 8, hoursWorked: 160, leaveDeductions: 0, finalSalary: 56000 },
-            { employeeId: 9, hoursWorked: 155, leaveDeductions: 5, finalSalary: 61500 },
-            { employeeId: 10, hoursWorked: 162, leaveDeductions: 4, finalSalary: 57750 }
-        ];
+       function loadData(){
+        fetch("data/employee_info.json")
+        .then(response => response.json())
+        .then(data => {
+          employees = data.employeeInformation;
 
-        // 1. Initial setup on window load
+          return fetch("data/payroll_data.json")
+        })
+        .then(response => response.json())
+        .then(data => {
+          payrollData = data.payrollData;
+
+          setupDashboard()
+        })
+        .catch(error => {
+          console.log("Error: ", error);
+          
+        })
+       }
+
         function setupDashboard() {
             const dropdown = document.getElementById("payslipEmployeeSelect");
             dropdown.innerHTML = ""; 
 
-            // Load all 10 employees into the select element
+            // Load all listed employees into dropdown
             for (let i = 0; i < employees.length; i++) {
                 const emp = employees[i];
                 const optionEl = document.createElement("option");
@@ -377,53 +371,44 @@
                 dropdown.appendChild(optionEl);
             }
 
-            // Show initial content 
             loadEmployeeData();
         }
 
-        // 2. Fetch dummy data for selected employee and push to boxes
+        // Fetch and push dummy data for selected employee 
         function loadEmployeeData() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
             
-            let currentPayroll = null;
-            for (let j = 0; j < payrollData.length; j++) {
-                if (payrollData[j].employeeId === currentId) {
-                    currentPayroll = payrollData[j];
-                }
-            }
+            const currentPayroll = payrollData.find(
+              payroll => payroll.employeeId === currentId
+            )
 
             if (currentPayroll) {
-                // Hourly rate based on total base pay / hours
-                let estimatedHourly = Math.round(currentPayroll.finalSalary / currentPayroll.hoursWorked);
+                // Hourly rate calculation
+                const estimatedHourly = Math.round(currentPayroll.finalSalary / (currentPayroll.hoursWorked - currentPayroll.leaveDeductions));
                 
-                // Update interactive controller input box numbers[cite: 1]
+                // Update form inputs
                 document.getElementById("customHoursWorked").value = currentPayroll.hoursWorked;
                 document.getElementById("customHourlyRate").value = estimatedHourly;
             }
 
-            // Run calculations to display data on screen layout sheet
             updatePayslipCalculations();
         }
 
-        // 3. Formula math calculation that updates layout live
+        // Calculation that updates gross pay live
         function updatePayslipCalculations() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
             const chosenMonth = document.getElementById("payslipMonthSelect").value;
             
-            // Extract numbers straight from the interactive live form inputs
+            // Take  and use numbers from the employee inputs
             const userHours = parseFloat(document.getElementById("customHoursWorked").value) || 0;
             const userRate = parseFloat(document.getElementById("customHourlyRate").value) || 0;
 
-            let currentEmp = null;
-            for (let i = 0; i < employees.length; i++) {
-                if (employees[i].employeeId === currentId) {
-                    currentEmp = employees[i];
-                }
-            }
+            const currentEmp = employees.find(
+              employee => employee.employeeId === currentId
+            )
 
             if (!currentEmp) return;
 
-            // Compute automated values dynamically based on live variables[cite: 1]
             const computedGross = userHours * userRate;
             const taxPaye = computedGross * 0.15; // 15% flat deduction rate
             const uifDeduct = computedGross * 0.01; // 1% Unemployment Insurance allocation
@@ -433,12 +418,11 @@
             // Currency formatting helper tool
             const formatZA = (amount) => "R" + amount.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // 4. Insert processed results live into UI elements
+            // Update UI
             document.getElementById("slipPeriodLabel").textContent = chosenMonth;
             document.getElementById("empName").textContent = currentEmp.name;
             document.getElementById("empPosition").textContent = "MTech-00" + currentEmp.employeeId + " / " + currentEmp.position;
             document.getElementById("empDept").textContent = currentEmp.department;
-            document.getElementById("empMetrics").textContent = userHours + " hrs processed @ R" + userRate + "/hr";
 
             document.getElementById("earnBasic").textContent = formatZA(computedGross);
             document.getElementById("earnLeave").textContent = "Base target: " + formatZA(currentEmp.salary);
@@ -451,8 +435,7 @@
             document.getElementById("netPayLabel").textContent = formatZA(finalNetPayout);
         }
 
-        // Initialize script trigger routines on viewport opening sequence
-        window.onload = setupDashboard;
+        window.onload = loadData;
     </script>
 </body>
 
