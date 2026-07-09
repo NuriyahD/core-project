@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModernTech Solutions - Secure Payslip Portal</title>
+
+    <!-- UI Component Framework & Font Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --page-bg: #f8f9fa;
+            --panel-bg: #ffffff;
+            --sidebar-start: #e0f2fe;
+            --sidebar-end: #bae6fd;
+            --accent: #0496c7;
+            --accent-dark: #0369a1;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --success-text: #166534;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--page-bg);
+            color: var(--text);
+            margin: 0;
+        }
+
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 60px;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border);
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, var(--sidebar-start) 0%, var(--sidebar-end) 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            padding: 1.5rem;
+            z-index: 100;
+            overflow-y: auto;
+            border-right: 1px solid #bae6fd;
+            padding-top: 5.5rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-dark);
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.7);
+            color: var(--accent-dark);
+        }
+
+        .sidebar-divider {
+            border-top: 1px solid rgba(3, 105, 161, 0.2);
+            margin: 1.5rem 0;
+        }
+
+        .sub-menu-title {
+            color: var(--accent-dark);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding-left: 15px;
+            margin-bottom: 5px;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            padding-top: 5.5rem;
+        }
+
+        .payslip-container {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .watermark {
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        #slip{
+          margin-top: 30px;
+        }
+
+        #earnTotal, #deductTotal{
+          font-size: large;
+        }
+
+        @media print {
+            body { background: #fff; color: #000; }
+            .top-navbar, .sidebar, .no-print { display: none !important; }
+            .main-content { margin-left: 0 !important; padding: 0 !important; }
+            .payslip-container { border: none !important; box-shadow: none !important; padding: 0 !important; }
+        }
+
+        @media (max-width: 991px) {
+            .top-navbar { position: sticky; top: 0; }
+            .sidebar { width: 100%; min-height: auto; position: relative; padding-top: 1.5rem; border-right: none; border-bottom: 1px solid #93c5fd; }
+            .main-content { margin-left: 0; padding: 1rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top NavBar -->
+    <header class="top-navbar">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2">
+                <div class="bg-light p-2 rounded text-primary">
+                    <i class="bi bi-wallet2 text-accent fs-5"></i>
+                </div>
+                <div>
+                    <h5 class="text-dark fw-bold m-0 fs-6">ModernTech Hub</h5>
+                    <small class="text-muted small">Enterprise Payroll</small>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted small d-none d-md-inline-block"><i class="bi bi-shield-lock text-success me-1"></i> Interactive Adjustments Panel</span>
+            <button class="btn btn-light btn-sm rounded-circle"><i class="bi bi-person-circle fs-5 text-secondary"></i></button>
+        </div>
+    </header>
+
+    <div>
+        <!-- Sidbar -->
+        <aside class="sidebar">
+            <nav>
+                <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
+                <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
+                <a href="Attendance.html" class="menu-item"><i class="bi bi-person-check"></i> Attendance</a>
+                <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
+                <a href="payslip.html" class="menu-item active"><i class="bi bi-wallet2"></i> Payroll</a>
+                <a href="about.html" class="menu-item"><i class="bi bi-info-circle"></i> About Us</a>
+                <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
+            </nav>
+            <hr class="sidebar-divider">
+            <div class="sub-menu-title">Management Logs</div>
+            <nav>
+                <a href="timesheet.html" class="menu-item">Time Sheet</a>
+                <a href="timetracker.html" class="menu-item">Time Tracker</a>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <div class="container-fluid py-2">
+                
+                <!-- Employee Input Row (Hidden during printing) -->
+                <div>
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label small fw-bold text-secondary">Choose Employee</label>
+                            <select class="form-select" id="payslipEmployeeSelect" onchange="loadEmployeeData()">
+                            </select>
+                        </div>
+
+                        <div class="col-6 col-md-2">
+                            <label class="form-label small fw-bold text-secondary">Select Month</label>
+                            <select class="form-select" id="payslipMonthSelect" onchange="updatePayslipCalculations()">
+                                <option value="July 2026" selected>July 2026 (Current)</option>
+                                <option value="June 2026">June 2026 (Previous)</option>
+                                <option value="May 2026">May 2026</option>
+                                <option value="April 2026">April 2026</option>
+                            </select>
+                        </div>
+
+                        <div class="col-6 col-md-2">
+                            <label class="form-label small fw-bold text-secondary">Hourly Rate (ZAR)</label>
+                            <input type="number" class="form-control" id="customHourlyRate" value="400" oninput="updatePayslipCalculations()">
+                        </div>
+
+                        <div class="col-6 col-md-2">
+                            <label class="form-label small fw-bold text-secondary">Hours Worked</label>
+                            <input type="number" class="form-control" id="customHoursWorked" value="160" oninput="updatePayslipCalculations()">
+                        </div>
+
+                        <div class="col-6 col-md-3 text-end">
+                            <button class="btn btn-primary w-100 shadow-sm" style="background-color: var(--accent-dark); border: none;" onclick="window.print()">
+                                <i class="bi bi-printer me-1"></i> Save as PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Printed payslip outline -->
+                <div id="slip" class="payslip-container mx-auto" style="max-width: 850px;">
+                    
+                    <!-- Payslip Header -->
+                    <div class="row align-items-center border-bottom pb-4 mb-4">
+                        <div class="col-sm-6">
+                            <h4 class="fw-bold text-dark mb-0" style="letter-spacing: 0.5px;">ModernTech Solutions</h4>
+                            <small class="text-secondary d-block">Reg No: 2010/084251/07</small>
+                        </div>
+
+                        <div class="col-sm-6 text-sm-end mt-3 mt-sm-0">
+                            <div>
+                                <strong class="text-dark text-uppercase" id="slipPeriodLabel">July 2026</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employee specification details -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block text-uppercase small">Employee Name</small>
+                            <strong class="text-dark d-block" id="empName">--</strong>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block text-uppercase small">Staff ID / Position</small>
+                            <span class="text-dark d-block" id="empPosition">--</span>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <small class="text-muted d-block text-uppercase small">Department</small>
+                            <span id="empDept">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Payslip details -->
+                    <div class="row g-4 mb-4">
+                        <!-- Gross Earnings Section -->
+                        <div class="col-md-6">
+                            <div class="border rounded-3 overflow-hidden">
+                                <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Gross Earnings</div>
+                                <table class="table table-sm table-borderless align-middle mb-0 font-monospace small">
+                                    <tbody>
+                                        <tr class="border-bottom">
+                                            <td class="p-2 ps-3">Calculated Base Earnings</td>
+                                            <td class="p-2 text-end pe-3 text-dark" id="earnBasic">R0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2 ps-3 text-muted">Base Earnings Allowance</td>
+                                            <td class="p-2 text-end pe-3 text-muted" id="earnLeave">--</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot class="table-light border-top">
+                                        <tr class="fw-bold">
+                                            <td class="p-2 ps-3 text-dark">Total Gross Salary</td>
+                                            <td class="p-2 text-end pe-3 text-dark" id="earnTotal">R0.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Deductions Section -->
+                        <div class="col-md-6">
+                            <div class="border rounded-3 overflow-hidden">
+                                <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Deductions</div>
+                                <table class="table table-sm table-borderless align-middle mb-0 font-monospace small">
+                                    <tbody>
+                                        <tr class="border-bottom">
+                                            <td class="p-2 ps-3">SARS PAYE Income Tax (15%)</td>
+                                            <td class="p-2 text-end pe-3 text-danger" id="deductPaye">R0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2 ps-3">UIF Unemployment Insurance (1%)</td>
+                                            <td class="p-2 text-end pe-3 text-danger" id="deductUif">R0.00</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot class="table-light border-top">
+                                        <tr class="fw-bold">
+                                            <td class="p-2 ps-3 text-dark">Total Deductions</td>
+                                            <td class="p-2 text-end pe-3 text-danger" id="deductTotal">R0.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Net Pay Area -->
+                    <div class="p-3 border rounded-3 d-flex justify-content-between align-items-center mb-4" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-color: #bbf7d0 !important;">
+                        <div>
+                            <strong class="text-success fw-bold text-uppercase small d-block">Net Pay</strong>
+                        </div>
+                        <div class="text-end font-monospace">
+                            <h3 class="fw-bold text-success m-0" id="netPayLabel">R0.00</h3>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="row pt-2 text-muted small border-top" style="font-size: 0.72rem;">
+                        <div class="col-sm-8">
+                            <span class="watermark text-success font-monospace"><i class="bi bi-patch-check"></i> Electronically Verified Ledger Signature Record</span>
+                        </div>
+                        <div class="col-sm-4 text-sm-end d-none d-sm-block mt-2 mt-sm-0">
+                            <span class="d-block font-monospace text-secondary">Authorized Signature</span>
+                            <div class="border-bottom mx-auto ms-sm-auto me-sm-0 my-1" style="width: 120px; border-style: dashed !important;"></div>
+                            <small class="text-muted opacity-75">Corporate HR Office</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let employees = []
+        let payrollData = []
+
+       function loadData(){
+        fetch("data/employee_info.json")
+        .then(response => response.json())
+        .then(data => {
+          employees = data.employeeInformation;
+
+          return fetch("data/payroll_data.json")
+        })
+        .then(response => response.json())
+        .then(data => {
+          payrollData = data.payrollData;
+
+          setupDashboard()
+        })
+        .catch(error => {
+          console.log("Error: ", error);
+          
+        })
+       }
+
+        function setupDashboard() {
+            const dropdown = document.getElementById("payslipEmployeeSelect");
+            dropdown.innerHTML = ""; 
+
+            // Load all listed employees into dropdown
+            for (let i = 0; i < employees.length; i++) {
+                const emp = employees[i];
+                const optionEl = document.createElement("option");
+                optionEl.value = emp.employeeId;
+                optionEl.textContent = emp.name;
+                dropdown.appendChild(optionEl);
+            }
+
+            loadEmployeeData();
+        }
+
+        // Fetch and push dummy data for selected employee 
+        function loadEmployeeData() {
+            const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
+            
+            const currentPayroll = payrollData.find(
+              payroll => payroll.employeeId === currentId
+            )
+
+            if (currentPayroll) {
+                // Hourly rate calculation
+                const estimatedHourly = Math.round(currentPayroll.finalSalary / (currentPayroll.hoursWorked - currentPayroll.leaveDeductions));
+                
+                // Update form inputs
+                document.getElementById("customHoursWorked").value = currentPayroll.hoursWorked;
+                document.getElementById("customHourlyRate").value = estimatedHourly;
+            }
+
+            updatePayslipCalculations();
+        }
+
+        // Calculation that updates gross pay live
+        function updatePayslipCalculations() {
+            const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
+            const chosenMonth = document.getElementById("payslipMonthSelect").value;
+            
+            // Take  and use numbers from the employee inputs
+            const userHours = parseFloat(document.getElementById("customHoursWorked").value) || 0;
+            const userRate = parseFloat(document.getElementById("customHourlyRate").value) || 0;
+
+            const currentEmp = employees.find(
+              employee => employee.employeeId === currentId
+            )
+
+            if (!currentEmp) return;
+
+            const computedGross = userHours * userRate;
+            const taxPaye = computedGross * 0.15; // 15% flat deduction rate
+            const uifDeduct = computedGross * 0.01; // 1% Unemployment Insurance allocation
+            const totalDeductions = taxPaye + uifDeduct;
+            const finalNetPayout = computedGross - totalDeductions;
+
+            // Currency formatting helper tool
+            const formatZA = (amount) => "R" + amount.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Update UI
+            document.getElementById("slipPeriodLabel").textContent = chosenMonth;
+            document.getElementById("empName").textContent = currentEmp.name;
+            document.getElementById("empPosition").textContent = "MTech-00" + currentEmp.employeeId + " / " + currentEmp.position;
+            document.getElementById("empDept").textContent = currentEmp.department;
+
+            document.getElementById("earnBasic").textContent = formatZA(computedGross);
+            document.getElementById("earnLeave").textContent = "Base target: " + formatZA(currentEmp.salary);
+            document.getElementById("earnTotal").textContent = formatZA(computedGross);
+
+            document.getElementById("deductPaye").textContent = formatZA(taxPaye);
+            document.getElementById("deductUif").textContent = formatZA(uifDeduct);
+            document.getElementById("deductTotal").textContent = formatZA(totalDeductions);
+
+            document.getElementById("netPayLabel").textContent = formatZA(finalNetPayout);
+        }
+
+        window.onload = loadData;
+    </script>
+</body>
+
+</html>
