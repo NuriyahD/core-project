@@ -208,11 +208,9 @@
                 <a href="employees.html" class="menu-item active"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
                 <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
-                <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
                 <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
-                <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
-                <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
+                <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
 
             <hr class="sidebar-divider">
@@ -229,7 +227,7 @@
  <main class="main-content">
     <div class="container-fluid">
 
-        <!-- Header Section -->
+        <!-- Page header -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
             <div>
                 <span class="text-uppercase small fw-bold text-success text-opacity-75">Employees</span>
@@ -242,7 +240,7 @@
             </div>
         </div>
 
-        <!-- Stats Cards Row -->
+        <!-- Stats cards -->
         <div class="row g-3 mb-4">
             <div class="col-6 col-xl-3">
                 <div class="stat-card border-info d-flex justify-content-between align-items-center">
@@ -311,7 +309,7 @@
     </div>
 </main>
 
-<!-- Add Employee Modal Popup -->
+<!-- Add employee modal -->
 <div class="modal fade" id="addStaffModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -320,7 +318,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p class="text-muted small">This is a frontend demonstration screen.</p>
+                <p class="text-muted small">Add</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -332,86 +330,101 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Wait until the HTML page is completely loaded before running the script
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
+    const tableBody = document.getElementById("employeeTableBody");
+    const totalStaff = document.getElementById("totalStaffCount");
+    const activeStaff = document.getElementById("activeStaffCount");
+    const leaveStaff = document.getElementById("leaveStaffCount");
+    const pendingStaff = document.getElementById("pendingStaffCount");
+
+    if (!tableBody) return;
+
+    // Fetch employee data
+    fetch("./Employee_info.json")
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error("Failed to load Employee_info.json");
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            console.log("JSON Loaded:", data);
+
+            // Handle standard array layout
+            let employees = [];
+            if (Array.isArray(data)) {
+                employees = data;
+            } else if (data.employeeInformation) {
+                employees = data.employeeInformation;
+            } else if (data.employees) {
+                employees = data.employees;
+            } else {
+                throw new Error("Employee array structure not found in JSON.");
+            }
+
+            displayEmployees(employees);
+        })
+        .catch(function(error) {
+            console.error(error);
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center text-danger py-4">
+                        Failed to load employee data. Please verify your file setup.
+                    </td>
+                </tr>
+            `;
+            if (totalStaff) totalStaff.textContent = "0";
+            if (activeStaff) activeStaff.textContent = "0";
+            if (leaveStaff) leaveStaff.textContent = "0";
+            if (pendingStaff) pendingStaff.textContent = "0";
+        });
+
+    function displayEmployees(employees) {
+        tableBody.innerHTML = "";
+
+        employees.forEach(function(emp) {
+
+            // catch differences in JSON keys
+            const employeeId = emp.employeeId ?? emp.id ?? "-";
+            const name = emp.name ?? emp.fullName ?? "-";
+            const position = emp.position ?? emp.role ?? "-";
+            const department = emp.department ?? "-";
+            const salary = Number(emp.salary ?? emp.salaryAmount ?? 0).toLocaleString('en-ZA');
+            const contact = emp.contact ?? emp.email ?? "-";
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td class="fw-bold text-primary">${employeeId}</td>
+                <td class="text-dark fw-semibold">${name}</td>
+                <td><span class="badge bg-light text-dark border px-2 py-1">${position}</span></td>
+                <td class="text-secondary">${department}</td>
+                <td class="text-dark fw-bold">R ${salary}</td>
+                <td class="text-muted small">${contact}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        if (totalStaff) totalStaff.textContent = employees.length;
         
-        const tableBody = document.getElementById("employeeTableBody");
-        if (!tableBody) return; // Stop if the table doesn't exist on the page
-
-        // Step 1: Try to load data from an external JSON file
-        fetch("employmentinfo.json")
-            .then(function(response) {
-                if (!response.ok) {
-                    throw new Error("Could not read JSON file.");
-                }
-                return response.json();
-            })
-            .then(function(data) {
-                // If data format has a parent object, use it; otherwise use the direct array
-                let employees = data.employeeInformation || data;
-                renderTable(employees);
-            })
-            .catch(function(error) {
-                // Step 2: Fallback to backup data if the JSON file fails to load
-                console.warn("JSON file not found. Loading backup list instead.", error.message);
-
-                const backupData = [
-                    { "employeeId": 1, "name": "Sibongile Nkosi", "position": "Software Engineer", "department": "Development", "salary": 70000, "contact": "sibongile.nkosi@moderntech.com" },
-                    { "employeeId": 2, "name": "Lungile Moyo", "position": "HR Manager", "department": "HR", "salary": 80000, "contact": "lungile.moyo@moderntech.com" },
-                    { "employeeId": 3, "name": "Thabo Molefe", "position": "Quality Analyst", "department": "QA", "salary": 55000, "contact": "thabo.molefe@moderntech.com" },
-                    { "employeeId": 4, "name": "Keshav Naidoo", "position": "Sales Representative", "department": "Sales", "salary": 60000, "contact": "keshav.naidoo@moderntech.com" },
-                    { "employeeId": 5, "name": "Zanele Khumalo", "position": "Marketing Specialist", "department": "Marketing", "salary": 58000, "contact": "zanele.khumalo@moderntech.com" },
-                    { "employeeId": 6, "name": "Sipho Zulu", "position": "UI/UX Designer", "department": "Design", "salary": 65000, "contact": "sipho.zulu@moderntech.com" },
-                    { "employeeId": 7, "name": "Naledi Moeketsi", "position": "DevOps Engineer", "department": "IT", "salary": 72000, "contact": "naledi.moeketsi@moderntech.com" },
-                    { "employeeId": 8, "name": "Farai Gumbo", "position": "Content Strategist", "department": "Marketing", "salary": 56000, "contact": "farai.gumbo@moderntech.com" },
-                    { "employeeId": 9, "name": "Karabo Dlamini", "position": "Accountant", "department": "Finance", "salary": 62000, "contact": "karabo.dlamini@moderntech.com" },
-                    { "employeeId": 10, "name": "Fatima Patel", "position": "Customer Support Lead", "department": "Support", "salary": 58000, "contact": "fatima.patel@moderntech.com" }
-                ];
-                
-                renderTable(backupData);
-            });
-
-        // Function to build the table items and update total metrics
-        function renderTable(employeeArray) {
-            // Clear the "Loading..." row from the table container
-            tableBody.innerHTML = "";
-
-            // Loop through each item in our data array
-            employeeArray.forEach(function(emp) {
-                const row = document.createElement("tr");
-                
-                // Construct table rows using standard JavaScript string templates
-                row.innerHTML = `
-                    <td class="fw-bold text-primary">${emp.employeeId}</td>
-                    <td class="text-dark fw-semibold">${emp.name}</td>
-                    <td><span class="badge bg-light text-dark border px-2 py-1">${emp.position}</span></td>
-                    <td class="text-secondary">${emp.department}</td>
-                    <td class="text-dark fw-bold">R ${emp.salary.toLocaleString('en-ZA')}</td>
-                    <td class="text-muted small">${emp.contact}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-
-            // Calculate metrics totals
-            const total = employeeArray.length;
-            
-            const active = employeeArray.filter(function(e) {
-                return (e.status || "active") === "active";
+        if (activeStaff) {
+            activeStaff.textContent = employees.filter(function(e) {
+                return (e.status || "").toLowerCase() === "active";
             }).length;
-
-            const onLeave = employeeArray.filter(function(e) {
-                return e.status === "leave";
-            }).length;
-
-            const pending = employeeArray.filter(function(e) {
-                return e.status === "pending";
-            }).length;
-
-            // Push numbers up to the counter card targets on the page if elements exist
-            if (document.getElementById("totalStaffCount"))   document.getElementById("totalStaffCount").innerText = total;
-            if (document.getElementById("activeStaffCount"))  document.getElementById("activeStaffCount").innerText = active;
-            if (document.getElementById("leaveStaffCount"))   document.getElementById("leaveStaffCount").innerText = onLeave;
-            if (document.getElementById("pendingStaffCount")) document.getElementById("pendingStaffCount").innerText = pending;
         }
-    });
+
+        if (leaveStaff) {
+            leaveStaff.textContent = employees.filter(function(e) {
+                const currentStatus = (e.status || "").toLowerCase();
+                return ["leave", "on leave", "vacation"].includes(currentStatus);
+            }).length;
+        }
+
+        if (pendingStaff) {
+            pendingStaff.textContent = employees.filter(function(e) {
+                const currentStatus = (e.status || "").toLowerCase();
+                return ["pending", "awaiting"].includes(currentStatus);
+            }).length;
+        }
+    }
+});
 </script>

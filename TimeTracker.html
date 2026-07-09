@@ -8,7 +8,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -23,11 +22,12 @@
             --border: #e5e7eb;
         }
 
-         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background-color: var(--page-bg);
-            color: var(--text);
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            color: #222;
             margin: 0;
+            padding: 0;
         }
 
         .top-navbar {
@@ -58,30 +58,6 @@
             overflow-y: auto;
             border-right: 1px solid #bae6fd;
             padding-top: 5.5rem;
-        }
-
-        .sidebar-brand {
-            white-space: nowrap;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar-brand .brand-icon {
-            width: 40px;
-            height: 40px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.6);
-            border-radius: 8px;
-        }
-
-        .sidebar-brand .brand-icon svg {
-            width: 22px;
-            height: 22px;
         }
 
         .menu-item {
@@ -124,18 +100,6 @@
             padding-top: 5.5rem;
         }
 
-        .text-accent {
-            color: var(--accent) !important;
-        }
-
-        .stat-card {
-            background: var(--panel-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            border-left: 5px solid;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
         @media (max-width: 991px) {
             .top-navbar {
                 position: sticky;
@@ -169,182 +133,111 @@
                 padding: 1rem;
             }
         }
-        
     </style>
 </head>
 
+<body>
+
 <div class="dashboard-container">
-        <aside class="sidebar">
-            <nav class="sidebar-menu main-menu">
-                <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
-                <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
-                <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendence</a>
-                <a href="timetracker.html" class="menu-item active"><i class="bi bi-clock-history"></i> Time Tracker</a>
-                <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
-                <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
-                <a href="#" class="menu-item"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
-                <a href="Settings.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
-            </nav>
+    <aside class="sidebar">
+        <nav class="sidebar-menu main-menu">
+            <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
+            <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
+            <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
+            <a href="Attendence.html" class="menu-item"><i class="bi bi-calendar-check"></i> Attendance</a>
+            <a href="timetracker.html" class="menu-item active"><i class="bi bi-clock-history"></i> Time Tracker</a>
+            <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
+            <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
+            <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
+        </nav>
 
-            <hr class="sidebar-divider">
+        <hr class="sidebar-divider">
 
-            <div class="sub-menu-title">Management Logs</div>
-            <nav class="sidebar-menu sub-menu">
-                <a href="timesheet.html" class="menu-item">Time Sheet</a>
-                <a href="timetracker.html" class="menu-item active">Time Tracker</a>
-                <a href="scheduling.html" class="menu-item">Scheduling</a>
-                <a href="reviewcycle.html" class="menu-item">Review Cycle</a>
-            </nav>
-        </aside>
+        <div class="sub-menu-title">Management Logs</div>
+        <nav class="sidebar-menu sub-menu">
+            <a href="timesheet.html" class="menu-item">Time Sheet</a>
+            <a href="timetracker.html" class="menu-item active">Time Tracker</a>
+            <a href="scheduling.html" class="menu-item">Scheduling</a>
+            <a href="reviewcycle.html" class="menu-item">Review Cycle</a>
+        </nav>
+    </aside>
 
-<div class="main-content">
-    <div class="container-fluid py-4">
+    <div class="main-content">
+        <div class="container-fluid py-4">
 
-        <div class="mb-4">
-            <span class="text-uppercase tracking-wider small fw-bold text-primary">Employee Tracker</span>
-            <h1 class="fw-bold h2 text-dark mb-0">Task &amp; Project Time Tracker</h1>
-        </div>
-
-        <div class="card border p-4 mb-4 shadow-sm bg-white">
-            <div class="row align-items-center g-3">
-                <div class="col-lg-5">
-                    <input type="text" id="taskExecutionInput" class="form-control form-control-lg border-opacity-50 fs-6" placeholder="What are you executing now?" aria-label="Task description">
-                </div>
-                <div class="col-md-4 col-lg-3">
-                    <select id="departmentSelect" class="form-select form-select-lg border-opacity-50 fs-6" aria-label="Department">
-                        <option value="" selected disabled>Select Department</option>
-                        <option>Marketing</option>
-                        <option>Development</option>
-                        <option>HR</option>
-                        <option>QA</option>
-                        <option>Sales</option>
-                        <option>Design</option>
-                        <option>IT</option>
-                        <option>Finance</option>
-                        <option>Support</option>
-                    </select>
-                </div>
-                <div class="col-md-8 col-lg-4 d-flex align-items-center justify-content-between justify-content-lg-end gap-4">
-                    <div class="d-flex align-items-center gap-2">
-                        <button class="btn btn-sm btn-danger rounded px-2" id="resetTimerBtn" title="Reset Counter and Logs">Reset All</button>
-                        <span class="fs-3 fw-bold text-dark font-monospace" id="liveTimerDisplay">00:00:00</span>
-                    </div>
-                    <button class="btn btn-primary btn-lg px-4 fs-6 rounded-pill" id="actionTimerBtn">Start Tracker</button>
-                </div>
+            <div class="mb-4">
+                <span class="text-uppercase small fw-bold text-primary">Employee Tracker</span>
+                <h1 class="fw-bold h2 text-dark mb-0">Task &amp; Project Time Tracker</h1>
             </div>
-        </div>
 
-        <!-- Management & HR Advisory Action Toolkit -->
-        <div class="row g-3 mb-4">
-            <div class="col-12 col-xl-4">
-                <div class="card p-3 h-100 border-start border-warning border-3 shadow-sm bg-white">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-chat-left-dots-fill text-warning fs-5"></i>
-                        <h6 class="fw-bold text-dark mb-0">Meeting Templates</h6>
+            <!-- Timer Bar Container -->
+            <div class="card border p-4 mb-4 shadow-sm bg-white">
+                <div class="row align-items-center g-3">
+                    <div class="col-lg-5">
+                        <input type="text" id="taskExecutionInput" class="form-control form-control-lg fs-6" placeholder="What are you executing now?">
                     </div>
-                    <p class="text-muted small mb-3">Standardized frameworks for general alignments, regular check-ins, or dispute mediation.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-light border text-dark" onclick="populateTemplate('Performance Review Consultation Call')">Performance Review</button>
-                        <button class="btn btn-sm btn-light border text-dark" onclick="populateTemplate('Disciplinary Briefing Alignment Session')">Internal Grievance</button>
+                    <div class="col-md-4 col-lg-3">
+                        <select id="departmentSelect" class="form-select form-select-lg fs-6">
+                            <option value="" selected disabled>Select Department</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Development">Development</option>
+                            <option value="HR">HR</option>
+                            <option value="QA">QA</option>
+                            <option value="Sales">Sales</option>
+                            <option value="Design">Design</option>
+                            <option value="IT">IT</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Support">Support</option>
+                        </select>
+                    </div>
+                    <div class="col-md-8 col-lg-4 d-flex align-items-center justify-content-end gap-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-danger rounded px-2" id="resetTimerBtn">Reset All</button>
+                            <span class="fs-3 fw-bold text-dark font-monospace" id="liveTimerDisplay">00:00:00</span>
+                        </div>
+                        <button class="btn btn-primary btn-lg px-4 fs-6 rounded-pill" id="actionTimerBtn">Start Tracker</button>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-xl-4">
-                <div class="card p-3 h-100 border-start border-danger border-3 shadow-sm bg-white">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-exclamation-triangle-fill text-danger fs-5"></i>
-                        <h6 class="fw-bold text-dark mb-0">Warning Protocols</h6>
-                    </div>
-                    <p class="text-muted small mb-3">Official structural frameworks for issuing verbal, written, or escalated internal alerts.</p>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button class="btn btn-sm btn-light border text-danger fw-medium" onclick="populateTemplate('[VERBAL WARNING] Attendance Infraction Notice')">Verbal Alert</button>
-                        <button class="btn btn-sm btn-light border text-danger fw-medium" onclick="populateTemplate('[WRITTEN WARNING] Non-Compliance Escalation Notice')">Written Action</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-xl-4">
-                <div class="card p-3 h-100 border-start border-info border-3 shadow-sm bg-white">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-file-earmark-text-fill text-info fs-5"></i>
-                        <h6 class="fw-bold text-dark mb-0">Compliance Aids</h6>
-                    </div>
-                    <p class="text-muted small mb-2">Reference regulatory legal parameters and internal company protocols directly.</p>
-                    <ul class="list-unstyled mb-0 small text-secondary">
-                        <li><i class="bi bi-dot text-info"></i> Standard Labor Relations Act Rules</li>
-                        <li><i class="bi bi-dot text-info"></i> ModernTech Performance Metrics</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
 
-        <!-- HR Case Incident Logger Section -->
-        <div class="card p-4 mb-4 bg-light border border-opacity-75 shadow-sm">
-            <div class="d-flex align-items-center gap-2 mb-3">
-                <i class="bi bi-folder-plus text-primary fs-4"></i>
-                <div>
-                    <h5 class="fw-bold text-dark mb-0">Direct Case &amp; Incident Logging</h5>
-                    <p class="text-muted small mb-0">Use this to log formal warnings, performance meetings, and administrative metrics directly to logs.</p>
-                </div>
-            </div>
-            <form id="hrIncidentForm" onsubmit="handleIncidentSubmit(event)">
+            <!-- Employee Warning Tool (Updated with Employee Name input) -->
+            <div class="card border p-4 mb-4 shadow-sm bg-white">
+                <h6 class="fw-bold text-danger mb-3"><i class="bi bi-exclamation-triangle-fill"></i> Issue Employee Alert / Warning</h6>
                 <div class="row g-3">
-                    <div class="col-md-5">
-                        <input type="text" id="incidentTitleInput" class="form-control" placeholder="Case Ref / Incident Title (e.g. Warning, Review Meeting)" required>
+                    <div class="col-md-3">
+                        <input type="text" id="warningEmployeeName" class="form-control" placeholder="Employee Name (e.g., John Doe)">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="warningNotes" class="form-control" placeholder="Reason for warning (e.g., Late for shift)...">
                     </div>
                     <div class="col-md-3">
-                        <select id="incidentTypeSelect" class="form-select" required>
-                            <option value="" selected disabled>Select Log Metric Category</option>
-                            <option value="HR Meeting">HR Meeting</option>
-                            <option value="Verbal Warning">Verbal Warning</option>
-                            <option value="Written Warning">Written Warning</option>
-                            <option value="Performance Assessment">Performance Assessment</option>
-                            <option value="Disciplinary Dispute">Disciplinary Dispute</option>
+                        <select id="warningType" class="form-select">
+                            <option value="[VERBAL WARNING]">Verbal Warning</option>
+                            <option value="[WRITTEN WARNING]">Written Warning</option>
+                            <option value="[FINAL ALERT]">Final Warning Notice</option>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <input type="text" id="incidentDurationInput" class="form-control font-monospace" placeholder="01:00:00 (Duration)" value="01:00:00" required>
+                        <button type="button" class="btn btn-danger w-100" id="submitWarningBtn">Log Warning</button>
                     </div>
-                    <div class="col-md-2">
-                        <button type="submit" class="btn btn-dark w-100 text-nowrap"><i class="bi bi-shield-plus me-1"></i> Commit Case</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <!-- Operation Logs View -->
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
-            <div class="d-flex align-items-center gap-3">
-                <h5 class="fw-bold text-dark mb-0">Today's Operation Logs</h5>
-                <div class="btn-group btn-group-sm border rounded bg-white p-1" role="group">
-                    <button type="button" class="btn btn-light btn-sm fw-medium active" id="filterAllBtn" onclick="filterLogs('all')">All Logs</button>
-                    <button type="button" class="btn btn-light btn-sm text-secondary" id="filterOpsBtn" onclick="filterLogs('ops')">Operational Logs</button>
-                    <button type="button" class="btn btn-light btn-sm text-danger" id="filterIncidentsBtn" onclick="filterLogs('incidents')">Incidents &amp; Cases</button>
                 </div>
             </div>
-            <span class="text-muted small">Session Accumulated: <strong class="text-dark" id="accumulatedTotalDisplay">00:00:00</strong></span>
-        </div>
 
-        <div class="d-flex flex-column gap-2" id="logHistoryStack"></div>
+            <!-- Operation Logs View -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark mb-0">Today's Operation Logs</h5>
+                <span class="text-muted small">Session Accumulated: <strong class="text-dark" id="accumulatedTotalDisplay">00:00:00</strong></span>
+            </div>
 
-    </div>
-</div>
+            <div id="logHistoryStack">
+            </div>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-    <div id="appToast" class="toast align-items-center text-white bg-dark border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body" id="appToastBody">Saved.</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    const STORAGE_KEY_LOGS = "modernTechTimeTrackerLogs";
-    const STORAGE_KEY_TOTAL = "modernTechTimeTrackerTotal";
-
+    // Variables for holding data
     let isTimerRunning = false;
     let timerId = null;
 
@@ -352,10 +245,18 @@
     let totalMinutes = 0;
     let totalHours = 0;
 
-    let sessionTotalSeconds = 0;
-    let loggedEntries = [];
-    let currentFilter = 'all';
+    let sessionTotalSeconds = 8100; // Starting default time (2 hours 15 mins)
+    let loggedEntries = [
+        {
+            task: "Enterprise Architecture Review",
+            dept: "Development",
+            timeRange: "09:15 - 11:30",
+            duration: "02:15:00",
+            isWarning: false
+        }
+    ];
 
+    // Getting HTML elements
     const actionButton = document.getElementById('actionTimerBtn');
     const displayScreen = document.getElementById('liveTimerDisplay');
     const resetButton = document.getElementById('resetTimerBtn');
@@ -363,20 +264,22 @@
     const deptSelect = document.getElementById('departmentSelect');
     const logHistoryStack = document.getElementById('logHistoryStack');
     const accumulatedTotalDisplay = document.getElementById('accumulatedTotalDisplay');
+    
+    // Warning UI elements
+    const warningEmployeeName = document.getElementById('warningEmployeeName');
+    const warningNotes = document.getElementById('warningNotes');
+    const warningType = document.getElementById('warningType');
+    const submitWarningBtn = document.getElementById('submitWarningBtn');
 
-    function showToast(message, isError = false) {
-        const toastEl = document.getElementById("appToast");
-        const toastBody = document.getElementById("appToastBody");
-        toastBody.textContent = message;
-        toastEl.classList.toggle("bg-dark", !isError);
-        toastEl.classList.toggle("bg-danger", isError);
-        new bootstrap.Toast(toastEl, { delay: 3000 }).show();
-    }
-
+    // Simple number formatting helper
     function formatDigits(h, m, s) {
-        return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+        let hStr = h < 10 ? "0" + h : h;
+        let mStr = m < 10 ? "0" + m : m;
+        let sStr = s < 10 ? "0" + s : s;
+        return hStr + ":" + mStr + ":" + sStr;
     }
 
+    // Refresh the total session score display
     function updateAccumulatedDisplay() {
         let h = Math.floor(sessionTotalSeconds / 3600);
         let m = Math.floor((sessionTotalSeconds % 3600) / 60);
@@ -384,147 +287,86 @@
         accumulatedTotalDisplay.textContent = formatDigits(h, m, s);
     }
 
-    function populateTemplate(templateText) {
-        if(taskInput) {
-            taskInput.value = templateText;
-            if(deptSelect) deptSelect.value = "HR";
-            showToast("Template imported to input fields.");
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+    // UI Loop to show items in list
+    function renderAllLogs() {
+        logHistoryStack.innerHTML = ""; // Clear existing first
+
+        if (loggedEntries.length === 0) {
+            logHistoryStack.innerHTML = '<div class="text-center p-4 text-muted small border rounded bg-white">No ledger tracking entries found.</div>';
+            return;
+        }
+
+        for (let i = 0; i < loggedEntries.length; i++) {
+            let entry = loggedEntries[i];
+            
+            // Default border and style colors
+            let sideBarColor = "#0284c7";
+            let rowBackground = "bg-white";
+            let warningBadge = "";
+
+            // Change colors if entry is a marked warning template card
+            if (entry.isWarning === true) {
+                sideBarColor = "#dc3545";
+                rowBackground = "bg-danger-subtle";
+                warningBadge = '<span class="badge bg-danger text-white ms-2">HR Incident Flag</span>';
+            }
+
+            // row string
+            let logHtml = '<div class="card p-3 d-flex flex-row justify-content-between align-items-center border shadow-sm rounded mb-2 ' + rowBackground + '">' +
+                '<div class="d-flex align-items-center gap-3">' +
+                    '<div style="width: 4px; height: 35px; background: ' + sideBarColor + '; border-radius: 4px;"></div>' +
+                    '<div>' +
+                        '<div class="fw-bold text-dark">' + entry.task + warningBadge + '</div>' +
+                        '<span class="badge bg-light text-secondary border mt-1">' + entry.dept + '</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="d-flex align-items-center gap-4 text-end ms-auto">' +
+                    '<span class="text-muted small">' + entry.timeRange + '</span>' +
+                    '<span class="fw-bold text-dark font-monospace">' + entry.duration + '</span>' +
+                '</div>' +
+            '</div>';
+
+            logHistoryStack.innerHTML += logHtml;
         }
     }
 
-    function handleIncidentSubmit(e) {
-        e.preventDefault();
-        const title = document.getElementById("incidentTitleInput").value.trim();
-        const type = document.getElementById("incidentTypeSelect").value;
-        const durationStr = document.getElementById("incidentDurationInput").value.trim();
-
-        const parts = durationStr.split(":");
-        let addedSeconds = 3600; 
-        if(parts.length === 3) {
-            addedSeconds = (parseInt(parts[0], 10) * 3600) + (parseInt(parts[1], 10) * 60) + parseInt(parts[2], 10);
+    // Warning Submission Event Listener
+    submitWarningBtn.addEventListener('click', function() {
+        let nameText = warningEmployeeName.value;
+        let notesText = warningNotes.value;
+        
+        if (nameText === "") {
+            alert("Please type the employee's name first!");
+            return;
+        }
+        if (notesText === "") {
+            alert("Please type a reason for the warning first!");
+            return;
         }
 
-        const now = new Date();
-        const endStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        now.setSeconds(now.getSeconds() - addedSeconds);
-        const startStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        let typeValue = warningType.value;
+        let now = new Date();
+        let timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        const newCaseEntry = {
-            task: `[${type}] - ${title}`,
-            dept: "HR / Administration",
-            timeRange: `${startStr} - ${endStr}`,
-            duration: durationStr,
-            seeded: false,
-            isIncident: true
+        // a manual entry object linking the employee's name
+        let newWarningLog = {
+            task: typeValue + " issued to " + nameText + " (" + notesText + ")",
+            dept: "HR / Corporate Governance",
+            timeRange: "Filed at " + timeString,
+            duration: "00:00:00",
+            isWarning: true
         };
 
-        loggedEntries.unshift(newCaseEntry);
-        sessionTotalSeconds += addedSeconds;
-        
-        updateAccumulatedDisplay();
+        // the entry on top of the historical record array
+        loggedEntries.unshift(newWarningLog);
         renderAllLogs();
-        persistState();
 
-        document.getElementById("incidentTitleInput").value = "";
-        document.getElementById("incidentTypeSelect").value = "";
-        showToast("Secure Incident Case successfully recorded.");
-    }
+        // Clear input field values
+        warningEmployeeName.value = "";
+        warningNotes.value = "";
+    });
 
-    function filterLogs(filterType) {
-        currentFilter = filterType;
-        
-        const btnAll = document.getElementById("filterAllBtn");
-        const btnOps = document.getElementById("filterOpsBtn");
-        const btnInc = document.getElementById("filterIncidentsBtn");
-
-        btnAll.classList.remove("active", "text-secondary", "fw-medium");
-        btnOps.classList.remove("active", "text-secondary", "fw-medium");
-        btnInc.classList.remove("active", "text-danger", "fw-medium", "bg-danger", "text-white");
-
-        if(filterType === 'all') {
-            btnAll.classList.add("active", "fw-medium");
-        } else if (filterType === 'ops') {
-            btnOps.classList.add("active", "fw-medium");
-        } else if (filterType === 'incidents') {
-            btnInc.classList.add("active", "fw-medium", "bg-danger", "text-white");
-        }
-        renderAllLogs();
-    }
-
-    function renderLogEntry(entry) {
-        const isInc = entry.isIncident || entry.task.includes("[VERBAL") || entry.task.includes("[WRITTEN") || entry.task.includes("Disciplinary") || entry.task.includes("Performance Review");
-        const barColor = isInc ? "#dc3545" : "#0284c7";
-        const iconClass = entry.seeded ? "bi-check" : "bi-check-all";
-        const btnColor = isInc ? "outline-danger" : "outline-primary";
-        const cardBg = isInc ? "style='background-color: #fff5f5; border-left: 2px solid #dc3545;'" : "style='background-color: #ffffff;'";
-
-        return `
-            <div class="card p-3 d-flex flex-row justify-content-between align-items-center flex-wrap gap-2 border shadow-sm rounded mb-2" ${cardBg}>
-                <div class="d-flex align-items-center gap-3">
-                    <div style="width: 4px; height: 35px; background: ${barColor}; border-radius: 4px;"></div>
-                    <div>
-                        <div class="fw-bold text-dark">${entry.task}</div>
-                        <span class="badge bg-light text-secondary border mt-1">${entry.dept}</span>
-                        ${isInc ? '<span class="badge bg-danger-subtle text-danger border border-danger-subtle ms-1">Management Case Flag</span>' : ''}
-                    </div>
-                </div>
-                <div class="d-flex align-items-center gap-4 text-end ms-auto">
-                    <span class="text-muted small">${entry.timeRange}</span>
-                    <span class="fw-bold text-dark font-monospace">${entry.duration}</span>
-                    <button class="btn btn-sm btn-${btnColor} rounded-circle" disabled><i class="bi ${iconClass}"></i></button>
-                </div>
-            </div>
-        `;
-    }
-
-    function renderAllLogs() {
-        let filtered = loggedEntries;
-        if(currentFilter === 'ops') {
-            filtered = loggedEntries.filter(e => !(e.isIncident || e.task.includes("[VERBAL") || e.task.includes("[WRITTEN") || e.task.includes("Disciplinary") || e.task.includes("Performance Review")));
-        } else if(currentFilter === 'incidents') {
-            filtered = loggedEntries.filter(e => (e.isIncident || e.task.includes("[VERBAL") || e.task.includes("[WRITTEN") || e.task.includes("Disciplinary") || e.task.includes("Performance Review")));
-        }
-
-        if(filtered.length === 0) {
-            logHistoryStack.innerHTML = `<div class="text-center p-4 text-muted small border rounded bg-white">No ledger tracking entries found matching this parameter dashboard view.</div>`;
-        } else {
-            logHistoryStack.innerHTML = filtered.map(renderLogEntry).join("");
-        }
-    }
-
-    function persistState() {
-        try {
-            localStorage.setItem(STORAGE_KEY_LOGS, JSON.stringify(loggedEntries));
-            localStorage.setItem(STORAGE_KEY_TOTAL, String(sessionTotalSeconds));
-        } catch (err) {
-            console.warn("Could not save time-tracker data:", err);
-        }
-    }
-
-    function loadState() {
-        const defaultSeed = [{
-            task: "Enterprise Architecture Review",
-            dept: "Development",
-            timeRange: "09:15 - 11:30",
-            duration: "02:15:00",
-            seeded: true,
-            isIncident: false
-        }];
-
-        try {
-            const savedLogs = localStorage.getItem(STORAGE_KEY_LOGS);
-            const savedTotal = localStorage.getItem(STORAGE_KEY_TOTAL);
-
-            loggedEntries = savedLogs ? JSON.parse(savedLogs) : defaultSeed;
-            sessionTotalSeconds = savedTotal !== null ? (parseInt(savedTotal, 10) || 0) : 8100;
-        } catch (err) {
-            console.warn("Could not restore saved time-tracker data, using defaults:", err);
-            loggedEntries = defaultSeed;
-            sessionTotalSeconds = 8100;
-        }
-    }
-
+    // Function that runs every second when timer is on
     function cycleTimeTracker() {
         totalSeconds++;
         if (totalSeconds === 60) {
@@ -538,92 +380,87 @@
         displayScreen.textContent = formatDigits(totalHours, totalMinutes, totalSeconds);
     }
 
-    function resetTimerCounter() {
-        totalSeconds = 0;
-        totalMinutes = 0;
-        totalHours = 0;
-        displayScreen.textContent = "00:00:00";
-    }
+    // Start / Stop Click Event Handler
+    actionButton.addEventListener('click', function() {
+        if (isTimerRunning === false) {
+            // Start Action
+            isTimerRunning = true;
+            actionButton.textContent = "Stop Timer";
+            actionButton.className = "btn btn-dark btn-lg px-4 fs-6 rounded-pill";
+            timerId = setInterval(cycleTimeTracker, 1000);
+        } else {
+            // Stop Action
+            isTimerRunning = false;
+            actionButton.textContent = "Start Tracker";
+            actionButton.className = "btn btn-primary btn-lg px-4 fs-6 rounded-pill";
+            clearInterval(timerId);
 
-    if (actionButton) {
-        actionButton.addEventListener('click', () => {
-            isTimerRunning = !isTimerRunning;
+            let trackedSeconds = (totalHours * 3600) + (totalMinutes * 60) + totalSeconds;
 
-            if (isTimerRunning) {
-                actionButton.textContent = "Stop Timer";
-                actionButton.classList.replace("btn-primary", "btn-dark");
-                timerId = setInterval(cycleTimeTracker, 1000);
-            } else {
-                actionButton.textContent = "Start Tracker";
-                actionButton.classList.replace("btn-dark", "btn-primary");
-                clearInterval(timerId);
-
-                const trackedSeconds = (totalHours * 3600) + (totalMinutes * 60) + totalSeconds;
-
-                if (trackedSeconds === 0) {
-                    showToast("Tracked 0 seconds — nothing was logged.", true);
-                    resetTimerCounter();
-                    return;
-                }
-
-                const taskName = taskInput.value.trim() || "General Administration Activity";
-                const deptName = deptSelect.value || "Operations";
-                const durationString = formatDigits(totalHours, totalMinutes, totalSeconds);
+            if (trackedSeconds > 0) {
+                let taskName = taskInput.value || "General Administration Activity";
+                let deptName = deptSelect.value || "Operations";
+                let durationString = formatDigits(totalHours, totalMinutes, totalSeconds);
 
                 sessionTotalSeconds += trackedSeconds;
                 updateAccumulatedDisplay();
 
-                const currentTime = new Date();
-                const endTimestampStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                currentTime.setSeconds(currentTime.getSeconds() - trackedSeconds);
-                const startTimestampStr = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                let now = new Date();
+                let endStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                let startStr = "Tracked"; 
 
-                loggedEntries.unshift({
+                // Add entry to array structure
+                let newLog = {
                     task: taskName,
                     dept: deptName,
-                    timeRange: `${startTimestampStr} - ${endTimestampStr}`,
+                    timeRange: startStr + " -> " + endStr,
                     duration: durationString,
-                    seeded: false,
-                    isIncident: (taskName.includes("[VERBAL") || taskName.includes("[WRITTEN") || deptName === "HR")
-                });
+                    isWarning: false
+                };
 
+                loggedEntries.unshift(newLog); // Put entry on top
                 renderAllLogs();
-                persistState();
-                showToast(`Logged ${durationString} on "${taskName}".`);
-
-                taskInput.value = "";
-                deptSelect.value = ""; 
-                resetTimerCounter();
             }
-        });
-    }
 
-    if (resetButton) {
-        resetButton.addEventListener('click', () => {
-            if (isTimerRunning) {
-                clearInterval(timerId);
-                isTimerRunning = false;
-                actionButton.textContent = "Start Tracker";
-                actionButton.classList.remove("btn-dark");
-                actionButton.classList.add("btn-primary");
-            }
-            
-            resetTimerCounter();
-            sessionTotalSeconds = 0;
-            loggedEntries = [];
-            
+            // Clear inputs and internal tracker numbers
             taskInput.value = "";
             deptSelect.value = "";
-            
-            updateAccumulatedDisplay();
-            renderAllLogs();
-            persistState();
-            
-            showToast("Time logs and sessions successfully reset.");
-        });
-    }
+            totalSeconds = 0;
+            totalMinutes = 0;
+            totalHours = 0;
+            displayScreen.textContent = "00:00:00";
+        }
+    });
 
-    loadState();
+    // Reset button tracking system values 
+    resetButton.addEventListener('click', function() {
+        clearInterval(timerId);
+        isTimerRunning = false;
+        
+        actionButton.textContent = "Start Tracker";
+        actionButton.className = "btn btn-primary btn-lg px-4 fs-6 rounded-pill";
+        
+        totalSeconds = 0;
+        totalMinutes = 0;
+        totalHours = 0;
+        displayScreen.textContent = "00:00:00";
+        
+        sessionTotalSeconds = 0;
+        loggedEntries = [];
+        
+        taskInput.value = "";
+        deptSelect.value = "";
+        warningEmployeeName.value = "";
+        warningNotes.value = "";
+        
+        updateAccumulatedDisplay();
+        renderAllLogs();
+    });
+
+    // Run basic layout initialization on open
     renderAllLogs();
     updateAccumulatedDisplay();
 </script>
+
+</body>
+</html>
