@@ -268,7 +268,7 @@
     color: #92500b;
   }
 
-  @media (max-width: 991px) {
+@media (max-width: 991px) {
     .top-navbar {
       position: sticky;
       top: 0;
@@ -335,7 +335,7 @@
       padding: 1rem;
     }
   }
-  
+
 </style>
 </head>
 <body>
@@ -375,6 +375,7 @@
             <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
             <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
             <a href="Attendence.html" class="menu-item"><i class="bi bi-person-check"></i> Attendance</a>
+            <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
             <a href="#" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
             <a href="#" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
             <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
@@ -492,13 +493,57 @@
 </div>
 
 <script>
-  // List of all time sheet entries. Each entry is a simple object.
-  var timesheetRecords = [
-    { employee: "Sibongile Nkosi", title: "API Endpoint Routing Setup", category: "Engineering", date: "2026-07-06", hours: 38, status: "Active" },
-    { employee: "Lungile Moyo", title: "Database Migration Audit", category: "Operations", date: "2026-07-05", hours: 14, status: "Pending" },
-    { employee: "Thabo Molefe", title: "HR Portal Workspaces UI", category: "Design", date: "2026-07-07", hours: 24, status: "Active" },
-    { employee: "Zanele Khumalo", title: "OAuth Security Integration", category: "Engineering", date: "2026-07-08", hours: 40, status: "Active" }
-  ];
+  // List of all time sheet entries.
+  var timesheetRecords = [];
+
+  function mapDepartmentToCategory(department) {
+    if (department === "Development" || department === "IT") {
+      return "Engineering";
+    }
+    if (department === "HR" || department === "Sales" || department === "Finance") {
+      return "Operations";
+    }
+    if (department === "Design") {
+      return "Design";
+    }
+    return "Engineering";
+  }
+
+  function loadTimesheetData() {
+    fetch("./Employee_info.json")
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error("Could not load Employee_info.json");
+        }
+        return response.json();
+      })
+      .then(function(data) {
+        var employees = data.employeeInformation || data.employees || data;
+        if (!Array.isArray(employees)) {
+          throw new Error("Employee list not found in JSON");
+        }
+
+        timesheetRecords = employees.map(function(emp, index) {
+          return {
+            employee: emp.name || "Unknown",
+            title: (emp.position ? emp.position : "Work") + " task",
+            category: mapDepartmentToCategory(emp.department),
+            date: "2026-07-09",
+            hours: 8,
+            status: index === 1 ? "Pending" : "Active"
+          };
+        });
+
+        refreshPage();
+      })
+      .catch(function(error) {
+        console.error("Unable to load timesheet data:", error);
+        timesheetRecords = [
+          { employee: "No Data", title: "No task loaded", category: "Engineering", date: "2026-07-09", hours: 0, status: "Pending" }
+        ];
+        refreshPage();
+      });
+  }
 
   // Returns only the entries that match the current search box and dropdowns
   function getFilteredEntries() {
@@ -575,6 +620,7 @@
   }
 
   // Button and input event listeners
+
   document.getElementById("searchInput").addEventListener("input", refreshPage);
   document.getElementById("categoryFilter").addEventListener("change", refreshPage);
   document.getElementById("statusFilter").addEventListener("change", refreshPage);
@@ -615,8 +661,8 @@
     refreshPage();
   });
 
-  // Draw everything once when the page first loads
-  refreshPage();
+  // Load the JSON data when the page opens
+  loadTimesheetData();
 </script>
 
 </body>
