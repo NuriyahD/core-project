@@ -54,7 +54,6 @@ body{
 
 h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
-/* ---------- page shell ---------- */
 .page{
   width:100%;
   padding:32px 20px;
@@ -75,7 +74,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   grid-template-columns:1fr 1fr;
 }
 
-/* ---------- LEFT PANEL ---------- */
 .panel-left{
   position:relative;
   background:linear-gradient(160deg,#EEF3FC 0%, #E4ECFB 55%, #E7F2EE 100%);
@@ -109,20 +107,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
 .panel-left-content{
   position:relative;
   z-index:1;
-}
-
-.logo-mark{
-  margin:0 auto 28px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.logo-image{
-  display:block;
-  max-width:320px;
-  width:auto;
-  height:auto;
 }
 
 .panel-heading{
@@ -188,7 +172,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   color:var(--ink-mute);
 }
 
-/* ---------- RIGHT PANEL ---------- */
 .panel-right{
   padding:56px 48px;
   display:flex;
@@ -213,7 +196,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   margin:0 0 28px;
 }
 
-/* ---------- FORM ---------- */
 .login-form{
   display:flex;
   flex-direction:column;
@@ -280,13 +262,8 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   flex-shrink:0;
 }
 
-.input-wrap[data-state="focus"] .input-icon{
-  color:var(--blue-600);
-}
-
-.input-wrap[data-state="error"] .input-icon{
-  color:var(--danger);
-}
+.input-wrap[data-state="focus"] .input-icon{ color:var(--blue-600); }
+.input-wrap[data-state="error"] .input-icon{ color:var(--danger); }
 
 .input-wrap input{
   width:100%;
@@ -299,9 +276,7 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   padding:13px 14px;
 }
 
-.input-wrap input::placeholder{
-  color:var(--ink-faint);
-}
+.input-wrap input::placeholder{ color:var(--ink-faint); }
 
 .toggle-visibility{
   border:none;
@@ -311,14 +286,8 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   padding:8px 14px 8px 8px;
   display:flex;
   align-items:center;
-  transition:color .15s ease;
 }
 .toggle-visibility:hover{ color:var(--navy-700); }
-.toggle-visibility:focus-visible{
-  outline:2px solid var(--blue-600);
-  outline-offset:2px;
-  border-radius:6px;
-}
 
 .field-error{
   font-size:12px;
@@ -329,7 +298,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
 }
 .field-error.visible{ display:block; }
 
-/* ---------- checkbox ---------- */
 .checkbox-row{
   display:flex;
   align-items:center;
@@ -375,18 +343,12 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   opacity:1;
   transform:scale(1);
 }
-.checkbox-row input:focus-visible + .checkbox-box{
-  outline:2px solid var(--blue-600);
-  outline-offset:2px;
-}
-.checkbox-row:active .checkbox-box{ transform:scale(0.92); }
 
 .checkbox-label{
   font-size:13.5px;
   color:var(--navy-700);
 }
 
-/* ---------- primary button ---------- */
 .btn-primary{
   position:relative;
   border:none;
@@ -409,10 +371,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
 
 .btn-primary:hover{ filter:brightness(1.06); }
 .btn-primary:active{ transform:translateY(1px) scale(0.99); }
-.btn-primary:focus-visible{
-  outline:2px solid var(--navy-950);
-  outline-offset:3px;
-}
 
 .btn-arrow{ transition:transform .15s ease; }
 .btn-primary:hover .btn-arrow{ transform:translateX(3px); }
@@ -435,7 +393,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
 
 @keyframes spin{ to{ transform:rotate(360deg); } }
 
-/* ---------- divider ---------- */
 .divider{
   display:flex;
   align-items:center;
@@ -457,32 +414,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   white-space:nowrap;
 }
 
-/* ---------- SSO button ---------- */
-.btn-sso{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  border:1.5px solid var(--line);
-  background:#FBFCFE;
-  border-radius:var(--radius-sm);
-  padding:12px 16px;
-  font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size:14px;
-  font-weight:600;
-  color:var(--navy-800);
-  cursor:pointer;
-  transition:border-color .15s ease, background .15s ease, transform .12s ease;
-}
-.btn-sso:hover{ border-color:#C9D3E6; background:#fff; }
-.btn-sso:active{ transform:translateY(1px); }
-.btn-sso:focus-visible{
-  outline:2px solid var(--blue-600);
-  outline-offset:2px;
-}
-.btn-sso.is-loading{ opacity:0.7; cursor:default; pointer-events:none; }
-
-/* ---------- footer text ---------- */
 .signup-line{
   text-align:center;
   font-size:13px;
@@ -507,9 +438,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
 }
 .form-footer a:hover{ color:var(--navy-700); }
 
-/* ==========================================================================
-   Modals & Legal Document Styling
-   ========================================================================= */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -566,7 +494,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  transition: color .15s ease, background .15s ease;
 }
 .modal-close:hover {
   color: var(--navy-950);
@@ -580,7 +507,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   color: var(--navy-700);
 }
 
-/* Legal Document Inner Formatting */
 .legal-meta {
   font-size: 12px;
   color: var(--ink-mute);
@@ -596,23 +522,10 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   color: var(--navy-950);
   margin: 24px 0 10px;
 }
-.legal-section-title:first-of-type {
-  margin-top: 0;
-}
-.legal-text {
-  margin: 0 0 14px;
-}
-.legal-list {
-  margin: 0 0 16px;
-  padding-left: 20px;
-}
-.legal-list li {
-  margin-bottom: 8px;
-}
+.legal-text { margin: 0 0 14px; }
+.legal-list { margin: 0 0 16px; padding-left: 20px; }
+.legal-list li { margin-bottom: 8px; }
 
-/* ==========================================================================
-   Responsive Adaptations
-   ========================================================================= */
 @media (max-width: 868px) {
   .auth-card {
     grid-template-columns: 1fr;
@@ -624,38 +537,18 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
     align-items: center;
     text-align: center;
   }
-  .panel-subtext {
-    margin: 0 auto 28px;
-  }
-  .feature-cards {
-    width: 100%;
-    max-width: 400px;
-  }
-  .panel-right {
-    padding: 44px 32px;
-  }
+  .panel-subtext { margin: 0 auto 28px; }
+  .feature-cards { width: 100%; max-width: 400px; }
+  .panel-right { padding: 44px 32px; }
 }
 
 @media (max-width: 480px) {
-  .page {
-    padding: 16px 12px;
-  }
-  .panel-left {
-    padding: 32px 20px;
-  }
-  .panel-heading {
-    font-size: 24px;
-  }
-  .feature-cards {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .panel-right {
-    padding: 32px 20px;
-  }
-  .form-header h2 {
-    font-size: 22px;
-  }
+  .page { padding: 16px 12px; }
+  .panel-left { padding: 32px 20px; }
+  .panel-heading { font-size: 24px; }
+  .feature-cards { flex-direction: column; gap: 10px; }
+  .panel-right { padding: 32px 20px; }
+  .form-header h2 { font-size: 22px; }
 }
 
 </style>
@@ -665,7 +558,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
 <div class="page">
   <div class="auth-card" role="main">
 
-    <!-- LEFT PANEL -->
     <section class="panel-left">
       <div class="grid-overlay"></div>
       <div class="glow glow-1"></div>
@@ -701,12 +593,11 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
       </div>
     </section>
 
-    <!-- RIGHT PANEL -->
     <section class="panel-right">
       <div class="panel-right-inner">
         <header class="form-header">
           <h2>Welcome Back</h2>
-          <p>Please enter your clinical credentials to continue.</p>
+          <p>Please enter your credentials to continue.</p>
         </header>
 
         <form class="login-form" id="loginForm" novalidate>
@@ -718,6 +609,15 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
               <input type="email" id="email" name="email" placeholder="john.doe@moderntech.solutions" autocomplete="username" required>
             </div>
             <span class="field-error" id="emailError"></span>
+          </div>
+
+          <div class="field">
+            <label for="job">Department/Role</label>
+            <div class="input-wrap" data-state="default">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="job" name="Job" placeholder="e.g. HR, Engineering, Sales" autocomplete="job" required>
+            </div>
+            <span class="field-error" id="jobError"></span>
           </div>
 
           <div class="field">
@@ -764,7 +664,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   </div>
 </div>
 
-<!-- Account Not Found Modal Overlay -->
 <div class="modal-overlay" id="accountNotFoundModal" role="dialog" aria-modal="true">
   <div class="modal-container">
     <div class="modal-header">
@@ -774,13 +673,12 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
       </button>
     </div>
     <div class="modal-body">
-      <p>The system could not identify any clinical account registered with that email address.</p>
-      <p>Please double-check your workspace credentials or click "Create an account" below to establish a new identity directory entry.</p>
+      <p>The system could not identify any workspace account registered with that configuration.</p>
+      <p>Please check your workspace credentials or click "Create an account" below to establish a new identity entry.</p>
     </div>
   </div>
 </div>
 
-<!-- Privacy Modal -->
 <div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true">
   <div class="modal-container">
     <div class="modal-header">
@@ -810,7 +708,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   </div>
 </div>
 
-<!-- Terms Modal -->
 <div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true">
   <div class="modal-container">
     <div class="modal-header">
@@ -840,7 +737,6 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
   </div>
 </div>
 
-<!-- Compliance Modal -->
 <div class="modal-overlay" id="complianceModal" role="dialog" aria-modal="true">
   <div class="modal-container">
     <div class="modal-header">
@@ -873,32 +769,33 @@ h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSyst
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Initialize simulated users from standard directory JSON if not present
-  if (!localStorage.getItem('registeredUsers') && typeof typeofData !== 'undefined') {
-    const baseUsers = typeofData.employeeInformation ? typeofData.employeeInformation.map(emp => emp.contact) : [];
+  // Safeguard: Extract emails cleanly into registered array
+  if (!localStorage.getItem('registeredUsers')) {
+    let baseUsers = ["sibongile.nkosi@moderntech.com", "lungile.moyo@moderntech.com", "thabo.molefe@moderntech.com"];
+    if (typeof typeofData !== 'undefined' && typeofData.employeeInformation) {
+      baseUsers = typeofData.employeeInformation.map(emp => {
+        return typeof emp.contact === 'string' ? emp.contact.trim() : (emp.contact?.email || '');
+      }).filter(email => email !== '');
+    }
     localStorage.setItem('registeredUsers', JSON.stringify(baseUsers));
-  } else if (!localStorage.getItem('registeredUsers')) {
-    localStorage.setItem('registeredUsers', JSON.stringify([
-      "sibongile.nkosi@moderntech.com", "lungile.moyo@moderntech.com", "thabo.molefe@moderntech.com"
-    ]));
   }
 
   const existingSession = typeof Auth !== 'undefined' ? Auth.getSession() : null;
   if (existingSession){
-    window.location.href = 'index.html';
+    const savedRole = localStorage.getItem('last_user_role') || '';
+    window.location.href = savedRole.toUpperCase() === 'HR' ? 'index.html' : 'dashboard.html';
     return;
   }
 
   const form = document.getElementById('loginForm');
   const emailInput = document.getElementById('email');
+  const jobInput = document.getElementById('job'); 
   const passwordInput = document.getElementById('password');
   const emailError = document.getElementById('emailError');
+  const jobError = document.getElementById('jobError');
   const passwordError = document.getElementById('passwordError');
   const signInBtn = document.getElementById('signInBtn');
   const toggleBtn = document.getElementById('toggleVisibility');
-  const forgotLink = document.getElementById('forgotLink');
-  const rememberMe = document.getElementById('rememberMe');
-  
   const notFoundModal = document.getElementById('accountNotFoundModal');
   const closeNotFoundBtn = document.getElementById('closeNotFoundModal');
 
@@ -926,7 +823,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  [emailInput, passwordInput].forEach((input) => {
+  [emailInput, jobInput, passwordInput].forEach((input) => {
     input.addEventListener('focus', () => {
       if (wrapOf(input).dataset.state !== 'error') setState(input, 'focus');
     });
@@ -962,7 +859,6 @@ document.addEventListener('DOMContentLoaded', () => {
   closeNotFoundBtn.addEventListener('click', () => closeModal(notFoundModal));
   notFoundModal.addEventListener('click', (e) => { if(e.target === notFoundModal) closeModal(notFoundModal); });
 
-  // Handle Bottom Footer Modals Link Clicks
   document.querySelectorAll('.js-trigger-privacy').forEach(el => {
     el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('privacyModal')); });
   });
@@ -983,6 +879,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     let valid = true;
     const emailVal = emailInput.value.trim();
+    const jobVal = jobInput.value.trim();
     const passVal = passwordInput.value;
 
     if (emailVal === ''){
@@ -991,30 +888,46 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (!isValidEmail(emailVal)){
       showError(emailInput, emailError, 'Enter a valid email address.');
       valid = false;
+    }
+
+    if (jobVal === ''){
+      showError(jobInput, jobError, 'Enter your department or role position.');
+      valid = false;
     } else {
-      clearError(emailInput, emailError);
+      clearError(jobInput, jobError);
     }
 
     if (passVal === ''){
       showError(passwordInput, passwordError, 'Enter your password.');
       valid = false;
-    } else {
-      clearError(passwordInput, passwordError);
+    } else if (passVal.length < 8) {
+      showError(passwordInput, passwordError, 'Password must be at least 8 characters.');
+      valid = false;
     }
 
     if (!valid) return;
-
-    const currentUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    if (!currentUsers.includes(emailVal)) {
-      openModal(notFoundModal);
-      return;
-    }
 
     signInBtn.classList.add('is-loading');
     signInBtn.disabled = true;
 
     setTimeout(() => {
-      window.location.href = 'index.html';
+      const usersArray = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+      const accountFound = usersArray.some(email => email.toLowerCase() === emailVal.toLowerCase());
+
+      if (!accountFound) {
+        signInBtn.classList.remove('is-loading');
+        signInBtn.disabled = false;
+        openModal(notFoundModal);
+        return;
+      }
+
+      localStorage.setItem('last_user_role', jobVal);
+
+      if (jobVal.toUpperCase() === 'HR') {
+        window.location.href = 'index.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
     }, 700);
   });
 
