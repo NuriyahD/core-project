@@ -168,8 +168,7 @@
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
                 <a href="attendance.html" class="menu-item"><i class="bi bi-person-check"></i> Attendance</a>
                 <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
-                <a href="#" class="menu-item active"><i class="bi bi-wallet2"></i> Payroll</a>
-                <a href="about.html" class="menu-item"><i class="bi bi-info-circle"></i> About Us</a>
+                <a href="payslip.html" class="menu-item active"><i class="bi bi-wallet2"></i> Payroll</a>
                 <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
             </nav>
             <hr class="sidebar-divider">
@@ -255,19 +254,23 @@
 
                     <!-- Payslip details -->
                     <div class="row g-4 mb-4">
-                        <!-- Gross Earnings Section -->
+                        <!-- Gross Income Section -->
                         <div class="col-md-6">
                             <div class="border rounded-3 overflow-hidden">
                                 <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Gross Earnings</div>
                                 <table class="table table-sm table-borderless align-middle mb-0 font-monospace small">
                                     <tbody>
+                                        <tr>
+                                            <td class="p-2 ps-3 text-muted">Base Income Allowance</td>
+                                            <td class="p-2 text-end pe-3 text-muted" id="earnLeave">--</td>
+                                        </tr>
                                         <tr class="border-bottom">
-                                            <td class="p-2 ps-3">Calculated Base Earnings</td>
+                                            <td class="p-2 ps-3">Calculated Base Income</td>
                                             <td class="p-2 text-end pe-3 text-dark" id="earnBasic">R0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="p-2 ps-3 text-muted">Base Earnings Allowance</td>
-                                            <td class="p-2 text-end pe-3 text-muted" id="earnLeave">--</td>
+                                           <td class="p-2 ps-3">Annual Income(Calculated Estimate)</td> 
+                                           <td class="p-2 text-end pe-3 text-dark" id="annual">R0.00</td>
                                         </tr>
                                     </tbody>
                                     <tfoot class="table-light border-top">
@@ -414,6 +417,7 @@
             const uifDeduct = computedGross * 0.01; // 1% Unemployment Insurance allocation
             const totalDeductions = taxPaye + uifDeduct;
             const finalNetPayout = computedGross - totalDeductions;
+            const annualIncome = computedGross * 12;
 
             // Currency formatting helper tool
             const formatZA = (amount) => "R" + amount.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -424,6 +428,7 @@
             document.getElementById("empPosition").textContent = "MTech-00" + currentEmp.employeeId + " / " + currentEmp.position;
             document.getElementById("empDept").textContent = currentEmp.department;
 
+            document.getElementById("annual").textContent = formatZA(annualIncome);
             document.getElementById("earnBasic").textContent = formatZA(computedGross);
             document.getElementById("earnLeave").textContent = "Base target: " + formatZA(currentEmp.salary);
             document.getElementById("earnTotal").textContent = formatZA(computedGross);
