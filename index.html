@@ -1,1012 +1,1001 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Tech Solutions</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --page-bg: #F8F9FA;
-            --panel-bg: #FFFFFF;
-            --sidebar-header-bg: #FFFFFF;
-            --sidebar-bg: #EAF6FF;
-            --accent: #2563EB;
-            --accent-dark: #1D4ED8;
-            --text: #1E293B;
-            --muted: #64748B;
-            --border: #E2E8F0;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ModernTech Solutions | Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-950:#0F1B3D;
+    --navy-800:#1A2A52;
+    --navy-700:#3A4666;
+    --blue-600:#2E6FF2;
+    --blue-700:#2158D6;
+    --blue-050:#EEF3FC;
+    --teal-400:#22C1DC;
+    --green-500:#3DBE7A;
+    --surface:#FFFFFF;
+    --line:#E3E8F1;
+    --ink-mute:#6B7688;
+    --ink-faint:#98A2B5;
+    --danger:#E4483C;
+    --radius-lg:20px;
+    --radius-md:12px;
+    --radius-sm:9px;
+    --shadow-card: 0 30px 60px -20px rgba(15,27,61,0.18), 0 4px 20px -4px rgba(15,27,61,0.08);
+    --shadow-focus: 0 0 0 4px rgba(46,111,242,0.14);
+  }
 
-        body {
-            background-color: var(--page-bg);
-            color: var(--text);
-            overflow-x: hidden;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
+  *{ box-sizing:border-box; }
 
-        #wrapper {
-            display: flex;
-            flex-direction: column;
-            width: 100vw;
-            min-height: 100vh;
-        }
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+  }
 
-        /* Top Sticky Header Framework */
-        .navbar {
-            position: sticky;
-            top: 0;
-            height: 73px;
-            background-color: #ffffff;
-            border-bottom: 1px solid var(--border);
-            z-index: 1050; /* Sits completely above sidebar elements */
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-        }
+  body{
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background:
+      radial-gradient(circle at 15% 15%, #eef2fb 0%, transparent 45%),
+      radial-gradient(circle at 85% 85%, #eaf3f0 0%, transparent 45%),
+      #F3F5F9;
+    color:var(--navy-950);
+    -webkit-font-smoothing:antialiased;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+  }
 
-        /* Branding Interface matching original visuals */
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 236px; /* Matches alignment offset boundary */
-        }
+  h1,h2,h3{ font-family:'Manrope', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
-        /* Accurate Custom CSS Rendering of the Logo Mark from the image */
-        .custom-logo-mark {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 36px;
-            position: relative;
-        }
+  .page{
+    width:100%;
+    padding:32px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 
-        .custom-logo-mark .logo-circle {
-            width: 20px;
-            height: 20px;
-            border: 3px solid #0284C7;
-            border-radius: 50%;
-            background: transparent;
-        }
+  .auth-card{
+    width:100%;
+    max-width:1000px;
+    min-height:640px;
+    background:var(--surface);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-card);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
 
-        .custom-logo-mark .logo-lines {
-            display: flex;
-            justify-content: space-between;
-            width: 16px;
-            height: 10px;
-            margin-top: -2px;
-        }
+  .panel-left{
+    position:relative;
+    background:linear-gradient(160deg,#EEF3FC 0%, #E4ECFB 55%, #E7F2EE 100%);
+    padding:56px 48px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    overflow:hidden;
+  }
 
-        .custom-logo-mark .logo-line {
-            width: 2.5px;
-            background-color: #0284C7;
-            border-radius: 1px;
-        }
+  .grid-overlay{
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(to right, rgba(46,111,242,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(46,111,242,0.06) 1px, transparent 1px);
+    background-size:34px 34px;
+    mask-image:radial-gradient(circle at 30% 35%, rgba(0,0,0,0.9), transparent 70%);
+  }
 
-        .custom-logo-mark .logo-line.center {
-            height: 12px;
-            margin-top: -3px;
-        }
+  .glow{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(60px);
+    opacity:0.35;
+    pointer-events:none;
+  }
+  .glow-1{
+    width:260px;
+    height:260px;
+    background:#22C1DC;
+    top:-60px;
+    left:-60px;
+    }
 
-        .custom-logo-mark .logo-line.side {
-            height: 7px;
-            margin-top: 2px;
-        }
+  .glow-2{
+    width:220px;
+    height:220px;
+    background:#3DBE7A;
+    bottom:-40px;
+    right:-20px;
+  }
 
-        .brand-title-container {
-            line-height: 1.1;
-        }
+  .panel-left-content{
+    position:relative;
+    z-index:1;
+  }
 
-        .brand-main {
-            font-weight: 700;
-            color: #1E293B; 
-            font-size: 1.25rem;
-        }
+  .panel-heading{
+    font-size:29px;
+    line-height:1.22;
+    font-weight:800;
+    color:var(--navy-950);
+    letter-spacing:-0.01em;
+    margin:0 0 16px;
+  }
 
-        .brand-sub {
-            color: #3B82F6;
-            font-size: 1rem;
-            font-weight: 500;
-        }
+  .panel-subtext{
+    font-size:15px;
+    line-height:1.6;
+    color:var(--navy-700);
+    max-width:400px;
+    margin:0 0 32px;
+  }
 
-        /* Main Workspace Splitting Frame */
-        .app-workspace {
-            display: flex;
-            flex-grow: 1;
-        }
+  .feature-cards{
+    display:flex;
+    gap:12px;
+  }
 
-        /* Sidebar Styling strictly matching layout guidelines */
-        #sidebar {
-            position: sticky;
-            top: 73px; /* Locks below the fixed 73px navbar height */
-            width: 260px;
-            min-width: 260px;
-            height: calc(100vh - 73px);
-            background-color: var(--sidebar-bg);
-            border-right: 1px solid var(--border);
-            z-index: 1000;
-            transition: all 0.3s ease;
-            overflow-y: auto;
-        }
+  .feature-card{
+    flex:1;
+    background:rgba(255,255,255,0.75);
+    border:1px solid rgba(255,255,255,0.9);
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    backdrop-filter:blur(6px);
+  }
 
-        #sidebar .nav-container {
-            padding: 1.5rem 0.75rem;
-        }
+  .feature-icon{
+    width:30px; height:30px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--blue-600);
+    background:rgba(46,111,242,0.1);
+  }
 
-        #sidebar .nav-pills .nav-link {
-            color: #0369a1;
-            font-weight: 500;
-            font-size: 1rem;
-            border-radius: 6px;
-            padding: 10px 15px;
-            margin-bottom: 5px;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: transparent;
-        }
+  .feature-icon[data-icon="chart"]{
+    color:var(--green-500);
+    background:rgba(61,190,122,0.12);
+  }
 
-        #sidebar .nav-pills .nav-link i {
-            font-size: 1.2rem; 
-            color: #0369a1;
-        }
+  .feature-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.35;
+  }
 
-        #sidebar .nav-pills .nav-link:hover, 
-        #sidebar .nav-pills .nav-link.active {
-            background-color: rgba(255, 255, 255, 0.7);
-            color: #0369a1;
-        }
+  .feature-text strong{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--navy-950);
+  }
 
-        #page-content-wrapper {
-            flex-grow: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-        }
+  .feature-text span{
+    font-size:12px;
+    color:var(--ink-mute);
+  }
 
-        .search-container-fluid {
-            flex-grow: 1;
-            max-width: 500px;
-        }
+  .panel-right{
+    padding:56px 48px;
+    display:flex;
+    align-items:center;
+  }
 
-        .burger-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text);
-            cursor: pointer;
-            padding: 0;
-        }
+  .panel-right-inner{
+    width:100%;
+    max-width:400px;
+    margin:0 auto;
+  }
 
-        .page-divider {
-            width: 1px;
-            background: var(--border);
-            height: 24px;
-        }
+  .form-header h2{
+    font-size:26px;
+    font-weight:800;
+    margin:0 0 8px;
+    color:var(--navy-950);
+  }
 
-        .stats-card {
-            border: none;
-            min-height: 150px;
-            border-radius: 24px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
-            background: linear-gradient(180deg,#ffffff,#f8fafc);
-        }
+  .form-header p{
+    font-size:14px;
+    color:var(--ink-mute);
+    margin:0 0 28px;
+  }
 
-        .stats-card .card-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
-            display: grid;
-            place-items: center;
-        }
+  .login-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+  }
 
-        .stats-card .card-title {
-            font-size: .82rem;
-            letter-spacing: .04em;
-            margin-bottom: .35rem;
-            color: var(--muted);
-            text-transform: uppercase;
-        }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+  }
 
-        .stats-card .card-value {
-            font-size: 1.7rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: .45rem;
-        }
+  .field label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--navy-800);
+  }
 
-        .avatar-placeholder {
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-        }
+  .field-label-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
 
-        .tiny-text {
-            font-size: 0.75rem;
-        }
+  .link-inline{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--blue-600);
+    text-decoration:none;
+  }
 
-        .donut-chart {
-            --present-percent: 80%;
-            --late-percent: 0%;
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: conic-gradient(
-                #20c997 0% var(--present-percent),
-                #ffc107 var(--present-percent) calc(var(--present-percent) + var(--late-percent)),
-                #dc3545 calc(var(--present-percent) + var(--late-percent)) 100%
-            );
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  .link-inline:hover{
+    text-decoration:underline;
+  }
 
-        .donut-hole {
-            width: 70%;
-            height: 70%;
-            background-color: #ffffff; 
-            border-radius: 50%;
-        }
+  .input-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    background:#F8F9FC;
+    border:1.5px solid var(--line);
+    border-radius:var(--radius-sm);
+    transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
 
-        .chart-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  .input-wrap:hover{
+    border-color:#C9D3E6;
+  }
 
-        .chart-center-text {
-            position: absolute;
-            text-align: center;
-            pointer-events: none;
-            z-index: 10;
-        }
+  .input-wrap[data-state="focus"]{
+    border-color:var(--blue-600);
+    box-shadow:var(--shadow-focus);
+    background:#FFFFFF;
+  }
 
-        /* Hero / Welcome Banner */
-        .hero-banner {
-            position: relative;
-            overflow: hidden;
-            border-radius: 28px;
-            background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 45%, #0EA5E9 100%);
-            color: #ffffff;
-            padding: 2.75rem 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-        }
+  .input-wrap[data-state="error"]{
+    border-color:var(--danger);
+    background:#FDF4F3;
+  }
 
-        .hero-banner::before {
-            content: "";
-            position: absolute;
-            top: -70px;
-            right: 140px;
-            width: 220px;
-            height: 220px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 50%;
-        }
+  .input-wrap[data-state="error"]:focus-within,
+  .input-wrap[data-state="error"].focus{
+    box-shadow:0 0 0 4px rgba(228,72,60,0.12);
+  }
 
-        .hero-banner::after {
-            content: "";
-            position: absolute;
-            bottom: -90px;
-            left: -40px;
-            width: 220px;
-            height: 220px;
-            background: rgba(255,255,255,0.06);
-            border-radius: 50%;
-        }
+  .input-icon{
+    color:var(--ink-faint);
+    margin-left:14px;
+    flex-shrink:0;
+  }
 
-        .hero-text {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-            min-width: 0;
-        }
+  .input-wrap[data-state="focus"] .input-icon{
+    color:var(--blue-600);
+  }
 
-        .hero-eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: .72rem;
-            font-weight: 700;
-            letter-spacing: .08em;
-            text-transform: uppercase;
-            background: rgba(255,255,255,0.16);
-            padding: 6px 14px;
-            border-radius: 999px;
-            margin-bottom: 1rem;
-        }
+  .input-wrap[data-state="error"] .input-icon{
+    color:var(--danger);
+  }
 
-        .hero-title {
-            font-size: 2rem;
-            font-weight: 800;
-            line-height: 1.15;
-            margin-bottom: .6rem;
-        }
+  .input-wrap input{
+    width:100%;
+    border:none;
+    outline:none;
+    background:transparent;
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:14.5px;
+    color:var(--navy-950);
+    padding:13px 14px;
+  }
 
-        .hero-subtitle {
-            color: rgba(255,255,255,.85);
-            max-width: 480px;
-            margin-bottom: 1.5rem;
-            font-size: .95rem;
-        }
+  .input-wrap input::placeholder{ color:var(--ink-faint); }
 
-        .hero-chip-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: .6rem;
-            margin-bottom: 1.75rem;
-        }
+  .toggle-visibility{
+    border:none;
+    background:none;
+    color:var(--ink-faint);
+    cursor:pointer;
+    padding:8px 14px 8px 8px;
+    display:flex;
+    align-items:center;
+  }
 
-        .hero-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.14);
-            border: 1px solid rgba(255,255,255,0.22);
-            border-radius: 14px;
-            padding: 8px 14px;
-            font-size: .8rem;
-            font-weight: 600;
-        }
+  .toggle-visibility:hover{ color:var(--navy-700); }
 
-        .hero-chip .chip-value {
-            font-weight: 800;
-        }
+  .field-error{
+    font-size:12px;
+    color:var(--danger);
+    min-height:0;
+    display:none;
+    font-weight:500;
+  }
 
-        .hero-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #ffffff;
-            color: var(--accent-dark);
-            font-weight: 700;
-            padding: 10px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: .88rem;
-            transition: transform .15s ease, box-shadow .15s ease;
-        }
+  .field-error.visible{
+    display:block;
+  }
 
-        .hero-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,.15);
-            color: var(--accent-dark);
-        }
+  .checkbox-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    user-select:none;
+    margin-top:-2px;
+  }
 
-        .hero-cta-ghost {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,.45);
-            color: #ffffff;
-            font-weight: 600;
-            padding: 10px 18px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: .88rem;
-            margin-left: .75rem;
-            transition: background .15s ease;
-        }
+  .checkbox-row input{
+    position:absolute;
+    opacity:0;
+    width:18px;
+    height:18px;
+    margin:0;
+    cursor:pointer;
+  }
 
-        .hero-cta-ghost:hover {
-            background: rgba(255,255,255,.14);
-            color: #ffffff;
-        }
+  .checkbox-box{
+    width:18px;
+    height:18px;
+    border-radius:5px;
+    border:1.5px solid #C9D3E6;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    transition:background .15s ease, border-color .15s ease, transform .1s ease;
+  }
 
-        .hero-illustration {
-            position: relative;
-            z-index: 1;
-            flex-shrink: 0;
-            width: 240px;
-        }
+  .checkbox-box svg{
+    opacity:0;
+    transform:scale(0.6);
+    transition:opacity .12s ease, transform .12s ease;
+  }
 
-        @media (max-width: 991.98px) {
-            .hero-banner {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 2.25rem 1.75rem;
-            }
-            .hero-illustration {
-                display: none;
-            }
-        }
+  .checkbox-row input:checked + .checkbox-box{
+    background:var(--blue-600);
+    border-color:var(--blue-600);
+  }
 
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 1.5rem;
-            }
-            .hero-cta-ghost {
-                margin-left: 0;
-                margin-top: .5rem;
-            }
-        }
+  .checkbox-row input:checked + .checkbox-box svg{
+    opacity:1;
+    transform:scale(1);
+  }
 
-        /* Responsiveness Overhauls */
-        @media (max-width: 991.98px) {
-            .search-container-fluid {
-                max-width: 100%;
-                order: 3;
-                width: 100%;
-                margin-top: 0.75rem;
-            }
-            .navbar {
-                height: auto;
-            }
-            #sidebar {
-                top: 0;
-                height: 100vh;
-            }
-        }
+  .checkbox-label{
+    font-size:13.5px;
+    color:var(--navy-700);
+  }
 
-        @media (max-width: 600px) {
-            .burger-btn {
-                display: block;
-            }
+  .btn-primary{
+    position:relative;
+    border:none;
+    border-radius:var(--radius-sm);
+    background:linear-gradient(135deg, var(--blue-600), var(--blue-700));
+    color:#fff;
+    font-family:'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:15px;
+    font-weight:700;
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    cursor:pointer;
+    transition:transform .12s ease, box-shadow .15s ease, filter .15s ease;
+    box-shadow:0 10px 24px -8px rgba(46,111,242,0.55);
+    margin-top:4px;
+  }
 
-            #sidebar {
-                position: fixed;
-                top: 73px; /* Adjusted to align directly beneath the 73px high header navbar */
-                left: -260px;
-                height: calc(100vh - 73px); /* Accounts for header height spacing */
-                box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-            }
+  .btn-primary:hover{ 
+    filter:brightness(1.06); 
+  }
 
-            #sidebar.show {
-                left: 0;
-            }
+  .btn-primary:active{
+    transform:translateY(1px) scale(0.99);
+  }
 
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 73px; /* Prevents overlay dim effect from covering the primary workspace burger container */
-                left: 0; right: 0; bottom: 0;
-                background: rgba(0, 0, 0, 0.4);
-                z-index: 999;
-            }
+  .btn-arrow{
+    transition:transform .15s ease;
+  }
 
-            .sidebar-overlay.show {
-                display: block;
-            }
-            
-            .brand-container {
-                width: auto;
-            }
-        }
-    </style>
+  .btn-primary:hover .btn-arrow{
+    transform:translateX(3px);
+  }
+
+  .btn-spinner{
+    display:none;
+    width:16px; height:16px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,0.4);
+    border-top-color:#fff;
+  }
+
+  .btn-primary.is-loading .btn-label,
+  .btn-primary.is-loading .btn-arrow{ display:none; }
+  .btn-primary.is-loading .btn-spinner{
+    display:inline-block;
+    animation:spin .7s linear infinite;
+  }
+
+  .btn-primary.is-loading{
+    cursor:default;
+    opacity:0.92;
+  }
+
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin:6px 0 2px;
+  }
+  .divider::before,
+  .divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+  .divider span{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.06em;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+
+  .signup-line{
+    text-align:center;
+    font-size:13px;
+    color:var(--ink-mute);
+    margin:6px 0 0;
+  }
+
+  .form-footer{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    margin-top:30px;
+  }
+  .form-footer a{
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    text-decoration:none;
+    transition:color .15s ease;
+  }
+  .form-footer a:hover{ color:var(--navy-700); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 27, 61, 0.45);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    padding: 20px;
+  }
+
+  .modal-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-container {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    transform: translateY(15px);
+    transition: transform 0.25s cubic-bezier(.16,.84,.44,1);
+  }
+
+  .modal-overlay.is-visible .modal-container {
+    transform: translateY(0);
+  }
+
+  .modal-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--navy-950);
+  }
+
+  .modal-close {
+    border: none;
+    background: none;
+    color: var(--ink-faint);
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+
+  .modal-close:hover {
+    color: var(--navy-950);
+    background: var(--blue-050);
+  }
+
+  .modal-body {
+    padding: 28px;
+    overflow-y: auto;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy-700);
+  }
+
+  .legal-meta {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .legal-section-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy-950);
+    margin: 24px 0 10px;
+  }
+  
+  .legal-text { 
+    margin: 0 0 14px;
+  }
+
+  .legal-list {
+    margin: 0 0 16px;
+    padding-left: 20px;
+  }
+
+  .legal-list li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 868px) {
+    .auth-card {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      max-width: 520px;
+    }
+    .panel-left {
+      padding: 44px 32px;
+      align-items: center;
+      text-align: center;
+    }
+    .panel-subtext { margin: 0 auto 28px; }
+    .feature-cards { width: 100%; max-width: 400px; }
+    .panel-right { padding: 44px 32px; }
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 16px 12px; }
+    .panel-left { padding: 32px 20px; }
+    .panel-heading { font-size: 24px; }
+    .feature-cards { flex-direction: column; gap: 10px; }
+    .panel-right { padding: 32px 20px; }
+    .form-header h2 { font-size: 22px; }
+  }
+
+</style>
 </head>
 <body>
 
-<div id="wrapper">
-    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+<div class="page">
+  <div class="auth-card" role="main">
 
-    <!-- Top Integrated Sticky Navigation Bar -->
-    <nav class="navbar navbar-light bg-white py-2 px-4">
-        <div class="container-fluid p-0 d-flex flex-wrap align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-3">
-                <button id="burgerToggle" class="burger-btn me-1">
-                    <i class="bi bi-list"></i>
-                </button>
-                <!-- Brand Engine Extracted Here to Remain Pinned Top Alongside the Nav Content -->
-                <div class="brand-container">
-                    <div class="custom-logo-mark">
-                        <div class="logo-circle"></div>
-                        <div class="logo-lines">
-                            <div class="logo-line side"></div>
-                            <div class="logo-line center"></div>
-                            <div class="logo-line side"></div>
-                        </div>
-                    </div>
-                    <div class="brand-title-container d-none d-sm-block">
-                        <div class="brand-main">ModernTech</div>
-                        <div class="brand-sub">Solutions</div>
-                    </div>
-                </div>
-            </div>
+    <section class="panel-left">
+      <div class="grid-overlay"></div>
+      <div class="glow glow-1"></div>
+      <div class="glow glow-2"></div>
 
-            <div class="search-container-fluid mx-lg-3">
-                <div class="input-group search-bar w-100">
-                    <input id="searchInput" type="text" class="form-control bg-light border-0" placeholder="Search">
-                    <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-                </div>
-            </div>
+      <div class="panel-left-content">
+        <h1 class="panel-heading">Precision in Personnel<br>Management</h1>
+        <p class="panel-subtext">
+          The clinical standard for high-performance HR operations.
+          Secure, reliable, and empathetic technology for modern healthcare teams.
+        </p>
 
-            <div class="d-flex align-items-center justify-content-end ms-auto gap-3">
-                <!-- Functional Notifications Trigger via Dropdown -->
-                <div class="dropdown">
-                    <i id="notificationBell" class="bi bi-bell fs-5 position-relative" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-                    </i>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border mt-2" style="width: 320px; max-height: 400px; overflow-y: auto;">
-                        <li class="dropdown-header fw-bold border-bottom pb-2">Notifications</li>
-                        <li>
-                            <div class="dropdown-item p-3 border-bottom text-wrap">
-                                <p class="mb-1 fw-semibold small">New Time Off Request</p>
-                                <span class="text-muted tiny-text">5 minutes ago</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown-item p-3 border-bottom text-wrap">
-                                <p class="mb-1 fw-semibold small">System Maintenance Scheduled</p>
-                                <span class="text-muted tiny-text">2 hours ago</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="page-divider"></div>
-                
-                <!-- Only Image Profile Dropdown Drop -->
-                <div class="dropdown">
-                    <button class="btn p-0 border-0 dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle fs-4 text-secondary"></i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                        <li><button class="dropdown-item text-danger fw-semibold" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi bi-box-arrow-right me-2"></i>Log out</button></li>
-                    </ul>
-                </div>
+        <div class="feature-cards">
+          <div class="feature-card">
+            <div class="feature-icon" data-icon="shield">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             </div>
+            <div class="feature-text">
+              <strong>Secure Access</strong>
+              <span>HIPAA Compliant</span>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" data-icon="chart">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>
+            </div>
+            <div class="feature-text">
+              <strong>Live Analytics</strong>
+              <span>Real-time Sync</span>
+            </div>
+          </div>
         </div>
-    </nav>
+      </div>
+    </section>
 
-    <!-- Lower Split Framework Container -->
-    <div class="app-workspace">
-        <!-- Sidebar Layout Container Base -->
-        <div id="sidebar" class="d-flex flex-column">
-            <div class="nav-container flex-grow-1">
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link active">
-                            <i class="bi bi-speedometer2"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="employees.html" class="nav-link">
-                            <i class="bi bi-people"></i> Employees
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="TimeOff.html" class="nav-link">
-                            <i class="bi bi-calendar-check"></i> Time Off
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="Attendence.html" class="nav-link">
-                            <i class="bi bi-clock-history"></i> Attendance
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="payslip.html" class="nav-link">
-                            <i class="bi bi-wallet2"></i> Payroll
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="performance_reviews.html" class="nav-link">
-                            <i class="bi bi-bar-chart"></i> Performance
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="Settings.html" class="nav-link">
-                            <i class="bi bi-gear"></i> Settings
-                        </a>
-                    </li>
-                </ul>    
+    <section class="panel-right">
+      <div class="panel-right-inner">
+        <header class="form-header">
+          <h2>Welcome Back</h2>
+          <p>Please enter your credentials to continue.</p>
+        </header>
+
+        <form class="login-form" id="loginForm" novalidate>
+
+          <div class="field">
+            <label for="email">Work Email Address</label>
+            <div class="input-wrap" data-state="default">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6l-10 7L2 6"/><path d="M2 6h20v12H2z"/></svg>
+              <input type="email" id="email" name="email" placeholder="kish.barik@moderntech.solutions" autocomplete="username" required>
             </div>
-        </div>
+            <span class="field-error" id="emailError"></span>
+          </div>
 
-        <!-- Primary Layout Body Space -->
-        <div id="page-content-wrapper">
-            <div id="searchMessage" class="text-muted small px-4 mt-2 d-none"></div>
-
-            <!-- Main Dashboard View Container -->
-            <div class="container-fluid px-4 py-4">
-                <div class="hero-banner mb-4">
-                    <div class="hero-text">
-                        <span class="hero-eyebrow"><i class="bi bi-grid-1x2-fill"></i> HR Command Center</span>
-                        <h1 id="welcomeTitle" class="hero-title">Welcome back, Admin Team 👋</h1>
-                        <p id="welcomeSubtitle" class="hero-subtitle">Everything you need to manage ModernTech Solutions' people is here &mdash; employee records, attendance, payroll and performance reviews, all in one place.</p>
-
-                        <div class="hero-chip-row">
-                            <span class="hero-chip"><i class="bi bi-people-fill"></i> <span class="chip-value">250</span>&nbsp;Employees</span>
-                            <span class="hero-chip"><i class="bi bi-calendar4-week"></i> <span class="chip-value">18</span>&nbsp;On leave today</span>
-                            <span class="hero-chip"><i class="bi bi-clock-history"></i> <span class="chip-value">7</span>&nbsp;Pending requests</span>
-                        </div>
-
-                        <a href="performance_reviews.html" class="hero-cta"><i class="bi bi-graph-up-arrow"></i> View Performance</a>
-                        <a href="employees.html" class="hero-cta-ghost"><i class="bi bi-people"></i> Manage Employees</a>
-                    </div>
-
-                    <div class="hero-illustration">
-                        <svg viewBox="0 0 260 220" width="100%" height="auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Floating bar-chart card -->
-                            <rect x="14" y="38" width="150" height="112" rx="18" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.35)"/>
-                            <rect x="34" y="100" width="14" height="36" rx="4" fill="#ffffff" opacity="0.9"/>
-                            <rect x="58" y="84" width="14" height="52" rx="4" fill="#ffffff" opacity="0.65"/>
-                            <rect x="82" y="68" width="14" height="68" rx="4" fill="#ffffff" opacity="0.9"/>
-                            <rect x="106" y="92" width="14" height="44" rx="4" fill="#ffffff" opacity="0.6"/>
-                            <rect x="130" y="58" width="14" height="78" rx="4" fill="#ffffff" opacity="1"/>
-
-                            <!-- Floating donut card -->
-                            <g transform="translate(148,4)">
-                                <circle cx="46" cy="46" r="42" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.35)"/>
-                                <circle cx="46" cy="46" r="27" fill="none" stroke="#ffffff" stroke-width="8" stroke-dasharray="112 168" stroke-linecap="round" transform="rotate(-90 46 46)"/>
-                            </g>
-
-                            <!-- Floating check badge -->
-                            <g transform="translate(6,150)">
-                                <circle cx="26" cy="26" r="26" fill="#22C55E"/>
-                                <path d="M15 26l8 8 14-15" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                            </g>
-
-                            <!-- Decorative dots -->
-                            <circle cx="228" cy="150" r="5" fill="rgba(255,255,255,0.6)"/>
-                            <circle cx="245" cy="128" r="3" fill="rgba(255,255,255,0.4)"/>
-                            <circle cx="212" cy="172" r="3" fill="rgba(255,255,255,0.4)"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <div class="row g-3 mb-4">
-                    <!-- Total Employees -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="card stats-card p-4">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="card-icon" style="background: rgba(6,214,160,.12); color: #20c997;">
-                                    <i class="bi bi-person-fill fs-5"></i>
-                                </div>
-                                <div>
-                                    <p class="card-title mb-1">Total Employees</p>
-                                    <h5 class="card-value mb-2">250</h5>
-                                    <small class="text-success"><i class="bi bi-arrow-up"></i> 12 up this month</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- On Leave Today -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="card stats-card p-4">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="card-icon" style="background: rgba(17,138,178,.12); color: var(--accent);">
-                                    <i class="bi bi-calendar4-week fs-5"></i>
-                                </div>
-                                <div>
-                                    <p class="card-title mb-1">On Leave Today</p>
-                                    <h5 class="card-value mb-2">18</h5>
-                                    <small class="text-success"><i class="bi bi-arrow-up"></i> 3 up this week</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Pending Requests -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="card stats-card p-4">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="card-icon" style="background: rgba(255,90,95,.12); color: #dc3545;">
-                                    <i class="bi bi-clock-history fs-5"></i>
-                                </div>
-                                <div>
-                                    <p class="card-title mb-1">Pending Requests</p>
-                                    <h5 class="card-value mb-2">7</h5>
-                                    <a href="time-off.html" class="card-link text-primary text-decoration-none">View all requests <i class="bi bi-arrow-right-short"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payroll this month -->
-                    <div class="col-12 col-sm-6 col-md-3">
-                        <div class="card stats-card p-4">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="card-icon" style="background: rgba(17,138,178,.12); color: var(--accent-dark);">
-                                    <i class="bi bi-currency-dollar fs-5"></i>
-                                </div>
-                                <div>
-                                    <p class="card-title mb-1">Payroll this month</p>
-                                    <h5 class="card-value mb-2">R 632,700</h5>
-                                    <a href="payroll.html" class="card-link text-primary text-decoration-none">View summary <i class="bi bi-arrow-right-short"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row g-4 mb-4">
-                    <!-- Attendance Card Container -->
-                    <div class="col-12 col-lg-6">
-                        <div class="card p-4 border-0 shadow-sm h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Attendance Overview</h6>
-                                <select id="attendanceDropdown" class="form-select form-select-sm w-auto border-0 bg-light text-muted fw-semibold">
-                                    <option value="month">This Month</option>
-                                    <option value="week">This Week</option>
-                                    <option value="year">This Year</option>
-                                </select>
-                            </div>
-
-                            <div class="row align-items-center">
-                                <div class="col-5 chart-container position-relative">
-                                    <div class="donut-chart" id="donutChartContainer">
-                                        <div class="donut-hole"></div>
-                                        <div class="chart-center-text">
-                                            <span id="centerPercent" class="fw-bold fs-5">80%</span><br>
-                                            <span class="text-muted tiny-text">Present</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-7">
-                                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
-                                        <li class="d-flex justify-content-between align-items-center small">
-                                            <span><i class="bi bi-circle-fill text-success me-2"></i> Present</span>
-                                            <span class="fw-semibold text-muted" id="presentLabel">80% <span class="fw-normal opacity-50">(200)</span></span>
-                                        </li>
-                                        <li class="d-flex justify-content-between align-items-center small">
-                                            <span><i class="bi bi-circle-fill text-warning me-2"></i> Late</span>
-                                            <span class="fw-semibold text-muted" id="lateLabel">0% <span class="fw-normal opacity-50">(0)</span></span>
-                                        </li>
-                                        <li class="d-flex justify-content-between align-items-center small">
-                                            <span><i class="bi bi-circle-fill text-danger me-2"></i> Absent</span>
-                                            <span class="fw-semibold text-muted" id="absentLabel">20% <span class="fw-normal opacity-50">(50)</span></span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div class="text-center mt-3 border-top pt-2">
-                                <a href="attendance.html" class="text-primary text-decoration-none small fw-semibold">View full attendance report <i class="bi bi-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Time Off Requests Segment -->
-                    <div class="col-12 col-lg-6">
-                        <div class="card p-4 border-0 shadow-sm h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Time Off Requests</h6>
-                                <a href="requests.html" class="text-primary text-decoration-none small fw-semibold">View all <i class="bi bi-arrow-right-short"></i></a>
-                            </div>
-                            <div class="d-flex flex-column gap-3">
-                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-placeholder text-white fw-bold bg-secondary rounded-circle">SN</div>
-                                        <div>
-                                            <p class="mb-0 fw-semibold small">Sibongile Nkosi</p>
-                                            <span class="text-muted tiny-text">Personal Leave</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <p class="mb-0 small fw-medium">2025-07-22</p>
-                                        <span class="badge bg-success">Approved</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-placeholder text-white fw-bold bg-danger rounded-circle">LM</div>
-                                        <div>
-                                            <p class="mb-0 fw-semibold small">Lungile Moyo</p>
-                                            <span class="text-muted tiny-text">Family Responsibility</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <p class="mb-0 small fw-medium">2025-07-15</p>
-                                        <span class="badge bg-danger">Denied</span>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-placeholder text-white fw-bold bg-info rounded-circle">TM</div>
-                                        <div>
-                                            <p class="mb-0 fw-semibold small">Thabo Molefe</p>
-                                            <span class="text-muted tiny-text">Personal Leave</span>
-                                        </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <p class="mb-0 small fw-medium">2024-12-05</p>
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Employees Segment -->
-                <div class="row g-4">
-                    <div class="col-12 col-lg-6">
-                        <div class="card p-4 border-0 shadow-sm h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Recent Employees</h6>
-                                <a href="employees.html" class="text-primary text-decoration-none small fw-semibold">See More <i class="bi bi-arrow-right-short"></i></a>
-                            </div>
-                            <div class="d-flex flex-column gap-3">
-                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-placeholder bg-success-subtle text-success fw-bold rounded-circle">SN</div>
-                                        <div>
-                                            <p class="mb-0 fw-semibold small">Sibongile Nkosi</p>
-                                            <span class="text-muted tiny-text">Software Engineer</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-success small fw-medium">Joined in 2015</span>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-placeholder bg-secondary-subtle text-secondary fw-bold rounded-circle">LM</div>
-                                        <div>
-                                            <p class="mb-0 fw-semibold small">Lungile Moyo</p>
-                                            <span class="text-muted tiny-text">HR Manager</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-success small fw-medium">Joined in 2013</span>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between border-bottom pb-2">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-placeholder bg-info-subtle text-info fw-bold rounded-circle">TM</div>
-                                        <div>
-                                            <p class="mb-0 fw-semibold small">Thabo Molefe</p>
-                                            <span class="text-muted tiny-text">Quality Analyst</span>
-                                        </div>
-                                    </div>
-                                    <span class="text-success small fw-medium">Joined in 2018</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payroll Summary -->
-                    <div class="col-12 col-lg-6">
-                        <div class="card p-4 border-0 shadow-sm h-100">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Payroll Summary</h6>
-                                <a href="payroll.html" class="text-primary text-decoration-none small fw-semibold">View full report <i class="bi bi-arrow-right-short"></i></a>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <div>
-                                    <p class="text-muted small mb-1">Total Payroll</p>
-                                    <h5 class="fw-bold mb-0">R 632,700</h5>
-                                    <p class="text-success small mb-0">+8.5% vs Apr 2026</p>
-                                </div>
-                                <span class="badge bg-light text-dark rounded-pill">May 2026</span>
-                            </div>
-                            <div class="payroll-placeholder">
-                                <svg width="100%" height="150" viewBox="0 0 300 200" style="margin-top: 10px;">
-                                    <line x1="40" y1="170" x2="290" y2="170" stroke="#e9ecef" stroke-width="1"/>
-                                    <defs>
-                                        <linearGradient id="fillGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#4a90e2;stop-opacity:0.2" />
-                                            <stop offset="100%" style="stop-color:#4a90e2;stop-opacity:0" />
-                                        </linearGradient>
-                                    </defs>
-                                    <polygon points="40,120 80,100 120,110 160,90 200,85 240,80 280,70 280,170 240,170 200,170 160,170 120,170 80,170 40,170" fill="url(#fillGradient)"/>
-                                    <polyline points="40,120 80,100 120,110 160,90 200,85 240,80 280,70" fill="none" stroke="#4a90e2" stroke-width="2" stroke-linejoin="round"/>
-                                    <circle cx="40" cy="120" r="3" fill="#4a90e2"/>
-                                    <circle cx="280" cy="70" r="3" fill="#4a90e2"/>
-                                    <text x="40" y="190" font-size="12" text-anchor="middle" fill="#6c757d">Dec</text>
-                                    <text x="280" y="190" font-size="12" text-anchor="middle" fill="#6c757d">May</text>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          <div class="field">
+            <label for="job">Department/Role</label>
+            <div class="input-wrap" data-state="default">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="job" name="Job" placeholder="e.g. HR, Engineering, Sales" autocomplete="job" required>
             </div>
-        </div>
-    </div>
+            <span class="field-error" id="jobError"></span>
+          </div>
+
+          <div class="field">
+            <div class="field-label-row">
+              <label for="password">Security Password</label>
+              <a href="#" class="link-inline" id="forgotLink">Forgot password?</a>
+            </div>
+            <div class="input-wrap" data-state="default">
+              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+              <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required minlength="8">
+              <button type="button" class="toggle-visibility" id="toggleVisibility" aria-label="Show password" aria-pressed="false">
+                <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                <svg class="icon-eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 4.22-5.06M9.9 4.24A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+              </button>
+            </div>
+            <span class="field-error" id="passwordError"></span>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="rememberMe" name="rememberMe">
+            <span class="checkbox-box" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-6"/></svg>
+            </span>
+            <span class="checkbox-label">Remember this workstation for 30 days</span>
+          </label>
+
+          <button type="submit" class="btn-primary" id="signInBtn">
+            <span class="btn-label">Sign In</span>
+            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+
+          <p class="signup-line">New to the platform? <a href="signup.html" class="link-inline">Create an account</a></p>
+        </form>
+
+        <footer class="form-footer">
+          <a href="#" class="js-trigger-privacy">Privacy</a>
+          <a href="#" class="js-trigger-terms">Terms</a>
+          <a href="#" class="js-trigger-compliance">Compliance</a>
+        </footer>
+      </div>
+    </section>
+
+  </div>
 </div>
 
-<!-- Log Out Intercept Modal -->
-<div class="modal fade" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center p-4">
-      <div class="modal-body">
-        <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
-        <h5 class="modal-title fw-bold mb-2" id="logoutModalLabel">You have been logged out</h5>
-        <p class="text-muted small">Redirecting you to the authentication page...</p>
-      </div>
+<div class="modal-overlay" id="accountNotFoundModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Account Not Found</h3>
+      <button type="button" class="modal-close" id="closeNotFoundModal" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>The system could not identify any workspace account registered with that configuration.</p>
+      <p>Please check your workspace credentials or click "Create an account" below to establish a new identity entry.</p>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Privacy Policy</h3>
+      <button type="button" class="modal-close" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="legal-meta">Last Updated: July 2026</div>
+      <p class="legal-text">At ModernTech Solutions, we prioritize the protection and confidentiality of clinical administration, operational workflows, and employee directories. This Comprehensive Privacy Policy establishes the dynamic framework under which administrative profiles, authorization metrics, and diagnostic log histories are protected.</p>
+      
+      <div class="legal-section-title">1. Data Types and Collection Vectors</div>
+      <p class="legal-text">To maintain continuity across multi-tenant enterprise configurations, our application infrastructure indexes specific structural identities:</p>
+      <ul class="legal-list">
+        <li><strong>Identity Metadata:</strong> Full names, certified operational work emails, and systemic access roles assigned within your healthcare division.</li>
+        <li><strong>Authentication Hashes:</strong> Advanced structural password representations processed entirely locally or safely translated through secure Single Sign-On integrations.</li>
+        <li><strong>Session Signatures:</strong> Time-stamps, machine configurations, browser user-agents, and network location logs required to fulfill deep audit capabilities.</li>
+      </ul>
+
+      <div class="legal-section-title">2. Functional Framework of Processing</div>
+      <p class="legal-text">Collected directory information is isolated from commercial exploitation filters. Elements are processed entirely to ensure workspace initialization safety, cross-department scheduling sync routines, role-based visibility configurations, and active intrusion mitigation profiles.</p>
+
+      <div class="legal-section-title">3. Structural Retention Strategies</div>
+      <p class="legal-text">Identity data layers remain persistent within the application's runtime sandboxes (`localStorage` / centralized vaults) until a formal deletion directive is issued by an authorized corporate administrator or workspace coordinator.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Terms of Service</h3>
+      <button type="button" class="modal-close" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="legal-meta">Effective Date: July 2026</div>
+      <p class="legal-text">These Terms of Service govern the access rules, architectural use boundaries, and directory configurations provided through the ModernTech Solutions enterprise suite. Finalizing an active identity or administrative channel establishes a legally binding contract framework.</p>
+      
+      <div class="legal-section-title">1. Acceptable Use Safeguards</div>
+      <p class="legal-text">Administrators and authorized clinical platform actors must strictly adhere to the following baseline structural provisions:</p>
+      <ul class="legal-list">
+        <li>Profiles must represent actual clinical agents containing real credential alignments.</li>
+        <li>Users must maintain strict isolation of local password strings from outside elements.</li>
+        <li>Malicious injection sweeps, reverse engineering of dashboard states, or systematic scrapers are strictly banned.</li>
+      </ul>
+
+      <div class="legal-section-title">2. Infrastructure Liability & Allocation</div>
+      <p class="legal-text">ModernTech Solutions delivers this identity portal configuration framework on an "as-is" basis. We refuse all explicit warranties concerning server uptime stability during unforeseen network dropouts, or data alterations resulting from browser configuration adjustments.</p>
+
+      <div class="legal-section-title">3. Account Breach Mandates</div>
+      <p class="legal-text">Should a workspace agent discover credential leak scenarios, they are mandated to instantly reset authorization passwords locally and alert security coordinates within exactly twenty-four (24) hours.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="complianceModal" role="dialog" aria-modal="true">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h3>Compliance & Security Mandates</h3>
+      <button type="button" class="modal-close" aria-label="Close modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="legal-meta">Framework Version: 4.2-2026</div>
+      <p class="legal-text">ModernTech Solutions runs active multi-layer guardrails to ensure user data remains fully aligned with strict medical and organizational platform rules. This application layout implements specific system filters designed to support high-level compliance goals.</p>
+      
+      <div class="legal-section-title">1. Regulatory Framework Alignments</div>
+      <p class="legal-text">Our identity systems are custom-engineered to align with complex technological and statutory mandates, including:</p>
+      <ul class="legal-list">
+        <li><strong>HIPAA Security Rule:</strong> Enforcing automated access locks, cryptographic payload wrapping, and clean session termination rules.</li>
+        <li><strong>HITECH Act Provisions:</strong> Running deep infrastructure monitoring and comprehensive tracking logs across all active personnel data changes.</li>
+        <li><strong>SOC 2 Type II Standards:</strong> Following strict rules for processing isolation, protecting entry vectors, and keeping audit pathways readable at all times.</li>
+      </ul>
+
+      <div class="legal-section-title">2. Active Cryptographic Blueprints</div>
+      <p class="legal-text">Data strings at rest utilize military-grade advanced block ciphers, paired with industry-standard secure transport paths during network travel. No raw identity matrices or cleartext structural strings are allowed into standard analytics channels.</p>
+    </div>
+  </div>
+</div>
+
+<script src="employees-data.js"></script>
+<script src="auth.js"></script>
+<script src="script.js"></script>
 <script>
-    // Responsive Burger View Setup
-    const burgerToggle = document.getElementById('burgerToggle');
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
+document.addEventListener('DOMContentLoaded', () => {
 
-    function toggleSidebar() {
-        sidebar.classList.toggle('show');
-        sidebarOverlay.classList.toggle('show');
+  // Safeguard: Extract emails cleanly into registered array
+  if (!localStorage.getItem('registeredUsers')) {
+    let baseUsers = ["sibongile.nkosi@moderntech.com", "lungile.moyo@moderntech.com", "thabo.molefe@moderntech.com"];
+    if (typeof typeofData !== 'undefined' && typeofData.employeeInformation) {
+      baseUsers = typeofData.employeeInformation.map(emp => {
+        return typeof emp.contact === 'string' ? emp.contact.trim() : (emp.contact?.email || '');
+      }).filter(email => email !== '');
+    }
+    localStorage.setItem('registeredUsers', JSON.stringify(baseUsers));
+  }
+
+  const existingSession = typeof Auth !== 'undefined' ? Auth.getSession() : null;
+  if (existingSession){
+    const savedRole = localStorage.getItem('last_user_role') || '';
+    window.location.href = savedRole.toUpperCase() === 'HR' ? 'index.html' : 'dashboard.html';
+    return;
+  }
+
+  const form = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const jobInput = document.getElementById('job'); 
+  const passwordInput = document.getElementById('password');
+  const emailError = document.getElementById('emailError');
+  const jobError = document.getElementById('jobError');
+  const passwordError = document.getElementById('passwordError');
+  const signInBtn = document.getElementById('signInBtn');
+  const toggleBtn = document.getElementById('toggleVisibility');
+  const notFoundModal = document.getElementById('accountNotFoundModal');
+  const closeNotFoundBtn = document.getElementById('closeNotFoundModal');
+
+  const wrapOf = (input) => input.closest('.input-wrap');
+
+  function setState(input, state){
+    wrapOf(input).dataset.state = state;
+  }
+
+  function showError(input, errorEl, message){
+    setState(input, 'error');
+    errorEl.textContent = message;
+    errorEl.classList.add('visible');
+  }
+
+  function clearError(input, errorEl){
+    errorEl.classList.remove('visible');
+    errorEl.textContent = '';
+    if (wrapOf(input).dataset.state === 'error'){
+      setState(input, document.activeElement === input ? 'focus' : 'default');
+    }
+  }
+
+  function isValidEmail(value){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  [emailInput, jobInput, passwordInput].forEach((input) => {
+    input.addEventListener('focus', () => {
+      if (wrapOf(input).dataset.state !== 'error') setState(input, 'focus');
+    });
+    input.addEventListener('blur', () => {
+      if (wrapOf(input).dataset.state !== 'error') setState(input, 'default');
+    });
+  });
+
+  emailInput.addEventListener('input', () => {
+    if (emailInput.value.trim() === '' || isValidEmail(emailInput.value.trim())){
+      clearError(emailInput, emailError);
+    }
+  });
+
+  passwordInput.addEventListener('input', () => {
+    if (passwordInput.value.length === 0 || passwordInput.value.length >= 8){
+      clearError(passwordInput, passwordError);
+    }
+  });
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = passwordInput.type === 'password';
+    passwordInput.type = isHidden ? 'text' : 'password';
+    toggleBtn.querySelector('.icon-eye').style.display = isHidden ? 'none' : 'block';
+    toggleBtn.querySelector('.icon-eye-off').style.display = isHidden ? 'block' : 'none';
+    toggleBtn.setAttribute('aria-pressed', String(isHidden));
+    passwordInput.focus();
+  });
+
+  function openModal(modal) { modal.classList.add('is-visible'); }
+  function closeModal(modal) { modal.classList.remove('is-visible'); }
+
+  closeNotFoundBtn.addEventListener('click', () => closeModal(notFoundModal));
+  notFoundModal.addEventListener('click', (e) => { if(e.target === notFoundModal) closeModal(notFoundModal); });
+
+  document.querySelectorAll('.js-trigger-privacy').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('privacyModal')); });
+  });
+  document.querySelectorAll('.js-trigger-terms').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('termsModal')); });
+  });
+  document.querySelectorAll('.js-trigger-compliance').forEach(el => {
+    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('complianceModal')); });
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    const closeBtn = modal.querySelector('.modal-close');
+    if(closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    let valid = true;
+    const emailVal = emailInput.value.trim();
+    const jobVal = jobInput.value.trim();
+    const passVal = passwordInput.value;
+
+    if (emailVal === ''){
+      showError(emailInput, emailError, 'Enter your work email address.');
+      valid = false;
+    } else if (!isValidEmail(emailVal)){
+      showError(emailInput, emailError, 'Enter a valid email address.');
+      valid = false;
     }
 
-    if (burgerToggle) burgerToggle.addEventListener('click', toggleSidebar);
-    if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
-
-    // Filter Logic Search implementation
-    const searchInput = document.getElementById('searchInput');
-    const searchMessage = document.getElementById('searchMessage');
-    const searchableCards = Array.from(document.querySelectorAll('#page-content-wrapper .card'));
-
-    if (searchInput) {
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.trim().toLowerCase();
-            let resultsCount = 0;
-
-            searchableCards.forEach(card => {
-                if (query === '') {
-                    card.parentElement.style.display = '';
-                    if (searchMessage) searchMessage.classList.add('d-none');
-                } else {
-                    const matched = card.textContent.toLowerCase().includes(query);
-                    card.parentElement.style.display = matched ? '' : 'none';
-                    if (matched) resultsCount++;
-                }
-            });
-
-            if (query !== '' && searchMessage) {
-                searchMessage.classList.remove('d-none');
-                searchMessage.textContent = resultsCount > 0 ? `Found ${resultsCount} metric items matches.` : 'No search parameters found matches.';
-            }
-        });
+    if (jobVal === ''){
+      showError(jobInput, jobError, 'Enter your department or role position.');
+      valid = false;
+    } else {
+      clearError(jobInput, jobError);
     }
 
-    // Modal Log Out Intercept Script Routing
-    const logoutModalEl = document.getElementById('logoutModal');
-    if (logoutModalEl) {
-        logoutModalEl.addEventListener('shown.bs.modal', () => {
-            setTimeout(() => {
-                window.location.href = 'signin.html';
-            }, 2000);
-        });
+    if (passVal === ''){
+      showError(passwordInput, passwordError, 'Enter your password.');
+      valid = false;
+    } else if (passVal.length < 8) {
+      showError(passwordInput, passwordError, 'Password must be at least 8 characters.');
+      valid = false;
     }
 
-    // Dynamic Attendance Dropdown Management Engine
-    const attendanceDropdown = document.getElementById('attendanceDropdown');
-    const centerPercent = document.getElementById('centerPercent');
-    const donutChartContainer = document.getElementById('donutChartContainer');
-    const presentLabel = document.getElementById('presentLabel');
-    const lateLabel = document.getElementById('lateLabel');
-    const absentLabel = document.getElementById('absentLabel');
+    if (!valid) return;
 
-    // Mapped attendance data (with visual variance added to week and year for functional demonstration)
-    const attendanceData = {
-        month: { presentPct: 80, presentCount: 200, latePct: 0, lateCount: 0, absentPct: 20, absentCount: 50 },
-        week:  { presentPct: 86, presentCount: 215, latePct: 4, lateCount: 10, absentPct: 10, absentCount: 25 },
-        year:  { presentPct: 74, presentCount: 185, latePct: 10, lateCount: 25, absentPct: 16, absentCount: 40 }
-    };
+    signInBtn.classList.add('is-loading');
+    signInBtn.disabled = true;
 
-    function updateAttendanceDisplay(period) {
-        const data = attendanceData[period];
-        if (!data) return;
+    setTimeout(() => {
+      const usersArray = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
+      const accountFound = usersArray.some(email => email.toLowerCase() === emailVal.toLowerCase());
 
-        // Sync local CSS variables inside the donut chart container dynamically
-        donutChartContainer.style.setProperty('--present-percent', `${data.presentPct}%`);
-        donutChartContainer.style.setProperty('--late-percent', `${data.latePct}%`);
+      if (!accountFound) {
+        signInBtn.classList.remove('is-loading');
+        signInBtn.disabled = false;
+        openModal(notFoundModal);
+        return;
+      }
 
-        // Update Text Nodes
-        centerPercent.textContent = `${data.presentPct}%`;
-        presentLabel.innerHTML = `${data.presentPct}% <span class="fw-normal opacity-50">(${data.presentCount})</span>`;
-        lateLabel.innerHTML = `${data.latePct}% <span class="fw-normal opacity-50">(${data.lateCount})</span>`;
-        absentLabel.innerHTML = `${data.absentPct}% <span class="fw-normal opacity-50">(${data.absentCount})</span>`;
-    }
+      localStorage.setItem('last_user_role', jobVal);
 
-    if (attendanceDropdown) {
-        attendanceDropdown.addEventListener('change', (e) => {
-            updateAttendanceDisplay(e.target.value);
-        });
-        // Run once on load to establish baseline sync
-        updateAttendanceDisplay(attendanceDropdown.value);
-    }
+      if (jobVal.toUpperCase() === 'HR') {
+        window.location.href = 'home.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    }, 700);
+  });
+
+});
 </script>
 </body>
 </html>
