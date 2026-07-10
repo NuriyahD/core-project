@@ -48,52 +48,79 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
         }
 
+        /* Top Nav Brand Logo Styling */
+        .brand-icon {
+            color: #2563eb;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-text h5 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.2;
+        }
+
+        .brand-text small {
+            margin: 0;
+            font-size: 12px;
+            color: #3b82f6;
+            font-weight: 600;
+            display: block;
+        }
+
+        /* Sidebar Gradient Design */
         .sidebar {
             width: 250px;
-            background: linear-gradient(135deg, var(--sidebar-start) 0%, var(--sidebar-end) 100%);
+            background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 100%);
             position: fixed;
             top: 0;
             left: 0;
             bottom: 0;
-            padding: 1.5rem;
+            padding: 1.5rem 1rem;
             z-index: 100;
             overflow-y: auto;
-            border-right: 1px solid #bae6fd;
+            border-right: 1px solid #cbd5e1;
             padding-top: 5.5rem;
         }
 
+        /* Menu Items */
         .menu-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: var(--accent-dark);
+            gap: 12px;
+            color: #0369a1;
             text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 5px;
-            transition: all 0.2s;
-            font-weight: 500;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 14px;
         }
 
-        .menu-item:hover, .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.7);
-            color: var(--accent-dark);
+        .menu-item i {
+            font-size: 18px;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            color: #0284c7;
+        }
+
+        /* Active highlight status */
+        .menu-item.active {
+            background-color: #ffffff;
+            color: #2563eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .sidebar-divider {
             border-top: 1px solid rgba(3, 105, 161, 0.2);
             margin: 1.5rem 0;
-        }
-
-        .sub-menu-title {
-            color: var(--accent-dark);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            padding-left: 15px;
-            margin-bottom: 5px;
-            letter-spacing: 0.05em;
-            opacity: 0.8;
         }
 
         .main-content {
@@ -107,6 +134,7 @@
             border-radius: 8px;
             padding: 2.5rem;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            background-color: #fff;
         }
 
         .watermark {
@@ -116,18 +144,18 @@
             letter-spacing: 1px;
         }
 
-        #slip{
-          margin-top: 30px;
+        #slip {
+            margin-top: 30px;
         }
 
-        #earnTotal, #deductTotal{
-          font-size: large;
+        #earnTotal, #deductTotal {
+            font-size: large;
         }
 
         @media print {
             body { background: #fff; color: #000; }
-            .top-navbar, .sidebar, .no-print { display: none !important; }
-            .main-content { margin-left: 0 !important; padding: 0 !important; }
+            .top-navbar, .sidebar, .no-print, .row.g-3.align-items-end { display: none !important; }
+            .main-content { margin-left: 0 !important; padding: 0 !important; padding-top: 0 !important; }
             .payslip-container { border: none !important; box-shadow: none !important; padding: 0 !important; }
         }
 
@@ -142,48 +170,52 @@
 <body>
     <!-- Top NavBar -->
     <header class="top-navbar">
-        <div class="d-flex align-items-center gap-3">
-            <div class="d-flex align-items-center gap-2">
-                <div class="bg-light p-2 rounded text-primary">
-                    <i class="bi bi-wallet2 text-accent fs-5"></i>
-                </div>
-                <div>
-                    <h5 class="text-dark fw-bold m-0 fs-6">ModernTech Hub</h5>
-                    <small class="text-muted small">Enterprise Payroll</small>
-                </div>
+    <div class="d-flex align-items-center gap-3">
+        <div class="sidebar-brand d-flex align-items-center gap-2">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;">
+                    <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"></path>
+                    <path d="M12 22v-6"></path>
+                    <path d="M8 22v-3"></path>
+                    <path d="M16 22v-3"></path>
+                </svg>
+            </div>
+            <div class="brand-text d-none d-sm-block">
+                <h5>ModernTech</h5>
+                <small>Solutions</small>
             </div>
         </div>
-        <div class="d-flex align-items-center gap-3">
-            <span class="text-muted small d-none d-md-inline-block"><i class="bi bi-shield-lock text-success me-1"></i> Interactive Adjustments Panel</span>
-            <button class="btn btn-light btn-sm rounded-circle"><i class="bi bi-person-circle fs-5 text-secondary"></i></button>
+    </div>
+
+    <div class="d-flex align-items-center gap-3">
+        <span class="text-muted small d-none d-md-inline-block"><i class="bi bi-shield-check text-success me-1"></i> Secure Session Gateway</span>
+        <div class="dropdown">
+            <button class="btn btn-light btn-sm rounded-circle" type="button" aria-label="User Profile">
+                <i class="bi bi-person-circle fs-5 text-secondary"></i>
+            </button>
         </div>
-    </header>
+    </div>
+</header>
 
     <div>
-        <!-- Sidbar -->
+        <!-- Sidebar Navigation -->
         <aside class="sidebar">
-            <nav>
+            <nav class="sidebar-menu main-menu">
                 <a href="timesheet.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
                 <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
-                <a href="Attendance.html" class="menu-item"><i class="bi bi-person-check"></i> Attendance</a>
-                <a href="timetracker.html" class="menu-item"><i class="bi bi-clock-history"></i> Time Tracker</a>
+                <a href="Attendence.html" class="menu-item"><i class="bi bi-person-check"></i> Attendance</a>
                 <a href="payslip.html" class="menu-item active"><i class="bi bi-wallet2"></i> Payroll</a>
-                <a href="about.html" class="menu-item"><i class="bi bi-info-circle"></i> About Us</a>
+                <a href="performance_reviews.html" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
                 <a href="setting.html" class="menu-item"><i class="bi bi-gear"></i> Settings</a>
-            </nav>
-            <hr class="sidebar-divider">
-            <div class="sub-menu-title">Management Logs</div>
-            <nav>
-                <a href="timesheet.html" class="menu-item">Time Sheet</a>
-                <a href="timetracker.html" class="menu-item">Time Tracker</a>
             </nav>
         </aside>
 
+        <!-- Main Workspace Area -->
         <div class="main-content">
             <div class="container-fluid py-2">
                 
-                <!-- Employee Input Row (Hidden during printing) -->
+                <!-- Employee Dynamic Controls Input Section -->
                 <div>
                     <div class="row g-3 align-items-end">
                         <div class="col-md-3">
@@ -220,10 +252,10 @@
                     </div>
                 </div>
 
-                <!-- Printed payslip outline -->
+                <!-- Live Document Area -->
                 <div id="slip" class="payslip-container mx-auto" style="max-width: 850px;">
                     
-                    <!-- Payslip Header -->
+                    <!-- Top Summary Structure -->
                     <div class="row align-items-center border-bottom pb-4 mb-4">
                         <div class="col-sm-6">
                             <h4 class="fw-bold text-dark mb-0" style="letter-spacing: 0.5px;">ModernTech Solutions</h4>
@@ -237,7 +269,7 @@
                         </div>
                     </div>
 
-                    <!-- Employee specification details -->
+                    <!-- Profile Configuration Summary -->
                     <div class="row g-3 mb-4">
                         <div class="col-6 col-md-3">
                             <small class="text-muted d-block text-uppercase small">Employee Name</small>
@@ -249,13 +281,13 @@
                         </div>
                         <div class="col-6 col-md-3">
                             <small class="text-muted d-block text-uppercase small">Department</small>
-                            <span id="empDept">--</span>
+                            <span id="empDept" class="text-dark d-block">--</span>
                         </div>
                     </div>
 
-                    <!-- Payslip details -->
+                    <!-- Breakdown Calculations Data Tables -->
                     <div class="row g-4 mb-4">
-                        <!-- Gross Earnings Section -->
+                        <!-- Income Metrics Ledger -->
                         <div class="col-md-6">
                             <div class="border rounded-3 overflow-hidden">
                                 <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Gross Earnings</div>
@@ -280,7 +312,7 @@
                             </div>
                         </div>
 
-                        <!-- Deductions Section -->
+                        <!-- Statutory Reductions Ledger -->
                         <div class="col-md-6">
                             <div class="border rounded-3 overflow-hidden">
                                 <div class="px-3 py-2 bg-light border-bottom fw-bold text-dark small text-uppercase">Deductions</div>
@@ -316,7 +348,7 @@
                         </div>
                     </div>
 
-                    <!-- Footer -->
+                    <!-- Verified Ledger Footer -->
                     <div class="row pt-2 text-muted small border-top" style="font-size: 0.72rem;">
                         <div class="col-sm-8">
                             <span class="watermark text-success font-monospace"><i class="bi bi-patch-check"></i> Electronically Verified Ledger Signature Record</span>
@@ -334,35 +366,32 @@
         </div>
     </div>
 
+    <!-- Live Data Loading logic orchestration -->
     <script>
-        let employees = []
-        let payrollData = []
+        let employees = [];
+        let payrollData = [];
 
-       function loadData(){
-        fetch("data/employee_info.json")
-        .then(response => response.json())
-        .then(data => {
-          employees = data.employeeInformation;
-
-          return fetch("data/payroll_data.json")
-        })
-        .then(response => response.json())
-        .then(data => {
-          payrollData = data.payrollData;
-
-          setupDashboard()
-        })
-        .catch(error => {
-          console.log("Error: ", error);
-          
-        })
-       }
+        function loadData(){
+            fetch("data/employee_info.json")
+            .then(response => response.json())
+            .then(data => {
+                employees = data.employeeInformation;
+                return fetch("data/payroll_data.json");
+            })
+            .then(response => response.json())
+            .then(data => {
+                payrollData = data.payrollData;
+                setupDashboard();
+            })
+            .catch(error => {
+                console.log("Error: ", error);
+            });
+        }
 
         function setupDashboard() {
             const dropdown = document.getElementById("payslipEmployeeSelect");
             dropdown.innerHTML = ""; 
 
-            // Load all listed employees into dropdown
             for (let i = 0; i < employees.length; i++) {
                 const emp = employees[i];
                 const optionEl = document.createElement("option");
@@ -374,19 +403,12 @@
             loadEmployeeData();
         }
 
-        // Fetch and push dummy data for selected employee 
         function loadEmployeeData() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
-            
-            const currentPayroll = payrollData.find(
-              payroll => payroll.employeeId === currentId
-            )
+            const currentPayroll = payrollData.find(payroll => payroll.employeeId === currentId);
 
             if (currentPayroll) {
-                // Hourly rate calculation
                 const estimatedHourly = Math.round(currentPayroll.finalSalary / (currentPayroll.hoursWorked - currentPayroll.leaveDeductions));
-                
-                // Update form inputs
                 document.getElementById("customHoursWorked").value = currentPayroll.hoursWorked;
                 document.getElementById("customHourlyRate").value = estimatedHourly;
             }
@@ -394,31 +416,24 @@
             updatePayslipCalculations();
         }
 
-        // Calculation that updates gross pay live
         function updatePayslipCalculations() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
             const chosenMonth = document.getElementById("payslipMonthSelect").value;
             
-            // Take  and use numbers from the employee inputs
             const userHours = parseFloat(document.getElementById("customHoursWorked").value) || 0;
             const userRate = parseFloat(document.getElementById("customHourlyRate").value) || 0;
 
-            const currentEmp = employees.find(
-              employee => employee.employeeId === currentId
-            )
-
+            const currentEmp = employees.find(employee => employee.employeeId === currentId);
             if (!currentEmp) return;
 
             const computedGross = userHours * userRate;
-            const taxPaye = computedGross * 0.15; // 15% flat deduction rate
-            const uifDeduct = computedGross * 0.01; // 1% Unemployment Insurance allocation
+            const taxPaye = computedGross * 0.15; 
+            const uifDeduct = computedGross * 0.01; 
             const totalDeductions = taxPaye + uifDeduct;
             const finalNetPayout = computedGross - totalDeductions;
 
-            // Currency formatting helper tool
             const formatZA = (amount) => "R" + amount.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            // Update UI
             document.getElementById("slipPeriodLabel").textContent = chosenMonth;
             document.getElementById("empName").textContent = currentEmp.name;
             document.getElementById("empPosition").textContent = "MTech-00" + currentEmp.employeeId + " / " + currentEmp.position;
@@ -438,5 +453,4 @@
         window.onload = loadData;
     </script>
 </body>
-
 </html>

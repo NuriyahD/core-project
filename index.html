@@ -33,23 +33,26 @@
             min-height: 100vh;
         }
 
+        /* Top Sticky Header Framework */
         .navbar {
             position: sticky;
             top: 0;
             height: 73px;
             background-color: #ffffff;
             border-bottom: 1px solid var(--border);
-            z-index: 1050;
+            z-index: 1050; /* Sits completely above sidebar elements */
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
         }
 
+        /* Branding Interface matching original visuals */
         .brand-container {
             display: flex;
             align-items: center;
             gap: 12px;
-            width: 236px; 
+            width: 236px; /* Matches alignment offset boundary */
         }
 
+        /* Accurate Custom CSS Rendering of the Logo Mark from the image */
         .custom-logo-mark {
             display: inline-flex;
             flex-direction: column;
@@ -108,14 +111,16 @@
             font-weight: 500;
         }
 
+        /* Main Workspace Splitting Frame */
         .app-workspace {
             display: flex;
             flex-grow: 1;
         }
 
+        /* Sidebar Styling strictly matching layout guidelines */
         #sidebar {
             position: sticky;
-            top: 73px; 
+            top: 73px; /* Locks below the fixed 73px navbar height */
             width: 260px;
             min-width: 260px;
             height: calc(100vh - 73px);
@@ -264,6 +269,170 @@
             z-index: 10;
         }
 
+        /* Hero / Welcome Banner */
+        .hero-banner {
+            position: relative;
+            overflow: hidden;
+            border-radius: 28px;
+            background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 45%, #0EA5E9 100%);
+            color: #ffffff;
+            padding: 2.75rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .hero-banner::before {
+            content: "";
+            position: absolute;
+            top: -70px;
+            right: 140px;
+            width: 220px;
+            height: 220px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+        }
+
+        .hero-banner::after {
+            content: "";
+            position: absolute;
+            bottom: -90px;
+            left: -40px;
+            width: 220px;
+            height: 220px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+        }
+
+        .hero-text {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            background: rgba(255,255,255,0.16);
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: .6rem;
+        }
+
+        .hero-subtitle {
+            color: rgba(255,255,255,.85);
+            max-width: 480px;
+            margin-bottom: 1.5rem;
+            font-size: .95rem;
+        }
+
+        .hero-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .hero-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.22);
+            border-radius: 14px;
+            padding: 8px 14px;
+            font-size: .8rem;
+            font-weight: 600;
+        }
+
+        .hero-chip .chip-value {
+            font-weight: 800;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            color: var(--accent-dark);
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: .88rem;
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,.15);
+            color: var(--accent-dark);
+        }
+
+        .hero-cta-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,.45);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: .88rem;
+            margin-left: .75rem;
+            transition: background .15s ease;
+        }
+
+        .hero-cta-ghost:hover {
+            background: rgba(255,255,255,.14);
+            color: #ffffff;
+        }
+
+        .hero-illustration {
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+            width: 240px;
+        }
+
+        @media (max-width: 991.98px) {
+            .hero-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 2.25rem 1.75rem;
+            }
+            .hero-illustration {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            .hero-cta-ghost {
+                margin-left: 0;
+                margin-top: .5rem;
+            }
+        }
+
+        /* Responsiveness Overhauls */
         @media (max-width: 991.98px) {
             .search-container-fluid {
                 max-width: 100%;
@@ -287,9 +456,9 @@
 
             #sidebar {
                 position: fixed;
-                top: 73px;
+                top: 73px; /* Adjusted to align directly beneath the 73px high header navbar */
                 left: -260px;
-                height: calc(100vh - 73px);
+                height: calc(100vh - 73px); /* Accounts for header height spacing */
                 box-shadow: 4px 0 15px rgba(0,0,0,0.1);
             }
 
@@ -300,7 +469,7 @@
             .sidebar-overlay {
                 display: none;
                 position: fixed;
-                top: 73px;
+                top: 73px; /* Prevents overlay dim effect from covering the primary workspace burger container */
                 left: 0; right: 0; bottom: 0;
                 background: rgba(0, 0, 0, 0.4);
                 z-index: 999;
@@ -321,12 +490,14 @@
 <div id="wrapper">
     <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
+    <!-- Top Integrated Sticky Navigation Bar -->
     <nav class="navbar navbar-light bg-white py-2 px-4">
         <div class="container-fluid p-0 d-flex flex-wrap align-items-center justify-content-between">
             <div class="d-flex align-items-center gap-3">
                 <button id="burgerToggle" class="burger-btn me-1">
                     <i class="bi bi-list"></i>
                 </button>
+                <!-- Brand Engine Extracted Here to Remain Pinned Top Alongside the Nav Content -->
                 <div class="brand-container">
                     <div class="custom-logo-mark">
                         <div class="logo-circle"></div>
@@ -351,6 +522,7 @@
             </div>
 
             <div class="d-flex align-items-center justify-content-end ms-auto gap-3">
+                <!-- Functional Notifications Trigger via Dropdown -->
                 <div class="dropdown">
                     <i id="notificationBell" class="bi bi-bell fs-5 position-relative" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
@@ -374,6 +546,7 @@
                 
                 <div class="page-divider"></div>
                 
+                <!-- Only Image Profile Dropdown Drop -->
                 <div class="dropdown">
                     <button class="btn p-0 border-0 dropdown-toggle no-caret" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle fs-4 text-secondary"></i>
@@ -386,7 +559,9 @@
         </div>
     </nav>
 
+    <!-- Lower Split Framework Container -->
     <div class="app-workspace">
+        <!-- Sidebar Layout Container Base -->
         <div id="sidebar" class="d-flex flex-column">
             <div class="nav-container flex-grow-1">
                 <ul class="nav nav-pills flex-column mb-auto">
@@ -396,7 +571,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="EmployeeRecords.html" class="nav-link">
+                        <a href="employees.html" class="nav-link">
                             <i class="bi bi-people"></i> Employees
                         </a>
                     </li>
@@ -406,7 +581,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="Attendance.html" class="nav-link">
+                        <a href="Attendence.html" class="nav-link">
                             <i class="bi bi-clock-history"></i> Attendance
                         </a>
                     </li>
@@ -429,16 +604,60 @@
             </div>
         </div>
 
+        <!-- Primary Layout Body Space -->
         <div id="page-content-wrapper">
             <div id="searchMessage" class="text-muted small px-4 mt-2 d-none"></div>
 
+            <!-- Main Dashboard View Container -->
             <div class="container-fluid px-4 py-4">
-                <div class="mb-4">
-                    <h4 id="welcomeTitle" class="fw-bold m-0 text-uppercase welcome-heading">Welcome Back, Admin Team!</h4>
-                    <p id="welcomeSubtitle" class="text-muted small welcome-subtitle">Check what's happening at Modern Tech Solutions today</p>
+                <div class="hero-banner mb-4">
+                    <div class="hero-text">
+                        <span class="hero-eyebrow"><i class="bi bi-grid-1x2-fill"></i> HR Command Center</span>
+                        <h1 id="welcomeTitle" class="hero-title">Welcome back, Admin Team 👋</h1>
+                        <p id="welcomeSubtitle" class="hero-subtitle">Everything you need to manage ModernTech Solutions' people is here &mdash; employee records, attendance, payroll and performance reviews, all in one place.</p>
+
+                        <div class="hero-chip-row">
+                            <span class="hero-chip"><i class="bi bi-people-fill"></i> <span class="chip-value">250</span>&nbsp;Employees</span>
+                            <span class="hero-chip"><i class="bi bi-calendar4-week"></i> <span class="chip-value">18</span>&nbsp;On leave today</span>
+                            <span class="hero-chip"><i class="bi bi-clock-history"></i> <span class="chip-value">7</span>&nbsp;Pending requests</span>
+                        </div>
+
+                        <a href="performance_reviews.html" class="hero-cta"><i class="bi bi-graph-up-arrow"></i> View Performance</a>
+                        <a href="employees.html" class="hero-cta-ghost"><i class="bi bi-people"></i> Manage Employees</a>
+                    </div>
+
+                    <div class="hero-illustration">
+                        <svg viewBox="0 0 260 220" width="100%" height="auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Floating bar-chart card -->
+                            <rect x="14" y="38" width="150" height="112" rx="18" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.35)"/>
+                            <rect x="34" y="100" width="14" height="36" rx="4" fill="#ffffff" opacity="0.9"/>
+                            <rect x="58" y="84" width="14" height="52" rx="4" fill="#ffffff" opacity="0.65"/>
+                            <rect x="82" y="68" width="14" height="68" rx="4" fill="#ffffff" opacity="0.9"/>
+                            <rect x="106" y="92" width="14" height="44" rx="4" fill="#ffffff" opacity="0.6"/>
+                            <rect x="130" y="58" width="14" height="78" rx="4" fill="#ffffff" opacity="1"/>
+
+                            <!-- Floating donut card -->
+                            <g transform="translate(148,4)">
+                                <circle cx="46" cy="46" r="42" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.35)"/>
+                                <circle cx="46" cy="46" r="27" fill="none" stroke="#ffffff" stroke-width="8" stroke-dasharray="112 168" stroke-linecap="round" transform="rotate(-90 46 46)"/>
+                            </g>
+
+                            <!-- Floating check badge -->
+                            <g transform="translate(6,150)">
+                                <circle cx="26" cy="26" r="26" fill="#22C55E"/>
+                                <path d="M15 26l8 8 14-15" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </g>
+
+                            <!-- Decorative dots -->
+                            <circle cx="228" cy="150" r="5" fill="rgba(255,255,255,0.6)"/>
+                            <circle cx="245" cy="128" r="3" fill="rgba(255,255,255,0.4)"/>
+                            <circle cx="212" cy="172" r="3" fill="rgba(255,255,255,0.4)"/>
+                        </svg>
+                    </div>
                 </div>
 
                 <div class="row g-3 mb-4">
+                    <!-- Total Employees -->
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="card stats-card p-4">
                             <div class="d-flex align-items-center gap-3">
@@ -454,6 +673,7 @@
                         </div>
                     </div>
 
+                    <!-- On Leave Today -->
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="card stats-card p-4">
                             <div class="d-flex align-items-center gap-3">
@@ -469,6 +689,7 @@
                         </div>
                     </div>
 
+                    <!-- Pending Requests -->
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="card stats-card p-4">
                             <div class="d-flex align-items-center gap-3">
@@ -478,12 +699,13 @@
                                 <div>
                                     <p class="card-title mb-1">Pending Requests</p>
                                     <h5 class="card-value mb-2">7</h5>
-                                    <a href="TimeOff.html" class="card-link text-primary text-decoration-none">View all requests <i class="bi bi-arrow-right-short"></i></a>
+                                    <a href="time-off.html" class="card-link text-primary text-decoration-none">View all requests <i class="bi bi-arrow-right-short"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Payroll this month -->
                     <div class="col-12 col-sm-6 col-md-3">
                         <div class="card stats-card p-4">
                             <div class="d-flex align-items-center gap-3">
@@ -493,7 +715,7 @@
                                 <div>
                                     <p class="card-title mb-1">Payroll this month</p>
                                     <h5 class="card-value mb-2">R 632,700</h5>
-                                    <a href="payslip.html" class="card-link text-primary text-decoration-none">View summary <i class="bi bi-arrow-right-short"></i></a>
+                                    <a href="payroll.html" class="card-link text-primary text-decoration-none">View summary <i class="bi bi-arrow-right-short"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -501,6 +723,7 @@
                 </div>
 
                 <div class="row g-4 mb-4">
+                    <!-- Attendance Card Container -->
                     <div class="col-12 col-lg-6">
                         <div class="card p-4 border-0 shadow-sm h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -546,6 +769,7 @@
                         </div>
                     </div>
                     
+                    <!-- Time Off Requests Segment -->
                     <div class="col-12 col-lg-6">
                         <div class="card p-4 border-0 shadow-sm h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -597,6 +821,7 @@
                     </div>
                 </div>
 
+                <!-- Recent Employees Segment -->
                 <div class="row g-4">
                     <div class="col-12 col-lg-6">
                         <div class="card p-4 border-0 shadow-sm h-100">
@@ -639,6 +864,7 @@
                         </div>
                     </div>
 
+                    <!-- Payroll Summary -->
                     <div class="col-12 col-lg-6">
                         <div class="card p-4 border-0 shadow-sm h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -678,6 +904,7 @@
     </div>
 </div>
 
+<!-- Log Out Intercept Modal -->
 <div class="modal fade" id="logoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center p-4">
@@ -692,6 +919,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Responsive Burger View Setup
     const burgerToggle = document.getElementById('burgerToggle');
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -732,6 +960,7 @@
         });
     }
 
+    // Modal Log Out Intercept Script Routing
     const logoutModalEl = document.getElementById('logoutModal');
     if (logoutModalEl) {
         logoutModalEl.addEventListener('shown.bs.modal', () => {
@@ -741,6 +970,7 @@
         });
     }
 
+    // Dynamic Attendance Dropdown Management Engine
     const attendanceDropdown = document.getElementById('attendanceDropdown');
     const centerPercent = document.getElementById('centerPercent');
     const donutChartContainer = document.getElementById('donutChartContainer');
@@ -748,6 +978,7 @@
     const lateLabel = document.getElementById('lateLabel');
     const absentLabel = document.getElementById('absentLabel');
 
+    // Mapped attendance data (with visual variance added to week and year for functional demonstration)
     const attendanceData = {
         month: { presentPct: 80, presentCount: 200, latePct: 0, lateCount: 0, absentPct: 20, absentCount: 50 },
         week:  { presentPct: 86, presentCount: 215, latePct: 4, lateCount: 10, absentPct: 10, absentCount: 25 },
@@ -758,9 +989,11 @@
         const data = attendanceData[period];
         if (!data) return;
 
+        // Sync local CSS variables inside the donut chart container dynamically
         donutChartContainer.style.setProperty('--present-percent', `${data.presentPct}%`);
         donutChartContainer.style.setProperty('--late-percent', `${data.latePct}%`);
 
+        // Update Text Nodes
         centerPercent.textContent = `${data.presentPct}%`;
         presentLabel.innerHTML = `${data.presentPct}% <span class="fw-normal opacity-50">(${data.presentCount})</span>`;
         lateLabel.innerHTML = `${data.latePct}% <span class="fw-normal opacity-50">(${data.lateCount})</span>`;
@@ -771,6 +1004,7 @@
         attendanceDropdown.addEventListener('change', (e) => {
             updateAttendanceDisplay(e.target.value);
         });
+        // Run once on load to establish baseline sync
         updateAttendanceDisplay(attendanceDropdown.value);
     }
 </script>
