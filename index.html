@@ -831,13 +831,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
 // fetch data from api
-fetch('http://localhost:3000/api/employees')
+
+/*fetch('http://localhost:3000/api/auth/login')
     .then(response => response.json())
     .then(data => {
         employees = data;
         setupDashboard();
     })
-    .catch(error => console.error('Error fetching payslip data:', error));
+    .catch(error => console.error('Error fetching payslip data:', error));*/
 
   if (!localStorage.getItem('registeredUsers')) {
     let baseUsers = [];
@@ -986,25 +987,54 @@ fetch('http://localhost:3000/api/employees')
     signInBtn.classList.add('is-loading');
     signInBtn.disabled = true;
 
-    setTimeout(() => {
-      const usersArray = JSON.parse(localStorage.getItem('registeredUsers') || "[]");
-      const accountFound = usersArray.some(email => email.toLowerCase() === emailVal.toLowerCase());
+    try {
+    const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: emailVal,
+            password: passVal
+        })
+    });
 
-      if (!accountFound) {
+    const data = await response.json();
+
+    if (!response.ok) {
         signInBtn.classList.remove('is-loading');
         signInBtn.disabled = false;
-        openModal(notFoundModal);
+
+        passwordError.textContent = data.error || 'Invalid email or password.';
+        passwordError.classList.add('visible');
+        setState(passwordInput, 'error');
+
         return;
-      }
+    }
 
-      localStorage.setItem('last_user_role', jobVal);
+    // Save the JWT token
+    localStorage.setItem('token', data.token);
 
-      if (jobVal.toUpperCase() === 'HR') {
+    // Save the user's actual role from the database
+    localStorage.setItem('last_user_role', data.role);
+
+    // Redirect based on the actual database role
+    if (data.role.toUpperCase() === 'HR') {
         window.location.href = 'home.html';
-      } else {
+    } else {
         window.location.href = 'dashboard.html';
-      }
-    }, 700);
+    }
+
+} catch (error) {
+    console.error('Login error:', error);
+
+    signInBtn.classList.remove('is-loading');
+    signInBtn.disabled = false;
+
+    passwordError.textContent = 'Unable to connect to the server.';
+    passwordError.classList.add('visible');
+    setState(passwordInput, 'error');
+}
   });
 
 });
