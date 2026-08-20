@@ -827,19 +827,32 @@
   </div>
 </div>
 
-<script src="employees-data.js"></script>
-<script src="auth.js"></script>
-<script src="script.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
-  // Safeguard: Extract emails cleanly into registered array
+// fetch data from api
+fetch('http://localhost:3000/api/employees')
+    .then(response => response.json())
+    .then(data => {
+        employees = data;
+        setupDashboard();
+    })
+    .catch(error => console.error('Error fetching payslip data:', error));
+
   if (!localStorage.getItem('registeredUsers')) {
-    let baseUsers = ["sibongile.nkosi@moderntech.com", "lungile.moyo@moderntech.com", "thabo.molefe@moderntech.com"];
-    if (typeof typeofData !== 'undefined' && typeofData.employeeInformation) {
-      baseUsers = typeofData.employeeInformation.map(emp => {
-        return typeof emp.contact === 'string' ? emp.contact.trim() : (emp.contact?.email || '');
-      }).filter(email => email !== '');
+    let baseUsers = [];
+    try {
+      const response = await fetch(API_ENDPOINT);
+      if (!response.ok) {
+        throw new Error("Request to " + API_ENDPOINT + " failed with status " + response.status);
+      }
+      const data = await response.json();
+      const employees = Array.isArray(data) ? data : (data.employees || []);
+      baseUsers = employees
+        .map(emp => (typeof emp.contact === 'string' ? emp.contact.trim() : (emp.contact?.email || emp.email || '')))
+        .filter(email => email !== '');
+    } catch (error) {
+      console.error("Unable to load registered users from API:", error.message);
     }
     localStorage.setItem('registeredUsers', JSON.stringify(baseUsers));
   }
@@ -847,8 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const existingSession = typeof Auth !== 'undefined' ? Auth.getSession() : null;
   if (existingSession){
     const savedRole = localStorage.getItem('last_user_role') || '';
-    window.location.href = savedRole.toUpperCase() === 'HR' ? 'index.html' : 'dashboard.html';
-    return;
+    window.location.href = savedRole.toUpperCase() === 'HR' ? 'home.html' : 'dashboard.html';
   }
 
   const form = document.getElementById('loginForm');

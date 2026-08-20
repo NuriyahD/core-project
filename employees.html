@@ -7,7 +7,7 @@
     <title>Employee Records - ModernTech Solutions</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         :root {
@@ -22,12 +22,14 @@
             --border: #e5e7eb;
         }
 
+        * { box-sizing: border-box; }
+
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             background-color: var(--page-bg);
             color: var(--text);
             margin: 0;
-            padding-top: 73px;
+            padding: 0;
         }
 
         .top-navbar {
@@ -35,7 +37,7 @@
             top: 0;
             right: 0;
             left: 0;
-            height: 73px;
+            height: 60px;
             background-color: var(--panel-bg);
             border-bottom: 1px solid var(--border);
             z-index: 101;
@@ -110,57 +112,77 @@
             font-weight: 500;
         }
 
+        .app-workspace {
+            display: flex;
+            flex-grow: 1;
+            margin-top: 60px;
+            min-height: calc(100vh - 60px);
+        }
+
         .sidebar {
             width: 250px;
-            background: linear-gradient(135deg, var(--sidebar-start) 0%, var(--sidebar-end) 100%);
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
             position: fixed;
-            top: 73px;
+            top: 60px;
             left: 0;
             bottom: 0;
             padding: 1.5rem;
+            padding-top: 1rem;
             z-index: 100;
             overflow-y: auto;
             border-right: 1px solid #bae6fd;
+            flex-shrink: 0;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            color: var(--accent-dark);
+            gap: 12px;
+            color: #0369a1;
             text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 5px;
-            transition: all 0.2s;
+            padding: 10px 14px;
+            border-radius: 7px;
+            margin-bottom: 4px;
+            transition: 0.2s;
             font-weight: 500;
+            font-size: 15px;
         }
 
-        .menu-item:hover, .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.7);
-            color: var(--accent-dark);
+        .menu-item i {
+            width: 20px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.75);
+            color: #0369a1;
         }
 
         .sidebar-divider {
-            border-top: 1px solid rgba(3, 105, 161, 0.2);
-            margin: 1.5rem 0;
+            border: 0;
+            border-top: 1px solid rgba(3, 105, 161, 0.12);
+            margin: 20px 0 16px;
         }
 
         .sub-menu-title {
-            color: var(--accent-dark);
-            font-size: 0.75rem;
+            color: #287fa9;
+            font-size: 12px;
             text-transform: uppercase;
             font-weight: 700;
-            padding-left: 15px;
-            margin-bottom: 5px;
+            padding-left: 14px;
+            margin-bottom: 8px;
             letter-spacing: 0.05em;
-            opacity: 0.8;
         }
 
-        .main-content {
+        #page-content-wrapper {
+            flex-grow: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
             margin-left: 250px;
-            padding: 2rem;
-            padding-top: 2rem;
+            padding: 0;
         }
 
         .text-accent {
@@ -175,70 +197,85 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-  @media (max-width: 991px) {
-    .top-navbar {
-      position: sticky;
-      top: 0;
-    }
-    .sidebar {
-      width: 100%;
-      min-height: auto;
-      position: relative;
-      padding-top: 1.5rem;
-      border-right: none;
-      border-bottom: 1px solid #93c5fd;
-      top: 0;
-    }
-    .main-content {
-      margin-left: 0;
-      padding: 1rem;
-      padding-top: 1.5rem;
-    }
-    body {
-      padding-top: 0;
-    }
-  }
+        .container-fluid.px-4.py-4 {
+            padding: 2rem !important;
+        }
 
-  @media (max-width: 600px) {
-    .filters {
-      flex-direction: column;
-    }
-    .filters input,
-    .filters select {
-      width: 100%;
-    }
-    .stats {
-      flex-direction: column;
-    }
-    .stat-box {
-      width: 100%;
-    }
-    .card {
-      width: 100%;
-    }
-    #addFormBox {
-      width: 100%;
-    }
-    #addFormBox input,
-    #addFormBox select,
-    #addFormBox textarea {
-      width: 100%;
-    }
-    table {
-      width: 100%;
-    }
-    #timesheetTable th,
-    #timesheetTable td {
-      width: 100%;
-    }
-  }
-        
+        /* Mobile Responsive */
+        @media (max-width: 991px) {
+            .top-navbar {
+                position: sticky;
+                top: 0;
+                height: 60px;
+            }
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                position: relative;
+                top: 0;
+                padding-top: 1.5rem;
+                border-right: none;
+                border-bottom: 1px solid #93c5fd;
+                display: none;
+            }
+            .sidebar.show {
+                display: block;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 999;
+                width: 100%;
+            }
+            #page-content-wrapper {
+                margin-left: 0;
+                padding: 0;
+            }
+            .app-workspace {
+                margin-top: 0;
+                min-height: auto;
+            }
+            .container-fluid.px-4.py-4 {
+                padding: 1rem !important;
+            }
+            body {
+                padding-top: 0;
+            }
+            .burger-btn {
+                display: block;
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 60px;
+                left: 0; right: 0; bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 998;
+            }
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stat-card {
+                padding: 1rem;
+            }
+            .row.g-3.mb-4 {
+                gap: 0.5rem;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- Top Navbar -->
     <header class="top-navbar">
         <div class="d-flex align-items-center gap-3">
+            <button id="burgerToggle" class="burger-btn me-1" style="display:none; background:none; border:none; font-size:1.5rem; color:var(--text); cursor:pointer;">
+                <i class="bi bi-list"></i>
+            </button>
             <div class="brand-container">
                 <div class="custom-logo-mark">
                     <div class="logo-circle"></div>
@@ -265,9 +302,14 @@
         </div>
     </header>
 
-    <div class="dashboard-container">
-        <aside class="sidebar">
+    <!-- Sidebar Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="app-workspace">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
             <nav class="sidebar-menu main-menu">
+                <div class="sub-menu-title">Solutions</div>
                 <a href="home.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
                 <a href="employees.html" class="menu-item active"><i class="bi bi-people"></i> Employees</a>
                 <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
@@ -278,202 +320,206 @@
             </nav>
         </aside>
 
- <main class="main-content">
-    <div class="container-fluid">
+        <!-- Main Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid px-4 py-4">
 
-        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-            <div>
-                <span class="text-uppercase small fw-bold text-success text-opacity-75">Employees</span>
-                <h1 class="fw-bold h2 text-dark mb-0">Employee List</h1>
-            </div>
-            <div>
-                <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addStaffModal">
-                    <i class="bi bi-plus-lg"></i> Add New Employee
-                </button>
-            </div>
-        </div>
-
-        <div class="row g-3 mb-4">
-            <div class="col-6 col-xl-3">
-                <div class="stat-card border-info d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
                     <div>
-                        <p class="text-muted mb-1 text-uppercase small fw-bold">Total Staff</p>
-                        <h3 class="fw-bold text-dark mb-0" id="totalStaffCount">0</h3>
+                        <span class="text-uppercase small fw-bold text-success text-opacity-75">Employees</span>
+                        <h1 class="fw-bold h2 text-dark mb-0">Employee List</h1>
                     </div>
-                    <div class="fs-2 text-info opacity-75"><i class="bi bi-people"></i></div>
-                </div>
-            </div>
-            <div class="col-6 col-xl-3">
-                <div class="stat-card border-success d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="text-muted mb-1 text-uppercase small fw-bold">Active Status</p>
-                        <h3 class="fw-bold text-success mb-0" id="activeStaffCount">0</h3>
+                        <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                            <i class="bi bi-plus-lg"></i> Add New Employee
+                        </button>
                     </div>
-                    <div class="fs-2 text-success opacity-75"><i class="bi bi-person-check"></i></div>
                 </div>
-            </div>
-            <div class="col-6 col-xl-3">
-                <div class="stat-card border-warning d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-muted mb-1 text-uppercase small fw-bold">On Active Leave</p>
-                        <h3 class="fw-bold text-warning mb-0" id="leaveStaffCount">0</h3>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-info d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">Total Staff</p>
+                                <h3 class="fw-bold text-dark mb-0" id="totalStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-info opacity-75"><i class="bi bi-people"></i></div>
+                        </div>
                     </div>
-                    <div class="fs-2 text-warning opacity-75"><i class="bi bi-airplane"></i></div>
-                </div>
-            </div>
-            <div class="col-6 col-xl-3">
-                <div class="stat-card border-danger d-flex justify-content-between align-items-center">
-                    <div>
-                        <p class="text-muted mb-1 text-uppercase small fw-bold">Pending Onboarding</p>
-                        <h3 class="fw-bold text-danger mb-0" id="pendingStaffCount">0</h3>
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-success d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">Active Status</p>
+                                <h3 class="fw-bold text-success mb-0" id="activeStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-success opacity-75"><i class="bi bi-person-check"></i></div>
+                        </div>
                     </div>
-                    <div class="fs-2 text-danger opacity-75"><i class="bi bi-clock-history"></i></div>
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-warning d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">On Active Leave</p>
+                                <h3 class="fw-bold text-warning mb-0" id="leaveStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-warning opacity-75"><i class="bi bi-airplane"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-xl-3">
+                        <div class="stat-card border-danger d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1 text-uppercase small fw-bold">Pending Onboarding</p>
+                                <h3 class="fw-bold text-danger mb-0" id="pendingStaffCount">0</h3>
+                            </div>
+                            <div class="fs-2 text-danger opacity-75"><i class="bi bi-clock-history"></i></div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="bg-white p-4 rounded shadow-sm border">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr class="text-muted small text-uppercase">
-                            <th>ID</th>
-                            <th>Full Name</th>
-                            <th>Role</th>
-                            <th>Department</th>
-                            <th>Salary</th>
-                            <th>Email Address</th>
-                        </tr>
-                    </thead>
-                    <tbody id="employeeTableBody">
-                        <tr>
-                            <td colspan="6" class="text-center text-muted py-4">
-                                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                Loading employee data...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                <div class="bg-white p-4 rounded shadow-sm border">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr class="text-muted small text-uppercase">
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Role</th>
+                                    <th>Department</th>
+                                    <th>Salary</th>
+                                    <th>Email Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                        Loading employee data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-    </div>
-</main>
-
-<div class="modal fade" id="addStaffModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title fw-bold">Add New Employee</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p class="text-muted small">Add</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Add Staff Modal -->
+    <div class="modal fade" id="addStaffModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Add New Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small">Add employee details here...</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const tableBody = document.getElementById("employeeTableBody");
-    const totalStaff = document.getElementById("totalStaffCount");
-    const activeStaff = document.getElementById("activeStaffCount");
-    const leaveStaff = document.getElementById("leaveStaffCount");
-    const pendingStaff = document.getElementById("pendingStaffCount");
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    if (!tableBody) return;
+    <script>
+        // Mobile burger toggle
+        const burgerToggle = document.getElementById('burgerToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-    fetch("./Employee_info.json")
-        .then(function(response) {
-            if (!response.ok) {
-                throw new Error("Failed to load Employee_info.json");
-            }
-            return response.json();
-        })
-        .then(function(data) {
-            console.log("JSON Loaded:", data);
+        function toggleSidebar() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        }
 
-            let employees = [];
-            if (Array.isArray(data)) {
-                employees = data;
-            } else if (data.employeeInformation) {
-                employees = data.employeeInformation;
-            } else if (data.employees) {
-                employees = data.employees;
+        // Show burger button on mobile
+        if (window.innerWidth <= 991) {
+            burgerToggle.style.display = 'block';
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 991) {
+                burgerToggle.style.display = 'block';
             } else {
-                throw new Error("Employee array structure not found in JSON.");
+                burgerToggle.style.display = 'none';
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
             }
+        });
+
+        if (burgerToggle) burgerToggle.addEventListener('click', toggleSidebar);
+        if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        // Employee data
+        document.addEventListener("DOMContentLoaded", function() {
+            const tableBody = document.getElementById("employeeTableBody");
+            const totalStaff = document.getElementById("totalStaffCount");
+            const activeStaff = document.getElementById("activeStaffCount");
+            const leaveStaff = document.getElementById("leaveStaffCount");
+            const pendingStaff = document.getElementById("pendingStaffCount");
+
+            if (!tableBody) return;
+
+  // fetch data from api
+fetch('http://localhost:3000/api/employees')
+    .then(response => response.json())
+    .then(data => {
+        employees = data;
+        setupDashboard();
+    })
+    .catch(error => console.error('Error fetching payslip data:', error));
 
             displayEmployees(employees);
-        })
-        .catch(function(error) {
-            console.error(error);
-            tableBody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="text-center text-danger py-4">
-                        Failed to load employee data. Please verify your file setup.
-                    </td>
-                </tr>
-            `;
-            if (totalStaff) totalStaff.textContent = "0";
-            if (activeStaff) activeStaff.textContent = "0";
-            if (leaveStaff) leaveStaff.textContent = "0";
-            if (pendingStaff) pendingStaff.textContent = "0";
+
+            function displayEmployees(employees) {
+                tableBody.innerHTML = "";
+
+                employees.forEach(function(emp) {
+                    const employeeId = emp.employeeId ?? emp.id ?? "-";
+                    const name = emp.name ?? emp.fullName ?? "-";
+                    const position = emp.position ?? emp.role ?? "-";
+                    const department = emp.department ?? "-";
+                    const salary = Number(emp.salary ?? emp.salaryAmount ?? 0).toLocaleString('en-ZA');
+                    const contact = emp.contact ?? emp.email ?? "-";
+
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td class="fw-bold text-primary">${employeeId}</td>
+                        <td class="text-dark fw-semibold">${name}</td>
+                        <td><span class="badge bg-light text-dark border px-2 py-1">${position}</span></td>
+                        <td class="text-secondary">${department}</td>
+                        <td class="text-dark fw-bold">R ${salary}</td>
+                        <td class="text-muted small">${contact}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                if (totalStaff) totalStaff.textContent = employees.length;
+                
+                if (activeStaff) {
+                    activeStaff.textContent = employees.filter(function(e) {
+                        return (e.status || "").toLowerCase() === "active";
+                    }).length;
+                }
+
+                if (leaveStaff) {
+                    leaveStaff.textContent = employees.filter(function(e) {
+                        const currentStatus = (e.status || "").toLowerCase();
+                        return ["leave", "on leave", "vacation"].includes(currentStatus);
+                    }).length;
+                }
+
+                if (pendingStaff) {
+                    pendingStaff.textContent = employees.filter(function(e) {
+                        const currentStatus = (e.status || "").toLowerCase();
+                        return ["pending", "awaiting"].includes(currentStatus);
+                    }).length;
+                }
+            }
         });
-
-    function displayEmployees(employees) {
-        tableBody.innerHTML = "";
-
-        employees.forEach(function(emp) {
-
-            const employeeId = emp.employeeId ?? emp.id ?? "-";
-            const name = emp.name ?? emp.fullName ?? "-";
-            const position = emp.position ?? emp.role ?? "-";
-            const department = emp.department ?? "-";
-            const salary = Number(emp.salary ?? emp.salaryAmount ?? 0).toLocaleString('en-ZA');
-            const contact = emp.contact ?? emp.email ?? "-";
-
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td class="fw-bold text-primary">${employeeId}</td>
-                <td class="text-dark fw-semibold">${name}</td>
-                <td><span class="badge bg-light text-dark border px-2 py-1">${position}</span></td>
-                <td class="text-secondary">${department}</td>
-                <td class="text-dark fw-bold">R ${salary}</td>
-                <td class="text-muted small">${contact}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-
-        if (totalStaff) totalStaff.textContent = employees.length;
-        
-        if (activeStaff) {
-            activeStaff.textContent = employees.filter(function(e) {
-                return (e.status || "").toLowerCase() === "active";
-            }).length;
-        }
-
-        if (leaveStaff) {
-            leaveStaff.textContent = employees.filter(function(e) {
-                const currentStatus = (e.status || "").toLowerCase();
-                return ["leave", "on leave", "vacation"].includes(currentStatus);
-            }).length;
-        }
-
-        if (pendingStaff) {
-            pendingStaff.textContent = employees.filter(function(e) {
-                const currentStatus = (e.status || "").toLowerCase();
-                return ["pending", "awaiting"].includes(currentStatus);
-            }).length;
-        }
-    }
-});
-</script>
+    </script>
 </body>
 </html>

@@ -21,6 +21,16 @@
     --border: #e5e7eb;
   }
 
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #222;
+    margin: 0;
+    padding: 0;
+  }
+
   .top-navbar {
     position: fixed;
     top: 0;
@@ -37,94 +47,151 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
   }
 
+  .brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .custom-logo-mark {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 36px;
+    position: relative;
+  }
+
+  .custom-logo-mark .logo-circle {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #0284C7;
+    border-radius: 50%;
+    background: transparent;
+  }
+
+  .custom-logo-mark .logo-lines {
+    display: flex;
+    justify-content: space-between;
+    width: 16px;
+    height: 10px;
+    margin-top: -2px;
+  }
+
+  .custom-logo-mark .logo-line {
+    width: 2.5px;
+    background-color: #0284C7;
+    border-radius: 1px;
+  }
+
+  .custom-logo-mark .logo-line.center {
+    height: 12px;
+    margin-top: -3px;
+  }
+
+  .custom-logo-mark .logo-line.side {
+    height: 7px;
+    margin-top: 2px;
+  }
+
+  .brand-title-container {
+    line-height: 1.1;
+  }
+
+  .brand-main {
+    font-weight: 700;
+    color: #1E293B; 
+    font-size: 1.25rem;
+  }
+
+  .brand-sub {
+    color: #3B82F6;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .app-workspace {
+    display: flex;
+    flex-grow: 1;
+    margin-top: 60px;
+    min-height: calc(100vh - 60px);
+  }
+
   .sidebar {
     width: 250px;
-    background: linear-gradient(135deg, var(--sidebar-start) 0%, var(--sidebar-end) 100%);
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
     position: fixed;
-    top: 0;
+    top: 60px;
     left: 0;
     bottom: 0;
     padding: 1.5rem;
+    padding-top: 1rem;
     z-index: 100;
     overflow-y: auto;
     border-right: 1px solid #bae6fd;
-    padding-top: 5.5rem;
-  }
-
-  .sidebar-brand {
-    white-space: nowrap;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .sidebar-brand .brand-icon {
-    width: 40px;
-    height: 40px;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 8px;
-  }
-
-  .sidebar-brand .brand-icon svg {
-    width: 22px;
-    height: 22px;
   }
 
   .menu-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: var(--accent-dark);
+    gap: 12px;
+    color: #0369a1;
     text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 6px;
-    margin-bottom: 5px;
-    transition: all 0.2s;
+    padding: 10px 14px;
+    border-radius: 7px;
+    margin-bottom: 4px;
+    transition: 0.2s;
     font-weight: 500;
+    font-size: 15px;
   }
 
-  .menu-item:hover, .menu-item.active {
-    background-color: rgba(255, 255, 255, 0.7);
-    color: var(--accent-dark);
+  .menu-item i {
+    width: 20px;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .menu-item:hover,
+  .menu-item.active {
+    background-color: rgba(255, 255, 255, 0.75);
+    color: #0369a1;
   }
 
   .sidebar-divider {
-    border-top: 1px solid rgba(3, 105, 161, 0.2);
-    margin: 1.5rem 0;
+    border: 0;
+    border-top: 1px solid rgba(3, 105, 161, 0.12);
+    margin: 20px 0 16px;
   }
 
   .sub-menu-title {
-    color: var(--accent-dark);
-    font-size: 0.75rem;
+    color: #287fa9;
+    font-size: 12px;
     text-transform: uppercase;
     font-weight: 700;
-    padding-left: 15px;
-    margin-bottom: 5px;
+    padding-left: 14px;
+    margin-bottom: 8px;
     letter-spacing: 0.05em;
-    opacity: 0.8;
   }
 
-  .main-content {
+  #page-content-wrapper {
+    flex-grow: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
     margin-left: 250px;
-    padding: 2rem;
-    padding-top: 5.5rem;
+    padding: 0;
   }
 
-  body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f8;
-    color: #222;
-    margin: 0;
-    padding: 0;
+  .container-fluid.px-4.py-4 {
+    padding: 2rem !important;
   }
 
   h1 {
     margin-bottom: 5px;
+    font-size: 28px;
+    font-weight: 700;
   }
 
   .subtitle {
@@ -287,92 +354,95 @@
     margin-bottom: 12px;
   }
 
-    @media (max-width: 991px) {
-    .top-navbar {
-      position: sticky;
+  .burger-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 998;
+  }
+  .sidebar-overlay.show {
+    display: block;
+  }
+
+  @media (max-width: 991px) {
+    .top-navbar { position: sticky; top: 0; }
+    .sidebar {
+      width: 100%;
+      min-height: auto;
+      position: relative;
       top: 0;
-    }
-    .sidebar {
-      width: 100%;
-      min-height: auto;
-      position: relative;
       padding-top: 1.5rem;
       border-right: none;
       border-bottom: 1px solid #93c5fd;
+      display: none;
     }
-    .main-content {
+    .sidebar.show {
+      display: block;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 999;
+      width: 100%;
+    }
+    #page-content-wrapper {
       margin-left: 0;
-      padding: 1rem;
-      padding-top: 1.5rem;
+      padding: 0;
+    }
+    .app-workspace {
+      margin-top: 0;
+      min-height: auto;
+    }
+    .container-fluid.px-4.py-4 {
+      padding: 1rem !important;
+    }
+    .burger-btn {
+      display: block !important;
     }
   }
 
   @media (max-width: 600px) {
-    .filters {
+    .settings-layout {
       flex-direction: column;
     }
-    .filters input,
-    .filters select {
-      width: 100%;
-    }
-    .stats {
-      flex-direction: column;
-    }
-    .stat-box {
-      width: 100%;
-    }
-    .card {
-      width: 100%;
-    }
-    #addFormBox {
-      width: 100%;
-    }
-    #addFormBox input,
-    #addFormBox select,
-    #addFormBox textarea {
-      width: 100%;
-    }
-    table {
-      width: 100%;
-    }
-    #timesheetTable th,
-    #timesheetTable td {
+    .settings-nav {
       width: 100%;
     }
   }
-
-  @media (max-width: 600px) {
-    .sidebar {
-      width: 100%;
-      min-height: auto;
-      position: relative;
-      border-right: none;
-      border-bottom: 1px solid #93c5fd;
-    }
-    .main-content {
-      margin-left: 0;
-      padding: 1rem;
-    }
-  }
-
 </style>
 </head>
 <body>
 
 <header class="top-navbar">
     <div class="d-flex align-items-center gap-3">
-        <div class="sidebar-brand">
-            <div class="brand-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"></path>
-                    <path d="M12 22v-6"></path>
-                    <path d="M8 22v-3"></path>
-                    <path d="M16 22v-3"></path>
-                </svg>
+        <button id="burgerToggle" class="burger-btn me-1">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="brand-container">
+            <div class="custom-logo-mark">
+                <div class="logo-circle"></div>
+                <div class="logo-lines">
+                    <div class="logo-line side"></div>
+                    <div class="logo-line center"></div>
+                    <div class="logo-line side"></div>
+                </div>
             </div>
-            <div class="d-none d-sm-block ms-1">
-                <h5 class="text-dark fw-bold m-0 fs-6" style="letter-spacing: 0.5px;">ModernTech</h5>
-                <small class="text-primary small fw-semibold opacity-75">Solutions</small>
+            <div class="brand-title-container d-none d-sm-block">
+                <div class="brand-main">ModernTech</div>
+                <div class="brand-sub">Solutions</div>
             </div>
         </div>
     </div>
@@ -387,282 +457,296 @@
     </div>
 </header>
 
-<div class="dashboard-container">
-    <aside class="sidebar">
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+<div class="app-workspace">
+    <aside class="sidebar" id="sidebar">
         <nav class="sidebar-menu main-menu">
+            <div class="sub-menu-title">Solutions</div>
             <a href="home.html" class="menu-item"><i class="bi bi-speedometer2"></i> Dashboard</a>
             <a href="employees.html" class="menu-item"><i class="bi bi-people"></i> Employees</a>
             <a href="TimeOff.html" class="menu-item"><i class="bi bi-calendar-check"></i> Time Off</a>
-            <a href="Attendence.html" class="menu-item"><i class="bi bi-clock-history"></i> Attendence</a>
+            <a href="Attendence.html" class="menu-item"><i class="bi bi-clock"></i> Attendance</a>
             <a href="payslip.html" class="menu-item"><i class="bi bi-wallet2"></i> Payroll</a>
             <a href="performance_reviews.html" class="menu-item"><i class="bi bi-bar-chart"></i> Performance</a>
             <a href="setting.html" class="menu-item active"><i class="bi bi-gear"></i> Settings</a>
         </nav>
     </aside>
 
-    <main class="main-content">
+    <div id="page-content-wrapper">
+        <div class="container-fluid px-4 py-4">
 
-<h1>Platform Settings</h1>
-<p class="subtitle">Manage your profile, notifications, billing, and account details.</p>
+            <h1>Platform Settings</h1>
+            <p class="subtitle">Manage your profile, notifications, billing, and account details.</p>
 
-<div class="settings-layout">
+            <div class="settings-layout">
 
-  <!-- Sub navigation for the settings sections -->
-  <div class="settings-nav">
-    <button class="settings-nav-item active" data-target="generalPanel">General</button>
-    <button class="settings-nav-item" data-target="notificationsPanel">Notifications</button>
-    <button class="settings-nav-item" data-target="securityPanel">Login &amp; security</button>
-    <button class="settings-nav-item" data-target="membersPanel">Members</button>
-    <button class="settings-nav-item" data-target="rolesPanel">User roles</button>
-  </div>
+                <div class="settings-nav">
+                    <button class="settings-nav-item active" data-target="generalPanel">General</button>
+                    <button class="settings-nav-item" data-target="notificationsPanel">Notifications</button>
+                    <button class="settings-nav-item" data-target="securityPanel">Login &amp; security</button>
+                    <button class="settings-nav-item" data-target="membersPanel">Members</button>
+                    <button class="settings-nav-item" data-target="rolesPanel">User roles</button>
+                </div>
 
-  <!-- General panel -->
-  <div class="settings-panel active" id="generalPanel">
+                <div class="settings-panel active" id="generalPanel">
+                    <div class="photo-row">
+                        <img id="avatarImage" class="avatar-circle" src="" alt="Profile photo">
+                        <div class="photo-buttons">
+                            <button class="danger" id="deletePhotoBtn"><i class="bi bi-trash"></i></button>
+                            <button id="uploadPhotoBtn"><i class="bi bi-upload"></i> Upload</button>
+                            <input type="file" id="photoFileInput" accept="image/*" style="display:none;">
+                        </div>
+                    </div>
 
-    <div class="photo-row">
-      <img id="avatarImage" class="avatar-circle" src="" alt="Profile photo">
-      <div class="photo-buttons">
-        <button class="danger" id="deletePhotoBtn"><i class="bi bi-trash"></i></button>
-        <button id="uploadPhotoBtn"><i class="bi bi-upload"></i> Upload</button>
-        <input type="file" id="photoFileInput" accept="image/*" style="display:none;">
-      </div>
-    </div>
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Name</div>
+                            <p class="info-value" id="nameDisplay">Alex Jackson</p>
+                            <div class="edit-form" id="nameEditForm">
+                                <input type="text" id="nameInput" value="Alex Jackson">
+                                <button class="primary" onclick="saveName()">Save</button>
+                                <button onclick="cancelEdit('nameEditForm')">Cancel</button>
+                            </div>
+                        </div>
+                        <button onclick="showEdit('nameEditForm')">Edit</button>
+                    </div>
 
-    <!-- Name -->
-    <div class="info-row">
-      <div>
-        <div class="info-label">Name</div>
-        <p class="info-value" id="nameDisplay">Alex Jackson</p>
-        <div class="edit-form" id="nameEditForm">
-          <input type="text" id="nameInput" value="Alex Jackson">
-          <button class="primary" onclick="saveName()">Save</button>
-          <button onclick="cancelEdit('nameEditForm')">Cancel</button>
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Contacts</div>
+                            <p class="info-value" id="contactsDisplay">Phone: +123123217923<br>Email: finalui@yandex.com</p>
+                            <div class="edit-form" id="contactsEditForm">
+                                <input type="text" id="phoneInput" value="+123123217923" placeholder="Phone">
+                                <input type="text" id="emailInput" value="finalui@yandex.com" placeholder="Email">
+                                <button class="primary" onclick="saveContacts()">Save</button>
+                                <button onclick="cancelEdit('contactsEditForm')">Cancel</button>
+                            </div>
+                        </div>
+                        <button onclick="showEdit('contactsEditForm')">Edit</button>
+                    </div>
+
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Language &amp; currency</div>
+                            <p class="info-value" id="langDisplay">English, USD</p>
+                            <div class="edit-form" id="langEditForm">
+                                <select id="langInput">
+                                    <option value="English, USD">English, USD</option>
+                                    <option value="English, ZAR">English, ZAR</option>
+                                    <option value="Spanish, EUR">Spanish, EUR</option>
+                                    <option value="French, EUR">French, EUR</option>
+                                </select>
+                                <button class="primary" onclick="saveLang()">Save</button>
+                                <button onclick="cancelEdit('langEditForm')">Cancel</button>
+                            </div>
+                        </div>
+                        <button onclick="showEdit('langEditForm')">Edit</button>
+                    </div>
+
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Integration</div>
+                            <p class="info-value">Google &bull; examplemail@gmail.com</p>
+                        </div>
+                        <div>
+                            <span class="badge-connected" id="integrationBadge">&#10003; Connected</span>
+                            <button onclick="toggleIntegration()">&#8942;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-panel" id="notificationsPanel">
+                    <h2 class="info-label" style="font-size:16px;">Notification preferences</h2>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="notifyEmail" checked>
+                        <label for="notifyEmail">Email notifications</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="notifySms">
+                        <label for="notifySms">SMS notifications</label>
+                    </div>
+                    <div class="checkbox-row">
+                        <input type="checkbox" id="notifyUpdates" checked>
+                        <label for="notifyUpdates">Product update emails</label>
+                    </div>
+                    <button class="primary" onclick="alert('Notification preferences saved.')">Save Preferences</button>
+                </div>
+
+                <div class="settings-panel" id="securityPanel">
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Password</div>
+                            <p class="info-value">Last changed 3 months ago</p>
+                        </div>
+                        <button>Change Password</button>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Two-Factor Authentication</div>
+                            <p class="info-value">Currently disabled</p>
+                        </div>
+                        <button>Enable</button>
+                    </div>
+                </div>
+
+                <div class="settings-panel" id="membersPanel">
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Sibongile Nkosi</div>
+                            <p class="info-value">Admin</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Lungile Moyo</div>
+                            <p class="info-value">Manager</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Thabo Molefe</div>
+                            <p class="info-value">Member</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-panel" id="rolesPanel">
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Admin</div>
+                            <p class="info-value">Full access to all settings and data.</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Manager</div>
+                            <p class="info-value">Can manage staff and view reports.</p>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div>
+                            <div class="info-label">Member</div>
+                            <p class="info-value">Standard access to daily tools.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-      </div>
-      <button onclick="showEdit('nameEditForm')">Edit</button>
     </div>
-
-    <!-- Contacts -->
-    <div class="info-row">
-      <div>
-        <div class="info-label">Contacts</div>
-        <p class="info-value" id="contactsDisplay">Phone: +123123217923<br>Email: finalui@yandex.com</p>
-        <div class="edit-form" id="contactsEditForm">
-          <input type="text" id="phoneInput" value="+123123217923" placeholder="Phone">
-          <input type="text" id="emailInput" value="finalui@yandex.com" placeholder="Email">
-          <button class="primary" onclick="saveContacts()">Save</button>
-          <button onclick="cancelEdit('contactsEditForm')">Cancel</button>
-        </div>
-      </div>
-      <button onclick="showEdit('contactsEditForm')">Edit</button>
-    </div>
-
-    <!-- Language & currency -->
-    <div class="info-row">
-      <div>
-        <div class="info-label">Language &amp; currency</div>
-        <p class="info-value" id="langDisplay">English, USD</p>
-        <div class="edit-form" id="langEditForm">
-          <select id="langInput">
-            <option value="English, USD">English, USD</option>
-            <option value="English, ZAR">English, ZAR</option>
-            <option value="Spanish, EUR">Spanish, EUR</option>
-            <option value="French, EUR">French, EUR</option>
-          </select>
-          <button class="primary" onclick="saveLang()">Save</button>
-          <button onclick="cancelEdit('langEditForm')">Cancel</button>
-        </div>
-      </div>
-      <button onclick="showEdit('langEditForm')">Edit</button>
-    </div>
-
-    <!-- Integration -->
-    <div class="info-row">
-      <div>
-        <div class="info-label">Integration</div>
-        <p class="info-value">Google &bull; examplemail@gmail.com</p>
-      </div>
-      <div>
-        <span class="badge-connected" id="integrationBadge">&check; Connected</span>
-        <button onclick="toggleIntegration()">&#8942;</button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- Notifications panel -->
-  <div class="settings-panel" id="notificationsPanel">
-    <h2 class="info-label" style="font-size:16px;">Notification preferences</h2>
-    <div class="checkbox-row">
-      <input type="checkbox" id="notifyEmail" checked>
-      <label for="notifyEmail">Email notifications</label>
-    </div>
-    <div class="checkbox-row">
-      <input type="checkbox" id="notifySms">
-      <label for="notifySms">SMS notifications</label>
-    </div>
-    <div class="checkbox-row">
-      <input type="checkbox" id="notifyUpdates" checked>
-      <label for="notifyUpdates">Product update emails</label>
-    </div>
-    <button class="primary" onclick="alert('Notification preferences saved.')">Save Preferences</button>
-  </div>
-
-  <!-- Login & security panel -->
-  <div class="settings-panel" id="securityPanel">
-    <div class="info-row">
-      <div>
-        <div class="info-label">Password</div>
-        <p class="info-value">Last changed 3 months ago</p>
-      </div>
-      <button>Change Password</button>
-    </div>
-    <div class="info-row">
-      <div>
-        <div class="info-label">Two-Factor Authentication</div>
-        <p class="info-value">Currently disabled</p>
-      </div>
-      <button>Enable</button>
-    </div>
-  </div>
-
-  <!-- Members panel -->
-  <div class="settings-panel" id="membersPanel">
-    <div class="info-row">
-      <div>
-        <div class="info-label">Sibongile Nkosi</div>
-        <p class="info-value">Admin</p>
-      </div>
-    </div>
-    <div class="info-row">
-      <div>
-        <div class="info-label">Lungile Moyo</div>
-        <p class="info-value">Manager</p>
-      </div>
-    </div>
-    <div class="info-row">
-      <div>
-        <div class="info-label">Thabo Molefe</div>
-        <p class="info-value">Member</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- User roles panel -->
-  <div class="settings-panel" id="rolesPanel">
-    <div class="info-row">
-      <div>
-        <div class="info-label">Admin</div>
-        <p class="info-value">Full access to all settings and data.</p>
-      </div>
-    </div>
-    <div class="info-row">
-      <div>
-        <div class="info-label">Manager</div>
-        <p class="info-value">Can manage staff and view reports.</p>
-      </div>
-    </div>
-    <div class="info-row">
-      <div>
-        <div class="info-label">Member</div>
-        <p class="info-value">Standard access to daily tools.</p>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-    </main>
-</div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Switching between settings tabs
-  var navButtons = document.getElementsByClassName("settings-nav-item");
-  for (var i = 0; i < navButtons.length; i++) {
-    navButtons[i].addEventListener("click", function () {
+    // Mobile burger toggle
+    const burgerToggle = document.getElementById('burgerToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-      // Remove "active" from every nav button and panel
-      for (var j = 0; j < navButtons.length; j++) {
-        navButtons[j].classList.remove("active");
-      }
-      var panels = document.getElementsByClassName("settings-panel");
-      for (var k = 0; k < panels.length; k++) {
-        panels[k].classList.remove("active");
-      }
+    function toggleSidebar() {
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('show');
+    }
 
-      // Show the panel that matches this button
-      this.classList.add("active");
-      var targetId = this.getAttribute("data-target");
-      document.getElementById(targetId).classList.add("active");
+    if (window.innerWidth <= 991) {
+        burgerToggle.style.display = 'block';
+    }
+
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 991) {
+            burgerToggle.style.display = 'block';
+        } else {
+            burgerToggle.style.display = 'none';
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        }
     });
-  }
 
-  // Show/hide the little edit form under a row
-  function showEdit(formId) {
-    document.getElementById(formId).classList.add("active");
-  }
+    if (burgerToggle) burgerToggle.addEventListener('click', toggleSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
 
-  function cancelEdit(formId) {
-    document.getElementById(formId).classList.remove("active");
-  }
-
-  function saveName() {
-    var newName = document.getElementById("nameInput").value;
-    document.getElementById("nameDisplay").textContent = newName;
-    cancelEdit("nameEditForm");
-  }
-
-  function saveContacts() {
-    var newPhone = document.getElementById("phoneInput").value;
-    var newEmail = document.getElementById("emailInput").value;
-    document.getElementById("contactsDisplay").innerHTML = "Phone: " + newPhone + "<br>Email: " + newEmail;
-    cancelEdit("contactsEditForm");
-  }
-
-  function saveLang() {
-    var newLang = document.getElementById("langInput").value;
-    document.getElementById("langDisplay").textContent = newLang;
-    cancelEdit("langEditForm");
-  }
-
-  // Profile photo upload and delete
-  var avatarImage = document.getElementById("avatarImage");
-  var photoFileInput = document.getElementById("photoFileInput");
-
-  document.getElementById("uploadPhotoBtn").addEventListener("click", function () {
-    photoFileInput.click();
-  });
-
-  photoFileInput.addEventListener("change", function () {
-    var chosenFile = this.files[0];
-    if (chosenFile) {
-      var reader = new FileReader();
-      reader.onload = function (event) {
-        avatarImage.src = event.target.result;
-      };
-      reader.readAsDataURL(chosenFile);
+    // Your existing JavaScript code - unchanged
+    var navButtons = document.getElementsByClassName("settings-nav-item");
+    for (var i = 0; i < navButtons.length; i++) {
+        navButtons[i].addEventListener("click", function () {
+            for (var j = 0; j < navButtons.length; j++) {
+                navButtons[j].classList.remove("active");
+            }
+            var panels = document.getElementsByClassName("settings-panel");
+            for (var k = 0; k < panels.length; k++) {
+                panels[k].classList.remove("active");
+            }
+            this.classList.add("active");
+            var targetId = this.getAttribute("data-target");
+            document.getElementById(targetId).classList.add("active");
+        });
     }
-  });
 
-  document.getElementById("deletePhotoBtn").addEventListener("click", function () {
-    avatarImage.src = "";
-  });
-
-  // Integration connect/disconnect toggle
-  var integrationConnected = true;
-  function toggleIntegration() {
-    var badge = document.getElementById("integrationBadge");
-    if (integrationConnected) {
-      badge.textContent = "Disconnected";
-      badge.style.backgroundColor = "#fbdada";
-      badge.style.color = "#941d1d";
-    } else {
-      badge.innerHTML = "&check; Connected";
-      badge.style.backgroundColor = "#d5f2df";
-      badge.style.color = "#1a6b34";
+    function showEdit(formId) {
+        document.getElementById(formId).classList.add("active");
     }
-    integrationConnected = !integrationConnected;
-  }
+
+    function cancelEdit(formId) {
+        document.getElementById(formId).classList.remove("active");
+    }
+
+    function saveName() {
+        var newName = document.getElementById("nameInput").value;
+        document.getElementById("nameDisplay").textContent = newName;
+        cancelEdit("nameEditForm");
+    }
+
+    function saveContacts() {
+        var newPhone = document.getElementById("phoneInput").value;
+        var newEmail = document.getElementById("emailInput").value;
+        document.getElementById("contactsDisplay").innerHTML = "Phone: " + newPhone + "<br>Email: " + newEmail;
+        cancelEdit("contactsEditForm");
+    }
+
+    function saveLang() {
+        var newLang = document.getElementById("langInput").value;
+        document.getElementById("langDisplay").textContent = newLang;
+        cancelEdit("langEditForm");
+    }
+
+    var avatarImage = document.getElementById("avatarImage");
+    var photoFileInput = document.getElementById("photoFileInput");
+
+    document.getElementById("uploadPhotoBtn").addEventListener("click", function () {
+        photoFileInput.click();
+    });
+
+    photoFileInput.addEventListener("change", function () {
+        var chosenFile = this.files[0];
+        if (chosenFile) {
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                avatarImage.src = event.target.result;
+            };
+            reader.readAsDataURL(chosenFile);
+        }
+    });
+
+    document.getElementById("deletePhotoBtn").addEventListener("click", function () {
+        avatarImage.src = "";
+    });
+
+    var integrationConnected = true;
+    function toggleIntegration() {
+        var badge = document.getElementById("integrationBadge");
+        if (integrationConnected) {
+            badge.textContent = "Disconnected";
+            badge.style.backgroundColor = "#fbdada";
+            badge.style.color = "#941d1d";
+        } else {
+            badge.innerHTML = "&#10003; Connected";
+            badge.style.backgroundColor = "#d5f2df";
+            badge.style.color = "#1a6b34";
+        }
+        integrationConnected = !integrationConnected;
+    }
 </script>
 
 </body>

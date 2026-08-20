@@ -773,7 +773,7 @@
             <span class="btn-spinner" aria-hidden="true"></span>
           </button>
 
-          <p class="signup-line">Already have an account? <a href="signin.html" class="link-inline">Sign in</a></p>
+          <p class="signup-line">Already have an account? <a href="index.html" class="link-inline">Sign in</a></p>
         </form>
 
         <footer class="form-footer">
@@ -871,15 +871,14 @@
   </div>
 </div>
 
-<script src="employees-data.js"></script>
-<script src="auth.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
 
   const form = document.getElementById('signupForm');
   const firstName = document.getElementById('firstName');
   const lastName = document.getElementById('lastName');
   const email = document.getElementById('email');
+  const job = document.getElementById('job');
   const password = document.getElementById('password');
   const confirmPassword = document.getElementById('confirmPassword');
   const agreeTerms = document.getElementById('agreeTerms');
@@ -887,6 +886,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const firstNameError = document.getElementById('firstNameError');
   const lastNameError = document.getElementById('lastNameError');
   const emailError = document.getElementById('emailError');
+  const jobError = document.getElementById('jobError');
   const passwordError = document.getElementById('passwordError');
   const confirmPasswordError = document.getElementById('confirmPasswordError');
   const termsError = document.getElementById('termsError');
@@ -895,111 +895,312 @@ document.addEventListener('DOMContentLoaded', () => {
   const strengthLabel = document.getElementById('strengthLabel');
   const signupBtn = document.getElementById('signupBtn');
 
-  const wrapOf = (input) => input.closest('.input-wrap');
-
-  function setState(input, state){ wrapOf(input).dataset.state = state; }
-
-  function showError(input, errorEl, message){
-    if (wrapOf(input)) setState(input, 'error');
-    errorEl.textContent = message;
-    errorEl.classList.add('visible');
+  function getInputWrap(input) {
+    return input.closest('.input-wrap');
   }
 
-  function clearError(input, errorEl){
-    errorEl.classList.remove('visible');
-    errorEl.textContent = '';
-    if (wrapOf(input) && wrapOf(input).dataset.state === 'error'){
+  function setState(input, state) {
+    const wrap = getInputWrap(input);
+
+    if (wrap) {
+      wrap.dataset.state = state;
+    }
+  }
+
+  function showError(input, errorElement, message) {
+    setState(input, 'error');
+    errorElement.textContent = message;
+    errorElement.classList.add('visible');
+  }
+
+  function clearError(input, errorElement) {
+    errorElement.textContent = '';
+    errorElement.classList.remove('visible');
+
+    if (getInputWrap(input)) {
       setState(input, document.activeElement === input ? 'focus' : 'default');
     }
   }
 
-  function isValidEmail(value){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
 
-  [firstName, lastName, email, password, confirmPassword].forEach((input) => {
-    input.addEventListener('focus', () => { if (wrapOf(input).dataset.state !== 'error') setState(input, 'focus'); });
-    input.addEventListener('blur', () => { if (wrapOf(input).dataset.state !== 'error') setState(input, 'default'); });
+  function validateName(input, errorElement, fieldName) {
+    const value = input.value.trim();
+
+    if (value === '') {
+      showError(input, errorElement, fieldName + ' is required.');
+      return false;
+    }
+
+    if (value.length < 2) {
+      showError(input, errorElement, fieldName + ' must be at least 2 characters.');
+      return false;
+    }
+
+    clearError(input, errorElement);
+    return true;
+  }
+
+  function validateJob() {
+    const value = job.value.trim();
+
+    if (value === '') {
+      showError(job, jobError, 'Department or role is required.');
+      return false;
+    }
+
+    clearError(job, jobError);
+    return true;
+  }
+
+  function validateEmail() {
+    const value = email.value.trim();
+
+    if (value === '') {
+      showError(email, emailError, 'Email address is required.');
+      return false;
+    }
+
+    if (!isValidEmail(value)) {
+      showError(email, emailError, 'Enter a valid email address.');
+      return false;
+    }
+
+    clearError(email, emailError);
+    return true;
+  }
+
+  function validatePassword() {
+    const value = password.value;
+
+    if (value === '') {
+      showError(password, passwordError, 'Password is required.');
+      return false;
+    }
+
+    if (value.length < 8) {
+      showError(password, passwordError, 'Password must be at least 8 characters.');
+      return false;
+    }
+
+    clearError(password, passwordError);
+    return true;
+  }
+
+  function validateConfirmPassword() {
+    if (confirmPassword.value === '') {
+      showError(confirmPassword, confirmPasswordError, 'Please confirm your password.');
+      return false;
+    }
+
+    if (confirmPassword.value !== password.value) {
+      showError(confirmPassword, confirmPasswordError, 'Passwords do not match.');
+      return false;
+    }
+
+    clearError(confirmPassword, confirmPasswordError);
+    return true;
+  }
+
+  [firstName, lastName, email, job, password, confirmPassword].forEach(function (input) {
+    input.addEventListener('focus', function () {
+      if (getInputWrap(input).dataset.state !== 'error') {
+        setState(input, 'focus');
+      }
+    });
+
+    input.addEventListener('blur', function () {
+      if (getInputWrap(input).dataset.state !== 'error') {
+        setState(input, 'default');
+      }
+    });
   });
 
-  document.querySelectorAll('.toggle-visibility').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-target');
+  document.querySelectorAll('.toggle-visibility').forEach(function (button) {
+    button.addEventListener('click', function () {
+      const targetId = button.getAttribute('data-target');
       const targetInput = document.getElementById(targetId);
-      const isHidden = targetInput.type === 'password';
-      targetInput.type = isHidden ? 'text' : 'password';
-      btn.querySelector('.icon-eye').style.display = isHidden ? 'none' : 'block';
-      btn.querySelector('.icon-eye-off').style.display = isHidden ? 'block' : 'none';
+
+      const eyeIcon = button.querySelector('.icon-eye');
+      const eyeOffIcon = button.querySelector('.icon-eye-off');
+
+      if (targetInput.type === 'password') {
+        targetInput.type = 'text';
+        eyeIcon.style.display = 'none';
+        eyeOffIcon.style.display = 'block';
+        button.setAttribute('aria-label', 'Hide password');
+        button.setAttribute('aria-pressed', 'true');
+      } else {
+        targetInput.type = 'password';
+        eyeIcon.style.display = 'block';
+        eyeOffIcon.style.display = 'none';
+        button.setAttribute('aria-label', 'Show password');
+        button.setAttribute('aria-pressed', 'false');
+      }
+
       targetInput.focus();
     });
   });
 
-  function scorePassword(value){
-    if (value.length === 0) return 0;
+  function scorePassword(value) {
+    if (value.length === 0) {
+      return 0;
+    }
+
     let score = 0;
-    if (value.length >= 8) score++;
-    if (value.length >= 12) score++;
-    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
-    if (/\d/.test(value) && /[^A-Za-z0-9]/.test(value)) score++;
+
+    if (value.length >= 8) {
+      score++;
+    }
+
+    if (value.length >= 12) {
+      score++;
+    }
+
+    if (/[a-z]/.test(value) && /[A-Z]/.test(value)) {
+      score++;
+    }
+
+    if (/\d/.test(value) && /[^A-Za-z0-9]/.test(value)) {
+      score++;
+    }
+
     return Math.max(1, Math.min(score, 4));
   }
 
-  const strengthText = { 0:'', 1:'Weak', 2:'Fair', 3:'Good', 4:'Strong' };
+  const strengthText = {
+    0: '',
+    1: 'Weak',
+    2: 'Fair',
+    3: 'Good',
+    4: 'Strong'
+  };
 
-  password.addEventListener('input', () => {
+  password.addEventListener('input', function () {
     const level = scorePassword(password.value);
+
     strengthMeter.dataset.level = level;
+    strengthLabel.dataset.level = level;
     strengthLabel.textContent = strengthText[level];
-    if (password.value.length === 0 || password.value.length >= 8) clearError(password, passwordError);
+
+    if (password.value.length >= 8) {
+      clearError(password, passwordError);
+    }
   });
 
-  confirmPassword.addEventListener('input', () => {
-    if (confirmPassword.value === password.value) clearError(confirmPassword, confirmPasswordError);
+  confirmPassword.addEventListener('input', function () {
+    if (confirmPassword.value === password.value) {
+      clearError(confirmPassword, confirmPasswordError);
+    }
   });
 
-  function openModal(modal) { if (modal) modal.classList.add('is-visible'); }
-  function closeModal(modal) { if (modal) modal.classList.remove('is-visible'); }
+  function openModal(modal) {
+    if (modal) {
+      modal.classList.add('is-visible');
+    }
+  }
 
-  document.querySelectorAll('.js-trigger-privacy').forEach(el => {
-    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('privacyModal')); });
-  });
-  document.querySelectorAll('.js-trigger-terms').forEach(el => {
-    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('termsModal')); });
-  });
-  
-  document.querySelectorAll('.js-trigger-compliance').forEach(el => {
-    el.addEventListener('click', (e) => { e.preventDefault(); openModal(document.getElementById('complianceModal')); });
+  function closeModal(modal) {
+    if (modal) {
+      modal.classList.remove('is-visible');
+    }
+  }
+
+  document.querySelectorAll('.js-trigger-privacy').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      openModal(document.getElementById('privacyModal'));
+    });
   });
 
-  document.querySelectorAll('.modal-overlay').forEach(modal => {
-    const closeBtn = modal.querySelector('.modal-close');
-    if(closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
+  document.querySelectorAll('.js-trigger-terms').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      openModal(document.getElementById('termsModal'));
+    });
   });
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  document.querySelectorAll('.js-trigger-compliance').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      openModal(document.getElementById('complianceModal'));
+    });
+  });
+
+  document.querySelectorAll('.modal-overlay').forEach(function (modal) {
+    const closeButton = modal.querySelector('.modal-close');
+
+    if (closeButton) {
+      closeButton.addEventListener('click', function () {
+        closeModal(modal);
+      });
+    }
+
+    modal.addEventListener('click', function (event) {
+      if (event.target === modal) {
+        closeModal(modal);
+      }
+    });
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.is-visible').forEach(function (modal) {
+        closeModal(modal);
+      });
+    }
+  });
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+
     let valid = true;
-    const emailVal = email.value.trim();
 
-    if (emailVal === '' || !isValidEmail(emailVal)) {
-      showError(email, emailError, 'Enter a valid email address.');
+    if (!validateName(firstName, firstNameError, 'First Name')) {
       valid = false;
     }
+
+    if (!validateName(lastName, lastNameError, 'Last Name')) {
+      valid = false;
+    }
+
+    if (!validateEmail()) {
+      valid = false;
+    }
+
+    if (!validateJob()) {
+      valid = false;
+    }
+
+    if (!validatePassword()) {
+      valid = false;
+    }
+
+    if (!validateConfirmPassword()) {
+      valid = false;
+    }
+
     if (!agreeTerms.checked) {
       termsError.textContent = 'You must agree to continue.';
       termsError.classList.add('visible');
       valid = false;
+    } else {
+      termsError.textContent = '';
+      termsError.classList.remove('visible');
     }
 
-    if (!valid) return;
-
-    const currentUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    if (!currentUsers.includes(emailVal)) {
-      currentUsers.push(emailVal);
-      localStorage.setItem('registeredUsers', JSON.stringify(currentUsers));
+    if (!valid) {
+      return;
     }
 
     signupBtn.classList.add('is-loading');
-    setTimeout(() => { window.location.href = 'index.html'; }, 800);
+    signupBtn.disabled = true;
+
+    setTimeout(function () {
+      window.location.href = 'index.html';
+    }, 800);
   });
 
 });
