@@ -1019,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     localStorage.setItem('last_user_role', data.role);
 
     // Redirect based on the actual database role
-    if (data.role.toUpperCase() === 'HR') {
+    if (data.role.toUpperCase() === 'HR Manager') {
         window.location.href = 'home.html';
     } else {
         window.location.href = 'dashboard.html';
