@@ -4,9 +4,8 @@
   const configuredUrl = localStorage.getItem('apiBaseUrl');
   const isLocalFrontend = ['localhost', '127.0.0.1'].includes(window.location.hostname) && window.location.port !== '3000';
   const localApiHost = window.location.hostname === 'localhost' ? 'localhost' : '127.0.0.1';
-  // On cloud hosting the frontend is served by Express, so API requests remain
-  // on the current HTTPS origin. Port 5501 still targets the local API on 3000.
-  const defaultApiUrl = isLocalFrontend ? `http://${localApiHost}:3000/api` : `${window.location.origin}/api`;
+  const productionApiUrl = 'https://passionate-integrity-production-55e8.up.railway.app/api';
+  const defaultApiUrl = isLocalFrontend ? `http://${localApiHost}:3000/api` : productionApiUrl;
   const API_BASE_URL = (configuredUrl || defaultApiUrl).replace(/\/$/, '');
   let employeeCache;
 
