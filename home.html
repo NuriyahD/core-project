@@ -1033,10 +1033,13 @@
             return groups;
         }, {});
         const labels = Object.keys(monthly).sort().slice(-8);
+        const hasTrend = labels.length > 1;
+        const chartLabels = labels.map(value => new Intl.DateTimeFormat('en-ZA', { month: 'short', year: '2-digit' }).format(new Date(`${value}-01`)));
+        const chartValues = labels.map(label => monthly[label]);
         if (payrollTrendChart) payrollTrendChart.destroy();
         payrollTrendChart = new Chart(document.getElementById('payrollTrendChart'), {
-            type: 'line',
-            data: { labels: labels.map(value => new Intl.DateTimeFormat('en-ZA', { month: 'short', year: '2-digit' }).format(new Date(`${value}-01`))), datasets: [{ label: 'Net payroll', data: labels.map(label => monthly[label]), borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,.12)', fill: true, tension: .35, pointRadius: 3, pointHoverRadius: 6 }] },
+            type: hasTrend ? 'line' : 'bar',
+            data: { labels: chartLabels, datasets: [{ label: 'Net payroll', data: chartValues, borderColor: '#2563eb', backgroundColor: hasTrend ? 'rgba(37,99,235,.12)' : 'rgba(37,99,235,.78)', fill: hasTrend, tension: .35, pointRadius: hasTrend ? 4 : 0, pointHoverRadius: 7, borderRadius: hasTrend ? 0 : 10, maxBarThickness: 110 }] },
             options: { responsive: true, maintainAspectRatio: false, interaction: { intersect: false, mode: 'index' }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(148,163,184,.18)' }, ticks: { callback: value => `R${Number(value / 1000).toFixed(0)}k` } }, x: { grid: { display: false } } }, plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f172a', padding: 10, callbacks: { label: context => new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(context.raw) } } } }
         });
     }
