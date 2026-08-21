@@ -781,8 +781,13 @@
             if (field === "overallStatus") {
                 applyOverallStatus(row, event.target.value);
                 renderTable();
-            } else if (field === "selfStatus" || field === "managerStatus") {
-                row[field] = event.target.value;
+            } else if (field === "selfStatus") {
+                row.selfStatus = event.target.value;
+                row.managerStatus = row.selfStatus === "Submitted" ? "Under Review" : "Waiting";
+                renderTable();
+            } else if (field === "managerStatus") {
+                row.managerStatus = event.target.value;
+                row.selfStatus = row.managerStatus === "Waiting" ? "Not Started" : "Submitted";
                 renderTable();
             }
             try {

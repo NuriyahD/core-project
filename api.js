@@ -128,21 +128,54 @@
     }
 
     if (isHrUser && !['index.html', 'signup.html'].includes(currentPage)) {
-      const notificationButton = document.createElement('button');
-      notificationButton.type = 'button';
-      notificationButton.className = 'btn btn-primary rounded-circle position-relative';
-      notificationButton.style.cssText = 'width:42px;height:42px';
-      notificationButton.innerHTML = '<i class="bi bi-bell-fill"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="hrPendingLeaveBadge">0</span>';
-      notificationButton.title = 'Pending time-off requests';
-      notificationButton.addEventListener('click', () => { window.location.href = 'TimeOff.html'; });
-      (sharedNavbar || document.body).appendChild(notificationButton);
+      const existingBell = document.getElementById('notificationBell');
+      if (!existingBell) {
+        const notificationButton = document.createElement('button');
+        notificationButton.type = 'button';
+        notificationButton.className = 'btn btn-primary rounded-circle position-relative';
+        notificationButton.style.cssText = 'width:42px;height:42px';
+        notificationButton.innerHTML = '<i class="bi bi-bell-fill"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="hrPendingLeaveBadge">0</span>';
+        notificationButton.title = 'Pending time-off requests';
+        notificationButton.addEventListener('click', () => { window.location.href = 'TimeOff.html'; });
+        (sharedNavbar || document.body).appendChild(notificationButton);
+      }
 
       let previousPendingIds = null;
       const pollTimeOffRequests = async () => {
         try {
           const groups = await apiJson('/leave-requests');
-          const pending = groups.flatMap(group => group.leaveRequests || []).filter(request => request.status === 'Pending');
-          document.getElementById('hrPendingLeaveBadge').textContent = pending.length;
+          const pending = groups.flatMap(group => (group.leaveRequests || []).map(request => ({
+            ...request,
+            employeeName: group.name || group.employeeName || 'Employee',
+          }))).filter(request => request.status === 'Pending');
+          const badge = document.getElementById('hrPendingLeaveBadge');
+          if (badge) {
+            badge.textContent = pending.length;
+            badge.classList.toggle('d-none', pending.length === 0);
+          }
+          const notificationList = document.getElementById('notificationList');
+          if (notificationList) {
+            notificationList.querySelectorAll('li:not(.dropdown-header)').forEach(item => item.remove());
+            if (!pending.length) {
+              notificationList.insertAdjacentHTML('beforeend', '<li><span class="dropdown-item-text p-3 text-muted small">No pending notifications.</span></li>');
+            } else {
+              pending.slice(0, 8).forEach(request => {
+                const item = document.createElement('li');
+                const link = document.createElement('a');
+                link.className = 'dropdown-item p-3 border-bottom text-wrap';
+                link.href = 'TimeOff.html';
+                const title = document.createElement('p');
+                title.className = 'mb-1 fw-semibold small';
+                title.textContent = `${request.employeeName} requested time off`;
+                const detail = document.createElement('span');
+                detail.className = 'text-muted tiny-text';
+                detail.textContent = `${request.reason || 'Leave request'} · ${request.date || ''}`;
+                link.append(title, detail);
+                item.appendChild(link);
+                notificationList.appendChild(item);
+              });
+            }
+          }
           const ids = new Set(pending.map(request => request.id));
           if (previousPendingIds && [...ids].some(id => !previousPendingIds.has(id))) {
             const notice = document.createElement('div');

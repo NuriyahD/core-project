@@ -546,22 +546,11 @@
             <div class="d-flex align-items-center justify-content-end ms-auto gap-3">
                 <div class="dropdown">
                     <i id="notificationBell" class="bi bi-bell fs-5 position-relative" style="cursor: pointer;" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                        <span id="hrPendingLeaveBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
                     </i>
-                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border mt-2" style="width: 320px; max-height: 400px; overflow-y: auto;">
+                    <ul id="notificationList" class="dropdown-menu dropdown-menu-end shadow-sm border mt-2" style="width: 320px; max-height: 400px; overflow-y: auto;">
                         <li class="dropdown-header fw-bold border-bottom pb-2">Notifications</li>
-                        <li>
-                            <div class="dropdown-item p-3 border-bottom text-wrap">
-                                <p class="mb-1 fw-semibold small">New Time Off Request</p>
-                                <span class="text-muted tiny-text">5 minutes ago</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="dropdown-item p-3 border-bottom text-wrap">
-                                <p class="mb-1 fw-semibold small">System Maintenance Scheduled</p>
-                                <span class="text-muted tiny-text">2 hours ago</span>
-                            </div>
-                        </li>
+                        <li id="notificationEmpty"><span class="dropdown-item-text p-3 text-muted small">No pending notifications.</span></li>
                     </ul>
                 </div>
                 
