@@ -563,13 +563,13 @@
 
         function reviewStatusParts(status) {
             if (status === "Completed") return { selfStatus: "Submitted", managerStatus: "Completed" };
-            if (status === "In Progress") return { selfStatus: "Submitted", managerStatus: "Under Review" };
+            if (status === "Submitted") return { selfStatus: "Submitted", managerStatus: "Under Review" };
             return { selfStatus: "Not Started", managerStatus: "Waiting" };
         }
 
         function backendStatus(row) {
             if (row.selfStatus === "Submitted" && row.managerStatus === "Completed") return "Completed";
-            if (row.selfStatus === "Submitted") return "In Progress";
+            if (row.selfStatus === "Submitted") return "Submitted";
             return "Draft";
         }
 
@@ -791,9 +791,20 @@
                 renderTable();
             }
             try {
+                const payload = {
+                    review_cycle_id: row.review_cycle_id,
+                    employee_id: row.employee_id,
+                    reviewer_id: row.reviewer_id,
+                    rating: row.rating,
+                    strengths: row.strengths,
+                    areas_for_improvement: row.areas_for_improvement,
+                    comments: row.comments,
+                    status: backendStatus(row),
+                    review_date: row.review_date ? String(row.review_date).slice(0, 10) : null
+                };
                 await apiJson(`/performance-reviews/${row.review_id}`, {
                     method: 'PUT',
-                    body: JSON.stringify({ ...row, status: backendStatus(row) })
+                    body: JSON.stringify(payload)
                 });
                 launchToast(`Updated ${row.name}'s review status`);
             } catch (error) {

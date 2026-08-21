@@ -19,6 +19,15 @@
   }
 
   if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('span').forEach((element) => {
+      if (element.textContent.includes('Secure Session Gateway')) element.remove();
+    });
+    document.querySelectorAll('button[aria-label="User Profile"], button[aria-label="User Account"]').forEach((button) => {
+      const wrapper = button.closest('.dropdown');
+      if (wrapper && wrapper.children.length === 1) wrapper.remove();
+      else button.remove();
+    });
+
     if (!role) return;
 
     // All pages use different header markup, so shared session controls target

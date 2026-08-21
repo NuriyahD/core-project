@@ -789,9 +789,9 @@
           <label class="field">
             Status
             <select id="reviewStatus" name="status" required>
-              <option value="completed">Completed</option>
-              <option value="in-progress">In Progress</option>
-              <option value="upcoming">Upcoming</option>
+              <option value="Completed">Completed</option>
+              <option value="Submitted">In Progress</option>
+              <option value="Draft">Upcoming</option>
             </select>
           </label>
           <label class="field">
@@ -824,8 +824,8 @@ const modal = document.getElementById('reviewModal');
 const form = document.getElementById('reviewForm');
 const tableBody = document.getElementById('reviewTableBody');
 
-const statusClass = (status) => String(status || 'Draft').toLowerCase().replace(/\s+/g, '-');
-const displayStatus = (status) => status || 'Draft';
+const statusClass = (status) => ({ Submitted: 'in-progress', Draft: 'upcoming' }[status] || String(status || 'Draft').toLowerCase().replace(/\s+/g, '-'));
+const displayStatus = (status) => ({ Submitted: 'In Progress', Draft: 'Upcoming' }[status] || status || 'Upcoming');
 const cycleFor = (id) => reviewCycles.find(cycle => Number(cycle.review_cycle_id) === Number(id));
 
 function openReviewModal(review = null) {
@@ -835,7 +835,7 @@ function openReviewModal(review = null) {
   document.getElementById('reviewDepartment').value = review?.department || 'Development';
   document.getElementById('reviewPeriod').value = cycleFor(review?.review_cycle_id)?.cycle_name || reviewCycles[0]?.cycle_name || '';
   document.getElementById('reviewReviewer').value = review?.manager || '';
-  document.getElementById('reviewStatus').value = statusClass(review?.status || 'upcoming');
+  document.getElementById('reviewStatus').value = review?.status || 'Draft';
   document.getElementById('reviewScore').value = review?.rating || '';
   document.getElementById('reviewComments').value = review?.comments || '';
   modal.classList.add('open');
@@ -996,7 +996,7 @@ form.addEventListener('submit', async event => {
     cycle = { review_cycle_id: created.review_cycle_id, cycle_name: cycleName };
     reviewCycles.push(cycle);
   }
-  const payload = { review_cycle_id: cycle.review_cycle_id, employee_id: employee.employeeId, reviewer_id: reviewer.employeeId, rating: Number(document.getElementById('reviewScore').value), comments: document.getElementById('reviewComments').value.trim(), status: document.getElementById('reviewStatus').selectedOptions[0].text, review_date: new Date().toISOString().slice(0, 10) };
+  const payload = { review_cycle_id: cycle.review_cycle_id, employee_id: employee.employeeId, reviewer_id: reviewer.employeeId, rating: Number(document.getElementById('reviewScore').value), comments: document.getElementById('reviewComments').value.trim(), status: document.getElementById('reviewStatus').value, review_date: new Date().toISOString().slice(0, 10) };
   await apiJson(editingReviewId ? `/performance-reviews/${editingReviewId}` : '/performance-reviews', { method: editingReviewId ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   window.location.reload();
 });
