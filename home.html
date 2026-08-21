@@ -185,8 +185,34 @@
         }
 
         .search-container-fluid {
-            flex-grow: 1;
-            max-width: 500px;
+            position: absolute;
+            left: 50%;
+            width: min(500px, 42vw);
+            transform: translateX(-50%);
+        }
+
+        .search-bar {
+            border: 2px solid #94a3b8;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .search-bar:focus-within {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+        }
+
+        .search-bar .form-control,
+        .search-bar .input-group-text {
+            background: #fff !important;
+            border: 0 !important;
+        }
+
+        .search-bar .form-control {
+            min-height: 44px;
         }
 
         .burger-btn {
@@ -465,6 +491,8 @@
                 padding: 0;
             }
             .search-container-fluid {
+                position: static;
+                transform: none;
                 max-width: 100%;
                 order: 3;
                 width: 100%;
@@ -538,8 +566,8 @@
 
             <div class="search-container-fluid mx-lg-3">
                 <div class="input-group search-bar w-100">
-                    <input id="searchInput" type="text" class="form-control bg-light border-0" placeholder="Search">
-                    <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
+                    <input id="searchInput" type="search" class="form-control" placeholder="Search dashboard data" aria-label="Search dashboard data">
+                    <span class="input-group-text"><i class="bi bi-search text-muted"></i></span>
                 </div>
             </div>
 
