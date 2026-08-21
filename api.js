@@ -40,7 +40,7 @@
 
     if (sharedNavbar && !['index.html', 'signup.html'].includes(currentPage)) {
       const sharedStyle = document.createElement('style');
-      sharedStyle.textContent = '.sidebar-collapsed #sidebar,.sidebar-collapsed #appSidebar,.sidebar-collapsed aside.sidebar{display:none!important}.sidebar-collapsed #page-content-wrapper,.sidebar-collapsed .main-panel{margin-left:0!important;width:100%!important}.shared-nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}.shared-account-menu{display:none;position:fixed;right:18px;top:58px;z-index:2600;min-width:190px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:8px;box-shadow:0 12px 30px rgba(15,23,42,.18)}.shared-account-menu.open{display:block}';
+      sharedStyle.textContent = '.sidebar-collapsed #sidebar,.sidebar-collapsed #appSidebar,.sidebar-collapsed aside.sidebar{display:none!important}.sidebar-collapsed #page-content-wrapper,.sidebar-collapsed .main-panel{margin-left:0!important;width:100%!important}.shared-nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}.shared-account-menu{display:none;position:fixed;right:18px;top:58px;z-index:2600;min-width:190px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:8px;box-shadow:0 12px 30px rgba(15,23,42,.18)}.shared-account-menu.open{display:block}.employee-clock-control{display:flex;align-items:center;gap:10px;min-width:245px;height:50px;margin-left:8px;padding:4px 8px 4px 12px;border-left:1px solid #e2e8f0;background:#fff}.employee-clock-copy{display:flex;flex-direction:column;justify-content:center;min-width:125px;line-height:1.15}.employee-clock-copy small{font-size:11px}.employee-clock-copy strong{font-size:14px;white-space:nowrap}.employee-clock-times{font-size:11px;white-space:nowrap}@media(max-width:760px){.employee-clock-control{min-width:auto}.employee-clock-copy small:first-child{display:none}.employee-clock-copy{min-width:105px}}';
       document.head.appendChild(sharedStyle);
       const actions = document.createElement('div');
       actions.className = 'shared-nav-actions';
@@ -83,9 +83,8 @@
       }
 
       const clockCard = document.createElement('div');
-      clockCard.className = 'card border-0 p-2 mb-0';
-      clockCard.style.cssText = 'min-width:230px;box-shadow:none';
-      clockCard.innerHTML = '<div class="d-flex align-items-center justify-content-between gap-3"><div><small class="text-muted d-block">Today’s attendance</small><strong id="employeeClockStatus">Loading…</strong></div><button type="button" class="btn btn-success btn-sm" id="employeeClockButton" disabled>Clock in</button></div><small class="text-muted mt-2" id="employeeClockTimes"></small>';
+      clockCard.className = 'employee-clock-control';
+      clockCard.innerHTML = '<div class="employee-clock-copy"><small class="text-muted">Today\'s attendance</small><strong id="employeeClockStatus">Loading...</strong><small class="text-muted employee-clock-times" id="employeeClockTimes"></small></div><button type="button" class="btn btn-success btn-sm text-nowrap" id="employeeClockButton" disabled>Clock in</button>';
       (sharedNavbar || document.body).appendChild(clockCard);
       const clockButton = clockCard.querySelector('#employeeClockButton');
       const clockStatus = clockCard.querySelector('#employeeClockStatus');
@@ -110,13 +109,13 @@
             clockButton.textContent = 'Clock out';
             clockButton.className = 'btn btn-outline-danger btn-sm';
             clockButton.disabled = false;
-            clockTimes.textContent = `Clocked in at ${String(record.check_in).slice(0, 5)}`;
+            clockTimes.textContent = `Clocked in at ${formatTime(record.check_in)}`;
           } else {
             clockStatus.textContent = 'Shift completed';
             clockButton.textContent = 'Completed';
             clockButton.className = 'btn btn-secondary btn-sm';
             clockButton.disabled = true;
-            clockTimes.textContent = `${String(record.check_in).slice(0, 5)} – ${String(record.check_out).slice(0, 5)}`;
+            clockTimes.textContent = `${formatTime(record.check_in)} - ${formatTime(record.check_out)}`;
           }
         } catch (error) {
           clockStatus.textContent = 'Attendance unavailable';
