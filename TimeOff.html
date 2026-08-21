@@ -426,6 +426,7 @@
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Employee Name</label>
                             <input type="text" id="empNameInput" class="form-control" placeholder="e.g. Alice Johnson" required>
+                            <div id="employeeNameHelp" class="form-text d-none">Filled from your signed-in employee account.</div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Leave Type</label>
@@ -525,10 +526,26 @@ apiFetch('/leave-requests')
                 .join('');
         }).catch(error => console.error('Error loading leave types:', error));
 
-        if (!(localStorage.getItem('last_user_role') || '').toUpperCase().includes('HR')) {
+        const isHrTimeOffUser = (localStorage.getItem('last_user_role') || '').toUpperCase().includes('HR');
+        if (!isHrTimeOffUser) {
             const employeeNameInput = document.getElementById('empNameInput');
-            employeeNameInput.value = localStorage.getItem('last_user_name') || '';
             employeeNameInput.readOnly = true;
+            employeeNameInput.placeholder = 'Loading your employee profile...';
+            document.getElementById('employeeNameHelp').classList.remove('d-none');
+
+            // Non-HR employees may only submit for the employee ID carried by
+            // their verified token. Load the matching database record for a
+            // friendly display name; the backend independently enforces the ID.
+            apiJson('/employees').then(employees => {
+                const employeeId = Number(localStorage.getItem('last_employee_id'));
+                const employee = employees.find(item => Number(item.employeeId) === employeeId) || employees[0];
+                if (!employee) throw new Error('No employee profile is linked to this account.');
+                employeeNameInput.value = employee.name;
+                localStorage.setItem('last_user_name', employee.name);
+            }).catch(error => {
+                employeeNameInput.value = localStorage.getItem('last_user_email') || '';
+                document.getElementById('employeeNameHelp').textContent = error.message;
+            });
         }
 
         function renderDashboard() {
@@ -608,7 +625,6 @@ apiFetch('/leave-requests')
         document.getElementById("searchInput").addEventListener("input", renderDashboard);
         document.getElementById("statusFilter").addEventListener("change", renderDashboard);
 
-        const isHrTimeOffUser = (localStorage.getItem('last_user_role') || '').toUpperCase().includes('HR');
         if (!isHrTimeOffUser) {
             document.querySelectorAll('.hr-action-column').forEach(element => element.classList.add('d-none'));
         }
@@ -639,8 +655,11 @@ apiFetch('/leave-requests')
             const submitButton = this.querySelector('[type="submit"]');
             submitButton.disabled = true;
             try {
-                const employee = await findEmployee(document.getElementById("empNameInput").value);
+                const employee = isHrTimeOffUser
+                    ? await findEmployee(document.getElementById("empNameInput").value)
+                    : { employeeId: Number(localStorage.getItem('last_employee_id')) };
                 if (!employee) throw new Error('Employee not found. Enter an exact employee name, email, or staff number.');
+                if (!employee.employeeId) throw new Error('Your login is not linked to an employee profile. Please sign in again.');
                 const leaveDate = document.getElementById("datesInput").value;
                 const leaveSelect = document.getElementById("leaveTypeInput");
                 await apiJson('/leave-requests', {
