@@ -412,19 +412,31 @@
                     <h5 class="modal-title fw-bold">Add New Employee</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <p class="text-muted small">Add employee details here...</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                </div>
+                <form id="addStaffForm">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-12"><label class="form-label">Staff ID</label><input id="staffNumber" class="form-control" required placeholder="EMP011"></div>
+                            <div class="col-md-6"><label class="form-label">First name</label><input id="staffFirstName" class="form-control" required></div>
+                            <div class="col-md-6"><label class="form-label">Last name</label><input id="staffLastName" class="form-control" required></div>
+                            <div class="col-12"><label class="form-label">Work email</label><input id="staffEmail" type="email" class="form-control" required></div>
+                            <div class="col-12"><label class="form-label">Position</label><select id="staffPosition" class="form-select" required><option value="">Loading positions...</option></select></div>
+                            <div class="col-md-6"><label class="form-label">Annual salary</label><input id="staffSalary" type="number" min="0" step="0.01" class="form-control" required></div>
+                            <div class="col-md-6"><label class="form-label">Hire date</label><input id="staffHireDate" type="date" class="form-control" required></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Employee</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+<script src="api.js"></script>
+<script>
         // Mobile burger toggle
         const burgerToggle = document.getElementById('burgerToggle');
         const sidebar = document.getElementById('sidebar');
@@ -464,7 +476,7 @@
             if (!tableBody) return;
 
   // fetch data from api
-fetch('http://localhost:3000/api/employees')
+apiFetch('/employees')
     .then(response => response.json())
     .then(data => {
         employees = data;
@@ -476,7 +488,7 @@ fetch('http://localhost:3000/api/employees')
                 tableBody.innerHTML = "";
 
                 employees.forEach(function(emp) {
-                    const employeeId = emp.employeeId ?? emp.id ?? "-";
+                    const employeeId = emp.employee_number ?? emp.employeeId ?? emp.id ?? "-";
                     const name = emp.name ?? emp.fullName ?? "-";
                     const position = emp.position ?? emp.role ?? "-";
                     const department = emp.department ?? "-";
@@ -517,6 +529,38 @@ fetch('http://localhost:3000/api/employees')
                     }).length;
                 }
             }
+
+            apiJson('/positions').then(function(positions) {
+                document.getElementById('staffPosition').innerHTML = '<option value="">Select a position</option>' + positions
+                    .filter(position => !position.position_title.startsWith('TestRole'))
+                    .map(position => `<option value="${position.position_id}">${position.position_title}</option>`)
+                    .join('');
+            }).catch(error => console.error('Error loading positions:', error));
+
+            document.getElementById('addStaffForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+                const submitButton = this.querySelector('[type="submit"]');
+                submitButton.disabled = true;
+                try {
+                    await apiJson('/employees', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            employee_number: document.getElementById('staffNumber').value.trim(),
+                            first_name: document.getElementById('staffFirstName').value.trim(),
+                            last_name: document.getElementById('staffLastName').value.trim(),
+                            email: document.getElementById('staffEmail').value.trim().toLowerCase(),
+                            position_id: Number(document.getElementById('staffPosition').value),
+                            salary: Number(document.getElementById('staffSalary').value),
+                            hire_date: document.getElementById('staffHireDate').value,
+                        }),
+                    });
+                    window.location.reload();
+                } catch (error) {
+                    alert(error.message);
+                    submitButton.disabled = false;
+                }
+            });
         });
     </script>
 </body>

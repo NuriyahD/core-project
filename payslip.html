@@ -353,7 +353,7 @@
 
                     <div class="col-6 col-md-2">
                         <label class="form-label small fw-bold text-secondary">Select Month</label>
-                        <select class="form-select" id="payslipMonthSelect" onchange="updatePayslipCalculations()">
+                        <select class="form-select" id="payslipMonthSelect" onchange="loadSelectedPayrollPeriod()">
                             <option value="July 2026" selected>July 2026 (Current)</option>
                             <option value="June 2026">June 2026 (Previous)</option>
                             <option value="May 2026">May 2026</option>
@@ -371,6 +371,34 @@
                         <input type="number" class="form-control" id="customHoursWorked" value="160" oninput="updatePayslipCalculations()">
                     </div>
                 </div>
+
+                <section class="card border-0 shadow-sm mb-4 d-none" id="hrPayrollOverview">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                            <div>
+                                <h2 class="h5 fw-bold mb-1">Complete Employee Payroll</h2>
+                                <p class="text-muted small mb-0">All payroll records and generated payslips, including your own.</p>
+                            </div>
+                            <span class="badge bg-primary" id="payrollRecordCount">0 records</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Pay period</th>
+                                        <th class="text-end">Gross pay</th>
+                                        <th class="text-end">Net pay</th>
+                                        <th>Status</th>
+                                        <th>Payslip</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payrollOverviewBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
 
                 <div id="slip" class="payslip-container mx-auto" style="max-width: 850px;">
                     
@@ -437,12 +465,20 @@
                                 <table class="table table-sm table-borderless align-middle mb-0 font-monospace small">
                                     <tbody>
                                         <tr class="border-bottom">
-                                            <td class="p-2 ps-3">SARS PAYE Income Tax (15%)</td>
+                                            <td class="p-2 ps-3">PAYE Deduction</td>
                                             <td class="p-2 text-end pe-3 text-danger" id="deductPaye">R0.00</td>
                                         </tr>
                                         <tr>
-                                            <td class="p-2 ps-3">UIF Unemployment Insurance (1%)</td>
+                                            <td class="p-2 ps-3">UIF Deduction</td>
                                             <td class="p-2 text-end pe-3 text-danger" id="deductUif">R0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2 ps-3">Leave Deductions</td>
+                                            <td class="p-2 text-end pe-3 text-danger" id="deductLeave">R0.00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-2 ps-3">Other Deductions</td>
+                                            <td class="p-2 text-end pe-3 text-danger" id="deductOther">R0.00</td>
                                         </tr>
                                     </tbody>
                                     <tfoot class="table-light border-top">
@@ -482,8 +518,38 @@
         </div>
     </div>
 
+    <div class="modal fade" id="payrollSetupModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" id="payrollSetupForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Configure Payroll &amp; Payslip</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="setupEmployeeId">
+                    <p class="fw-semibold" id="setupEmployeeName"></p>
+                    <div class="row g-3">
+                        <div class="col-6"><label class="form-label">Period start</label><input type="date" class="form-control" id="setupPeriodStart" required></div>
+                        <div class="col-6"><label class="form-label">Period end</label><input type="date" class="form-control" id="setupPeriodEnd" required></div>
+                        <div class="col-6"><label class="form-label">Base salary</label><input type="number" min="0" step="0.01" class="form-control" id="setupBaseSalary" required></div>
+                        <div class="col-6"><label class="form-label">Hours worked</label><input type="number" min="0" step="0.01" class="form-control" id="setupHours" value="160" required></div>
+                        <div class="col-6"><label class="form-label">Leave deductions</label><input type="number" min="0" step="0.01" class="form-control" id="setupLeaveDeduction" value="0"></div>
+                        <div class="col-6"><label class="form-label">Other deductions</label><input type="number" min="0" step="0.01" class="form-control" id="setupOtherDeduction" value="0"></div>
+                    </div>
+                    <small class="text-muted d-block mt-3">PAYE and UIF are calculated by the backend. A payslip record will be generated automatically.</small>
+                    <div class="text-danger small mt-2 d-none" id="setupPayrollError"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Payroll &amp; Payslip</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+<script src="api.js"></script>
+<script>
         // Mobile burger toggle
         const burgerToggle = document.getElementById('burgerToggle');
         const sidebar = document.getElementById('sidebar');
@@ -511,11 +577,17 @@
         if (burgerToggle) burgerToggle.addEventListener('click', toggleSidebar);
         if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
 
+let employees = [];
+let payrollData = [];
+let payslipData = [];
+const isHrPayrollUser = (localStorage.getItem('last_user_role') || '').toUpperCase().includes('HR');
+
 // fetch data from api
-fetch('http://localhost:3000/api/payslip')
-    .then(response => response.json())
-    .then(data => {
-        employees = data;
+Promise.all([apiJson('/employees'), apiJson('/payroll'), apiJson('/payslips')])
+    .then(([employeeData, payrollRecords, payslipRecords]) => {
+        employees = employeeData;
+        payrollData = payrollRecords;
+        payslipData = payslipRecords;
         setupDashboard();
     })
     .catch(error => console.error('Error fetching payslip data:', error));
@@ -528,29 +600,184 @@ fetch('http://localhost:3000/api/payslip')
                 const emp = employees[i];
                 const optionEl = document.createElement("option");
                 optionEl.value = emp.employeeId;
-                optionEl.textContent = emp.name;
+                optionEl.textContent = `${emp.employee_number} — ${emp.name}`;
                 dropdown.appendChild(optionEl);
             }
 
             loadEmployeeData();
+            if (!isHrPayrollUser) {
+                dropdown.disabled = true;
+            } else {
+                document.querySelector('h1').textContent = 'Payroll & Payslips';
+                renderPayrollOverview();
+            }
         }
+
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(Number(amount || 0));
+        }
+
+        function formatPeriodDate(value) {
+            return value ? new Intl.DateTimeFormat('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(value)) : '—';
+        }
+
+        function renderPayrollOverview() {
+            const section = document.getElementById('hrPayrollOverview');
+            const body = document.getElementById('payrollOverviewBody');
+            section.classList.remove('d-none');
+            const overviewRows = employees.flatMap(employee => {
+                const records = payrollData.filter(record => Number(record.employeeId) === Number(employee.employeeId));
+                return records.length ? records.map(record => ({ employee, record })) : [{ employee, record: null }];
+            });
+            const pendingEmployees = overviewRows.filter(row => !row.record).length;
+            document.getElementById('payrollRecordCount').textContent = `${employees.length} employees · ${pendingEmployees} awaiting payroll`;
+            body.innerHTML = overviewRows.map(({ employee, record }) => {
+                if (!record) {
+                    return `<tr>
+                        <td><strong>${employee.name}</strong><br><small class="text-muted">${employee.employee_number || ''}</small></td>
+                        <td><span class="text-muted">No pay period yet</span></td>
+                        <td class="text-end">${formatMoney(employee.salary)}</td>
+                        <td class="text-end text-muted">—</td>
+                        <td><span class="badge text-bg-secondary">Not configured</span></td>
+                        <td><span class="text-muted">Not generated</span></td>
+                        <td class="text-end"><button type="button" class="btn btn-sm btn-primary" data-configure-employee="${employee.employeeId}">Configure payroll</button></td>
+                    </tr>`;
+                }
+                const payslip = payslipData.find(item => Number(item.payroll_id) === Number(record.payroll_id));
+                const statusClass = record.payment_status === 'Paid' ? 'success' : 'warning';
+                return `<tr>
+                    <td><strong>${employee.name || `Employee #${record.employeeId}`}</strong><br><small class="text-muted">${employee.employee_number || ''}</small></td>
+                    <td>${formatPeriodDate(record.pay_period_start)} – ${formatPeriodDate(record.pay_period_end)}</td>
+                    <td class="text-end">${formatMoney(record.gross_pay)}</td>
+                    <td class="text-end fw-semibold">${formatMoney(record.net_pay)}</td>
+                    <td><span class="badge text-bg-${statusClass}">${record.payment_status || 'Pending'}</span></td>
+                    <td>${payslip ? `<span class="text-success"><i class="bi bi-file-earmark-check"></i> ${payslip.payslip_number}</span>` : '<span class="text-muted">Not generated</span>'}</td>
+                    <td class="text-end"><button type="button" class="btn btn-sm btn-outline-primary" data-view-employee="${record.employeeId}">View payslip</button></td>
+                </tr>`;
+            }).join('') || '<tr><td colspan="7" class="text-center text-muted py-4">No payroll records found.</td></tr>';
+
+            body.querySelectorAll('[data-view-employee]').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.getElementById('payslipEmployeeSelect').value = button.dataset.viewEmployee;
+                    loadEmployeeData();
+                    document.getElementById('slip').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            body.querySelectorAll('[data-configure-employee]').forEach(button => {
+                button.addEventListener('click', () => openPayrollSetup(Number(button.dataset.configureEmployee)));
+            });
+        }
+
+        function openPayrollSetup(employeeId) {
+            const employee = employees.find(item => Number(item.employeeId) === Number(employeeId));
+            if (!employee) return;
+            const today = new Date();
+            const start = new Date(today.getFullYear(), today.getMonth(), 1);
+            const end = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            const localDate = date => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            document.getElementById('setupEmployeeId').value = employee.employeeId;
+            document.getElementById('setupEmployeeName').textContent = `${employee.employee_number} — ${employee.name}`;
+            document.getElementById('setupPeriodStart').value = localDate(start);
+            document.getElementById('setupPeriodEnd').value = localDate(end);
+            document.getElementById('setupBaseSalary').value = employee.salary;
+            document.getElementById('setupPayrollError').classList.add('d-none');
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('payrollSetupModal')).show();
+        }
+
+        document.getElementById('payrollSetupForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const submitButton = this.querySelector('[type="submit"]');
+            const errorElement = document.getElementById('setupPayrollError');
+            const employeeId = Number(document.getElementById('setupEmployeeId').value);
+            const employee = employees.find(item => Number(item.employeeId) === employeeId);
+            submitButton.disabled = true;
+            errorElement.classList.add('d-none');
+            try {
+                const payroll = await apiJson('/payroll', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        employee_id: employeeId,
+                        pay_period_start: document.getElementById('setupPeriodStart').value,
+                        pay_period_end: document.getElementById('setupPeriodEnd').value,
+                        base_salary: Number(document.getElementById('setupBaseSalary').value),
+                        hours_worked: Number(document.getElementById('setupHours').value),
+                        leave_deductions: Number(document.getElementById('setupLeaveDeduction').value || 0),
+                        other_deductions: Number(document.getElementById('setupOtherDeduction').value || 0),
+                        payment_status: 'Pending'
+                    })
+                });
+                const period = document.getElementById('setupPeriodEnd').value.slice(0, 7).replace('-', '');
+                await apiJson('/payslips', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        payroll_id: payroll.payroll_id,
+                        payslip_number: `PS-${period}-${employee.employee_number}`
+                    })
+                });
+                window.location.reload();
+            } catch (error) {
+                errorElement.textContent = error.message;
+                errorElement.classList.remove('d-none');
+                submitButton.disabled = false;
+            }
+        });
 
         function loadEmployeeData() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
-            const currentPayroll = payrollData.find(payroll => payroll.employeeId === currentId);
+            const employeePayroll = payrollData.filter(payroll => payroll.employeeId === currentId);
+            const currentEmployee = employees.find(employee => employee.employeeId === currentId);
+            const monthSelect = document.getElementById('payslipMonthSelect');
 
-            if (currentPayroll) {
-                const estimatedHourly = Math.round(currentPayroll.finalSalary / currentPayroll.hoursWorked);
-                document.getElementById("customHoursWorked").value = currentPayroll.hoursWorked;
-                document.getElementById("customHourlyRate").value = estimatedHourly;
+            if (employeePayroll.length) {
+                monthSelect.innerHTML = employeePayroll.map((payroll, index) => {
+                    const label = new Intl.DateTimeFormat('en-ZA', { month: 'long', year: 'numeric' }).format(new Date(payroll.pay_period_end));
+                    return `<option value="${payroll.payroll_id}" ${index === 0 ? 'selected' : ''}>${label}</option>`;
+                }).join('');
+            } else {
+                const label = new Intl.DateTimeFormat('en-ZA', { month: 'long', year: 'numeric' }).format(new Date());
+                monthSelect.innerHTML = `<option value="estimate">${label} estimate</option>`;
             }
 
+            const currentPayroll = employeePayroll[0];
+
+            if (currentPayroll) {
+                const estimatedHourly = currentPayroll.hoursWorked
+                    ? Math.round(currentPayroll.baseSalary / currentPayroll.hoursWorked)
+                    : Math.round(currentPayroll.baseSalary / 160);
+                document.getElementById("customHoursWorked").value = currentPayroll.hoursWorked || 160;
+                document.getElementById("customHourlyRate").value = estimatedHourly;
+            } else if (currentEmployee) {
+                document.getElementById("customHoursWorked").value = 160;
+                document.getElementById("customHourlyRate").value = Math.round(currentEmployee.salary / 160);
+            }
+
+            document.getElementById("customHoursWorked").readOnly = Boolean(currentPayroll);
+            document.getElementById("customHourlyRate").readOnly = Boolean(currentPayroll);
+
+            loadSelectedPayrollPeriod();
+        }
+
+        function loadSelectedPayrollPeriod() {
+            const payrollId = Number(document.getElementById('payslipMonthSelect').value);
+            const payroll = payrollData.find(record => Number(record.payroll_id) === payrollId);
+            const currentId = Number(document.getElementById('payslipEmployeeSelect').value);
+            const employee = employees.find(item => Number(item.employeeId) === currentId);
+            if (payroll) {
+                const hours = Number(payroll.hoursWorked || 160);
+                document.getElementById('customHoursWorked').value = hours;
+                document.getElementById('customHourlyRate').value = Math.round(Number(payroll.baseSalary) / hours);
+            } else if (employee) {
+                document.getElementById('customHoursWorked').value = 160;
+                document.getElementById('customHourlyRate').value = Math.round(employee.salary / 160);
+            }
             updatePayslipCalculations();
         }
 
         function updatePayslipCalculations() {
             const currentId = parseInt(document.getElementById("payslipEmployeeSelect").value);
-            const chosenMonth = document.getElementById("payslipMonthSelect").value;
+            const monthSelect = document.getElementById("payslipMonthSelect");
+            const chosenMonth = monthSelect.options[monthSelect.selectedIndex]?.text || '';
+            const currentPayroll = payrollData.find(payroll => Number(payroll.payroll_id) === Number(monthSelect.value));
             
             const userHours = parseFloat(document.getElementById("customHoursWorked").value) || 0;
             const userRate = parseFloat(document.getElementById("customHourlyRate").value) || 0;
@@ -558,33 +785,36 @@ fetch('http://localhost:3000/api/payslip')
             const currentEmp = employees.find(employee => employee.employeeId === currentId);
             if (!currentEmp) return;
 
-            const computedGross = userHours * userRate;
-            const taxPaye = computedGross * 0.15; 
-            const uifDeduct = computedGross * 0.01; 
-            const totalDeductions = taxPaye + uifDeduct;
-            const finalNetPayout = computedGross - totalDeductions;
-            const annualIncome = computedGross * 12;
+            const computedGross = currentPayroll ? Number(currentPayroll.gross_pay) : userHours * userRate;
+            const payeDeduction = currentPayroll ? Number(currentPayroll.paye_deduction || 0) : computedGross * 0.15;
+            const uifDeduction = currentPayroll ? Number(currentPayroll.uif_deduction || 0) : computedGross * 0.01;
+            const leaveDeduction = currentPayroll ? Number(currentPayroll.leave_deductions || 0) : 0;
+            const otherDeduction = currentPayroll ? Number(currentPayroll.other_deductions || 0) : 0;
+            const totalDeductions = payeDeduction + uifDeduction + leaveDeduction + otherDeduction;
+            const finalNetPayout = currentPayroll ? Number(currentPayroll.net_pay) : computedGross - totalDeductions;
+            const annualIncome = (currentPayroll ? Number(currentPayroll.base_salary) : computedGross) * 12;
 
             const formatZA = (amount) => "R" + amount.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
             document.getElementById("slipPeriodLabel").textContent = chosenMonth;
             document.getElementById("empName").textContent = currentEmp.name;
-            document.getElementById("empPosition").textContent = "MTech-00" + currentEmp.employeeId + " / " + currentEmp.position;
+            document.getElementById("empPosition").textContent = currentEmp.employee_number + " / " + currentEmp.position;
             document.getElementById("empDept").textContent = currentEmp.department;
 
             document.getElementById("annual").textContent = formatZA(annualIncome);
             document.getElementById("earnBasic").textContent = formatZA(computedGross);
-            document.getElementById("earnLeave").textContent = "Base target: " + formatZA(currentEmp.salary);
+            document.getElementById("earnLeave").textContent = "Base target: " + formatZA(currentPayroll ? Number(currentPayroll.base_salary) : currentEmp.salary);
             document.getElementById("earnTotal").textContent = formatZA(computedGross);
 
-            document.getElementById("deductPaye").textContent = formatZA(taxPaye);
-            document.getElementById("deductUif").textContent = formatZA(uifDeduct);
+            document.getElementById("deductPaye").textContent = formatZA(payeDeduction);
+            document.getElementById("deductUif").textContent = formatZA(uifDeduction);
+            document.getElementById("deductLeave").textContent = formatZA(leaveDeduction);
+            document.getElementById("deductOther").textContent = formatZA(otherDeduction);
             document.getElementById("deductTotal").textContent = formatZA(totalDeductions);
 
             document.getElementById("netPayLabel").textContent = formatZA(finalNetPayout);
         }
 
-        window.onload = setupDashboard;
     </script>
 </body>
 </html>

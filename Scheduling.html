@@ -558,7 +558,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+<script src="api.js"></script>
+<script>
         // Mobile burger toggle
         const burgerToggle = document.getElementById('burgerToggle');
         const sidebar = document.getElementById('sidebar');
@@ -587,11 +588,11 @@
         if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
 
 // fetch data from api
-fetch('http://localhost:3000/api/shifts')
+apiFetch('/shifts')
     .then(response => response.json())
     .then(data => {
         shiftRecords = data;
-        setupDashboard();
+        refreshPage();
     })
     .catch(error => console.error('Error fetching shifts:', error));
 
@@ -798,30 +799,26 @@ fetch('http://localhost:3000/api/shifts')
             refreshPage();
         });
 
-        document.getElementById("shiftForm").addEventListener("submit", function(e) {
+        document.getElementById("shiftForm").addEventListener("submit", async function(e) {
             e.preventDefault();
-
-            var newShift = {
-                name: document.getElementById("shiftEmployee").value.trim(),
-                department: document.getElementById("shiftDepartment").value,
-                title: document.getElementById("shiftTitle").value.trim(),
-                date: document.getElementById("shiftDate").value,
-                time: document.getElementById("shiftTime").value,
-                status: "Scheduled"
-            };
-
-            shiftRecords.push(newShift);
-            this.reset();
-
-            const modalElement = document.getElementById("addShiftModal");
-            const modalInstance = bootstrap.Modal.getInstance(modalElement);
-            if (modalInstance) modalInstance.hide();
-
-            var newShiftDate = new Date(newShift.date);
-            activeYear = newShiftDate.getFullYear();
-            activeMonth = newShiftDate.getMonth();
-
-            refreshPage();
+            const submitButton = this.querySelector('[type="submit"]');
+            submitButton.disabled = true;
+            try {
+                const employee = await findEmployee(document.getElementById("shiftEmployee").value);
+                if (!employee) throw new Error('Employee not found. Enter an exact employee name, email, or staff number.');
+                const startTime = document.getElementById("shiftTime").value;
+                const endHour = (Number(startTime.slice(0, 2)) + 8) % 24;
+                const endTime = `${String(endHour).padStart(2, '0')}:${startTime.slice(3)}`;
+                await apiJson('/shifts', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ employee_id: employee.employeeId, shift_date: document.getElementById("shiftDate").value, start_time: startTime, end_time: endTime, location: document.getElementById("shiftTitle").value.trim(), status: 'Scheduled' }),
+                });
+                window.location.reload();
+            } catch (error) {
+                alert(error.message);
+                submitButton.disabled = false;
+            }
         });
 
         refreshPage();

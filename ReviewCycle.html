@@ -514,7 +514,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
+<script src="api.js"></script>
+<script>
         // Mobile burger toggle
         const burgerToggle = document.getElementById('burgerToggle');
         const sidebar = document.getElementById('sidebar');
@@ -556,46 +557,62 @@
         const OVERALL_OPTIONS = ["Employee Input", "Manager Review", "Final Sign-off"];
         let rowIdCounter = 3;
         
-        let reviewRows = [
-            {
-                id: "row-1",
-                name: "Sarah Jenkins",
-                department: "Development",
-                manager: "Marcus Brody",
-                selfStatus: "Submitted",
-                managerStatus: "Completed",
+        let reviewRows = [];
+        let employees = [];
+        let activeCycle = null;
+
+        function reviewStatusParts(status) {
+            if (status === "Completed") return { selfStatus: "Submitted", managerStatus: "Completed" };
+            if (status === "In Progress") return { selfStatus: "Submitted", managerStatus: "Under Review" };
+            return { selfStatus: "Not Started", managerStatus: "Waiting" };
+        }
+
+        function backendStatus(row) {
+            if (row.selfStatus === "Submitted" && row.managerStatus === "Completed") return "Completed";
+            if (row.selfStatus === "Submitted") return "In Progress";
+            return "Draft";
+        }
+
+        function lookupEmployee(value) {
+            const query = String(value || '').trim().toLowerCase();
+            return employees.find(employee => [employee.name, employee.email, employee.employee_number]
+                .some(field => String(field || '').trim().toLowerCase() === query));
+        }
+
+        function mapReview(review) {
+            const employee = employees.find(item => Number(item.employee_id) === Number(review.employee_id)) || {};
+            const reviewer = employees.find(item => Number(item.employee_id) === Number(review.reviewer_id)) || {};
+            return {
+                ...review,
+                id: review.review_id,
+                name: employee.name || `Employee #${review.employee_id}`,
+                email: employee.email || "",
+                department: employee.department || "Unassigned",
+                manager: reviewer.name || `Employee #${review.reviewer_id}`,
+                ...reviewStatusParts(review.status),
                 editing: false,
                 justAdded: false
-            },
-            {
-                id: "row-2",
-                name: "Lungile Moyo",
-                department: "People Ops",
-                manager: "Sarah Jenkins",
-                selfStatus: "Submitted",
-                managerStatus: "Under Review",
-                editing: false,
-                justAdded: false
-            },
-            {
-                id: "row-3",
-                name: "Carl Peters",
-                department: "Sales",
-                manager: "Nina Patel",
-                selfStatus: "Not Started",
-                managerStatus: "Waiting",
-                editing: false,
-                justAdded: false
+            };
+        }
+
+        async function loadReviewCycleData() {
+            try {
+                const [employeeData, cycleData, reviewData] = await Promise.all([
+                    apiJson('/employees'),
+                    apiJson('/review-cycles'),
+                    apiJson('/performance-reviews')
+                ]);
+                employees = employeeData;
+                activeCycle = cycleData.find(cycle => cycle.status === 'Active') || cycleData[0] || null;
+                reviewRows = reviewData
+                    .filter(review => !activeCycle || Number(review.review_cycle_id) === Number(activeCycle.review_cycle_id))
+                    .map(mapReview);
+                cycleTargetName.textContent = activeCycle ? activeCycle.cycle_name : 'No active review cycle';
+                renderTable();
+            } catch (error) {
+                launchToast(error.message || 'Unable to load review cycles');
             }
-        ];
-// fetch data from api
-fetch('http://localhost:3000/api/performance_reviews')
-    .then(response => response.json())
-    .then(data => {
-        reviewRows = data;
-        setupDashboard();
-    })
-    .catch(error => console.error('Error fetching performance reviews:', error));
+        }
        
 
         function nextRowId() {
@@ -704,7 +721,7 @@ fetch('http://localhost:3000/api/performance_reviews')
                     tr.innerHTML = `
                         <td>
                             <div class="fw-semibold text-dark">${row.name}</div>
-                            <small class="text-muted">${emailFor(row.name)}</small>
+                            <small class="text-muted">${row.email || emailFor(row.name)}</small>
                         </td>
                         <td><span class="badge bg-light text-dark border">${row.department}</span></td>
                         <td>${row.manager}</td>
@@ -753,7 +770,7 @@ fetch('http://localhost:3000/api/performance_reviews')
             return reviewRows.find(row => String(row.id) === String(id));
         }
 
-        reviewTableBody.addEventListener("change", function(event) {
+        reviewTableBody.addEventListener("change", async function(event) {
             const field = event.target.dataset.field;
             if (!field) return;
 
@@ -764,11 +781,19 @@ fetch('http://localhost:3000/api/performance_reviews')
             if (field === "overallStatus") {
                 applyOverallStatus(row, event.target.value);
                 renderTable();
-                launchToast(`Updated status for ${row.name}`);
             } else if (field === "selfStatus" || field === "managerStatus") {
                 row[field] = event.target.value;
                 renderTable();
+            }
+            try {
+                await apiJson(`/performance-reviews/${row.review_id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ ...row, status: backendStatus(row) })
+                });
                 launchToast(`Updated ${row.name}'s review status`);
+            } catch (error) {
+                launchToast(error.message || 'Could not update review');
+                await loadReviewCycleData();
             }
         });
 
@@ -815,60 +840,81 @@ fetch('http://localhost:3000/api/performance_reviews')
             displayContainer.classList.remove("d-none");
         });
 
-        document.getElementById("saveInlineEditBtn").addEventListener("click", function() {
+        document.getElementById("saveInlineEditBtn").addEventListener("click", async function() {
             const newTitle = inlineInput.value.trim();
             if (!newTitle) return;
 
-            cycleTargetName.textContent = newTitle;
-            editContainer.classList.add("d-none");
-            displayContainer.classList.remove("d-none");
-            launchToast("Review cycle title updated");
+            if (!activeCycle) return launchToast('Create a review cycle first');
+            try {
+                await apiJson(`/review-cycles/${activeCycle.review_cycle_id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ ...activeCycle, cycle_name: newTitle })
+                });
+                activeCycle.cycle_name = newTitle;
+                cycleTargetName.textContent = newTitle;
+                editContainer.classList.add("d-none");
+                displayContainer.classList.remove("d-none");
+                launchToast("Review cycle title updated");
+            } catch (error) {
+                launchToast(error.message || 'Could not rename review cycle');
+            }
         });
 
-        document.getElementById("createCycleBtn").addEventListener("click", function() {
+        document.getElementById("createCycleBtn").addEventListener("click", async function() {
             const titleInput = document.getElementById("cycleTitleInput");
             const nameInput = document.getElementById("employeeNameInput");
             const deptInput = document.getElementById("employeeDeptInput");
             const managerInput = document.getElementById("cycleOwnerInput");
 
-            if (!nameInput.value.trim()) {
+            const employee = lookupEmployee(nameInput.value);
+            const manager = lookupEmployee(managerInput.value);
+            if (!employee || !manager) {
                 nameInput.classList.add("is-invalid");
+                launchToast('Enter an existing employee and manager name, email, or staff number');
                 return;
             }
             nameInput.classList.remove("is-invalid");
 
-            if (titleInput.value.trim()) {
-                cycleTargetName.textContent = titleInput.value.trim();
+            try {
+                const now = new Date();
+                const end = new Date(now);
+                end.setDate(end.getDate() + 90);
+                const cycleResult = await apiJson('/review-cycles', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        cycle_name: titleInput.value.trim() || 'Performance Review',
+                        cycle_type: 'Quarterly',
+                        start_date: now.toISOString().slice(0, 10),
+                        end_date: end.toISOString().slice(0, 10),
+                        status: 'Active'
+                    })
+                });
+                await apiJson('/performance-reviews', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        review_cycle_id: cycleResult.review_cycle_id,
+                        employee_id: employee.employee_id,
+                        reviewer_id: manager.employee_id,
+                        status: 'Draft',
+                        review_date: now.toISOString().slice(0, 10)
+                    })
+                });
+                const modalInstance = bootstrap.Modal.getInstance(document.getElementById("newCycleModal"));
+                if (modalInstance) modalInstance.hide();
+                nameInput.value = "";
+                await loadReviewCycleData();
+                launchToast("New review cycle initialized");
+            } catch (error) {
+                launchToast(error.message || 'Could not create review cycle');
             }
-
-            const newEmployee = {
-                id: nextRowId(),
-                name: nameInput.value.trim(),
-                department: deptInput.value,
-                manager: managerInput.value.trim() || "Team Lead",
-                selfStatus: "Not Started",
-                managerStatus: "Waiting",
-                editing: false,
-                justAdded: true
-            };
-
-            reviewRows.unshift(newEmployee);
-
-            const modalEl = document.getElementById("newCycleModal");
-            const modalInstance = bootstrap.Modal.getInstance(modalEl);
-            if (modalInstance) modalInstance.hide();
-
-            nameInput.value = "";
-            renderTable();
-            launchToast("New review cycle initialized");
         });
 
         document.getElementById("profileRefreshBtn").addEventListener("click", function() {
-            renderTable();
-            launchToast("View refreshed");
+            loadReviewCycleData();
+            launchToast("Refreshing view");
         });
 
-        document.addEventListener("DOMContentLoaded", renderTable);
+        document.addEventListener("DOMContentLoaded", loadReviewCycleData);
     </script>
 </body>
 </html>

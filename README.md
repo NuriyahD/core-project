@@ -2,7 +2,7 @@ core-project
 ModernTech Solutions — HR Management Dashboard
 A front-end prototype of an internal HR / Workforce Management platform for ModernTech Solutions. The project is a set of static, self-contained HTML pages (HTML + CSS + JavaScript, styled with Bootstrap) that together mimic a full HR suite: employee records, attendance, time tracking, scheduling, time off, performance reviews, and platform settings.
 
-There is no backend server — each page either holds its data inline in JavaScript or loads it from the bundled JSON files (Employee_info.json, Attendence.json) using fetch(). This makes the project easy to preview locally, but it also means some data will not persist between page reloads unless a page specifically uses localStorage.
+The frontend integrates with the Core Project Express API. Pages served from `localhost:5501` or `127.0.0.1:5501` call the API on port `3000`, and `api.js` adds the saved authentication token to requests. To use another deployment, set `localStorage.apiBaseUrl` to its full `/api` URL and reload.
 
 **Live site:** https://nuriyahd.github.io/core-project/
 :rocket: Getting Started / How to Access the Site

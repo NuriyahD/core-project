@@ -570,7 +570,7 @@
                         <input type="checkbox" id="notifyUpdates" checked>
                         <label for="notifyUpdates">Product update emails</label>
                     </div>
-                    <button class="primary" onclick="alert('Notification preferences saved.')">Save Preferences</button>
+                    <button class="primary" onclick="saveNotificationPreferences()">Save Preferences</button>
                 </div>
 
                 <div class="settings-panel" id="securityPanel">
@@ -579,14 +579,14 @@
                             <div class="info-label">Password</div>
                             <p class="info-value">Last changed 3 months ago</p>
                         </div>
-                        <button>Change Password</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#changePasswordModal">Change Password</button>
                     </div>
                     <div class="info-row">
                         <div>
                             <div class="info-label">Two-Factor Authentication</div>
                             <p class="info-value">Currently disabled</p>
                         </div>
-                        <button>Enable</button>
+                        <button type="button" onclick="showSecurityMessage('Two-factor authentication is not enabled by this backend yet.')">Enable</button>
                     </div>
                 </div>
 
@@ -638,7 +638,38 @@
     </div>
 </div>
 
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" id="changePasswordForm">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="currentPassword">Current password</label>
+                    <input class="form-control" type="password" id="currentPassword" autocomplete="current-password" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="newPassword">New password</label>
+                    <input class="form-control" type="password" id="newPassword" autocomplete="new-password" minlength="8" required>
+                </div>
+                <div>
+                    <label class="form-label" for="confirmNewPassword">Confirm new password</label>
+                    <input class="form-control" type="password" id="confirmNewPassword" autocomplete="new-password" minlength="8" required>
+                </div>
+                <div class="text-danger small mt-3 d-none" id="passwordChangeError"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="api.js"></script>
 <script>
     // Mobile burger toggle
     const burgerToggle = document.getElementById('burgerToggle');
@@ -692,23 +723,70 @@
         document.getElementById(formId).classList.remove("active");
     }
 
-    function saveName() {
-        var newName = document.getElementById("nameInput").value;
-        document.getElementById("nameDisplay").textContent = newName;
-        cancelEdit("nameEditForm");
+    var companySettings = [];
+    var employeeSettings = [];
+    var isHrUser = (localStorage.getItem('last_user_role') || '').toUpperCase().includes('HR');
+    var currentEmployeeId = Number(localStorage.getItem('last_employee_id'));
+
+    async function saveCompanySetting(key, value) {
+        var existing = companySettings.find(function (setting) { return setting.setting_key === key; });
+        var saved = await apiJson(existing ? '/company-settings/' + existing.setting_id : '/company-settings', {
+            method: existing ? 'PUT' : 'POST',
+            body: JSON.stringify({ setting_key: key, setting_value: value })
+        });
+        if (!existing && saved.setting_id) {
+            companySettings.push({ setting_id: saved.setting_id, setting_key: key, setting_value: value });
+        } else if (existing) {
+            existing.setting_value = value;
+        }
     }
 
-    function saveContacts() {
+    async function saveEmployeeSetting(key, value) {
+        var existing = employeeSettings.find(function (setting) { return setting.setting_key === key; });
+        var saved = await apiJson(existing ? '/employee-settings/' + existing.employee_setting_id : '/employee-settings', {
+            method: existing ? 'PUT' : 'POST',
+            body: JSON.stringify({ employee_id: currentEmployeeId, setting_key: key, setting_value: String(value) })
+        });
+        if (!existing && saved.employee_setting_id) {
+            employeeSettings.push({ employee_setting_id: saved.employee_setting_id, employee_id: currentEmployeeId, setting_key: key, setting_value: String(value) });
+        } else if (existing) {
+            existing.setting_value = String(value);
+        }
+    }
+
+    async function saveName() {
+        var newName = document.getElementById("nameInput").value;
+        if (!newName.trim()) return;
+        if (!isHrUser) return alert('Your legal name is managed by HR.');
+        try {
+            await saveCompanySetting('company_name', newName.trim());
+            document.getElementById("nameDisplay").textContent = newName.trim();
+            cancelEdit("nameEditForm");
+        } catch (error) { alert(error.message); }
+    }
+
+    async function saveContacts() {
         var newPhone = document.getElementById("phoneInput").value;
         var newEmail = document.getElementById("emailInput").value;
-        document.getElementById("contactsDisplay").innerHTML = "Phone: " + newPhone + "<br>Email: " + newEmail;
-        cancelEdit("contactsEditForm");
+        try {
+            if (isHrUser) {
+                await Promise.all([saveCompanySetting('company_phone', newPhone), saveCompanySetting('company_email', newEmail)]);
+            } else {
+                await saveEmployeeSetting('phone', newPhone);
+            }
+            document.getElementById("contactsDisplay").innerHTML = "Phone: " + newPhone + "<br>Email: " + newEmail;
+            cancelEdit("contactsEditForm");
+        } catch (error) { alert(error.message); }
     }
 
-    function saveLang() {
+    async function saveLang() {
         var newLang = document.getElementById("langInput").value;
-        document.getElementById("langDisplay").textContent = newLang;
-        cancelEdit("langEditForm");
+        try {
+            if (isHrUser) await saveCompanySetting('default_currency', newLang.split(', ')[1]);
+            else await saveEmployeeSetting('language_currency', newLang);
+            document.getElementById("langDisplay").textContent = newLang;
+            cancelEdit("langEditForm");
+        } catch (error) { alert(error.message); }
     }
 
     var avatarImage = document.getElementById("avatarImage");
@@ -747,6 +825,110 @@
         }
         integrationConnected = !integrationConnected;
     }
+
+    function showSecurityMessage(message) {
+        alert(message);
+    }
+
+    document.getElementById('changePasswordForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        var currentPassword = document.getElementById('currentPassword').value;
+        var newPassword = document.getElementById('newPassword').value;
+        var confirmation = document.getElementById('confirmNewPassword').value;
+        var errorElement = document.getElementById('passwordChangeError');
+        var submitButton = this.querySelector('[type="submit"]');
+        errorElement.classList.add('d-none');
+
+        if (newPassword !== confirmation) {
+            errorElement.textContent = 'New passwords do not match.';
+            errorElement.classList.remove('d-none');
+            return;
+        }
+
+        submitButton.disabled = true;
+        try {
+            await apiJson('/auth/change-password', {
+                method: 'PUT',
+                body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
+            });
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('changePasswordModal')).hide();
+            this.reset();
+            alert('Password changed successfully. Use your new password next time you sign in.');
+        } catch (error) {
+            errorElement.textContent = error.message;
+            errorElement.classList.remove('d-none');
+        } finally {
+            submitButton.disabled = false;
+        }
+    });
+
+    async function saveNotificationPreferences() {
+        if (isHrUser) return alert('Notification preferences saved.');
+        try {
+            await Promise.all([
+                saveEmployeeSetting('notify_email', document.getElementById('notifyEmail').checked),
+                saveEmployeeSetting('notify_sms', document.getElementById('notifySms').checked),
+                saveEmployeeSetting('notify_updates', document.getElementById('notifyUpdates').checked)
+            ]);
+            alert('Notification preferences saved.');
+        } catch (error) { alert(error.message); }
+    }
+
+    async function loadSettings() {
+        try {
+            if (!isHrUser) {
+                document.querySelector('h1').textContent = 'Account Settings';
+                document.querySelectorAll('.settings-nav-item[data-target="membersPanel"], .settings-nav-item[data-target="rolesPanel"]').forEach(function (element) { element.remove(); });
+                var integrationRow = document.getElementById('integrationBadge').closest('.info-row');
+                if (integrationRow) integrationRow.remove();
+                var employeeResults = await Promise.all([apiJson('/employee-settings'), apiJson('/employees')]);
+                employeeSettings = employeeResults[0];
+                var employee = employeeResults[1][0];
+                if (!employee) throw new Error('Unable to load your employee profile');
+                var personalValues = Object.fromEntries(employeeSettings.map(function (setting) { return [setting.setting_key, setting.setting_value]; }));
+                document.getElementById('nameDisplay').textContent = employee.name;
+                document.getElementById('nameInput').value = employee.name;
+                document.getElementById('nameInput').readOnly = true;
+                document.getElementById('emailInput').value = employee.email || employee.contact || '';
+                document.getElementById('emailInput').readOnly = true;
+                document.getElementById('phoneInput').value = personalValues.phone || employee.phone || '';
+                document.getElementById('contactsDisplay').innerHTML = 'Phone: ' + (personalValues.phone || employee.phone || 'Not set') + '<br>Email: ' + (employee.email || employee.contact || '');
+                var language = personalValues.language_currency || 'English, ZAR';
+                document.getElementById('langDisplay').textContent = language;
+                document.getElementById('langInput').value = language;
+                document.getElementById('notifyEmail').checked = personalValues.notify_email !== 'false';
+                document.getElementById('notifySms').checked = personalValues.notify_sms === 'true';
+                document.getElementById('notifyUpdates').checked = personalValues.notify_updates !== 'false';
+                return;
+            }
+
+            var results = await Promise.all([apiJson('/company-settings'), apiJson('/employees')]);
+            companySettings = results[0];
+            var values = Object.fromEntries(companySettings.map(function (setting) {
+                return [setting.setting_key, setting.setting_value];
+            }));
+            if (values.company_name) {
+                document.getElementById('nameDisplay').textContent = values.company_name;
+                document.getElementById('nameInput').value = values.company_name;
+            }
+            if (values.company_phone) document.getElementById('phoneInput').value = values.company_phone;
+            if (values.company_email) document.getElementById('emailInput').value = values.company_email;
+            if (values.company_phone || values.company_email) {
+                document.getElementById('contactsDisplay').innerHTML = 'Phone: ' + (values.company_phone || '') + '<br>Email: ' + (values.company_email || '');
+            }
+            if (values.default_currency) {
+                document.getElementById('langDisplay').textContent = 'English, ' + values.default_currency;
+                document.getElementById('langInput').value = 'English, ' + values.default_currency;
+            }
+            document.getElementById('membersPanel').innerHTML = results[1].map(function (employee) {
+                return '<div class="info-row"><div><div class="info-label">' + employee.name + '</div><p class="info-value">' + (employee.position || employee.employee_number) + '</p></div></div>';
+            }).join('') || '<p class="info-value">No employees found.</p>';
+        } catch (error) {
+            alert(error.message || 'Unable to load settings');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadSettings);
 </script>
 
 </body>

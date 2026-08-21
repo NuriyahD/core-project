@@ -597,6 +597,7 @@
     </div>
 </div>
 
+<script src="api.js"></script>
 <script>
   // Mobile burger toggle
   const burgerToggle = document.getElementById('burgerToggle');
@@ -627,7 +628,7 @@
   if (sidebarOverlay) sidebarOverlay.addEventListener('click', toggleSidebar);
 
   // Placeholder data
- fetch('http://localhost:3000/api/attendance')
+ apiFetch('/attendance')
  .then(response => response.json())
  .then(data => {
     attendanceRecords = data;
@@ -739,23 +740,29 @@
     document.getElementById("addFormBox").style.display = "none";
   });
 
-  document.getElementById("attendanceForm").addEventListener("submit", function (e) {
+  document.getElementById("attendanceForm").addEventListener("submit", async function (e) {
     e.preventDefault();
-
-    var newEntry = {
-      name: document.getElementById("entryName").value,
-      department: document.getElementById("entryDepartment").value,
-      date: document.getElementById("entryDate").value,
-      time: document.getElementById("entryTime").value,
-      status: document.getElementById("entryStatus").value
-    };
-
-    attendanceRecords.push(newEntry);
-
-    this.reset();
-    document.getElementById("addFormBox").style.display = "none";
-
-    refreshPage();
+    const submitButton = this.querySelector('[type="submit"]');
+    submitButton.disabled = true;
+    try {
+      const employee = await findEmployee(document.getElementById("entryName").value);
+      if (!employee) throw new Error('Employee not found. Enter an exact employee name, email, or staff number.');
+      const selectedStatus = document.getElementById("entryStatus").value;
+      await apiJson('/attendance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          employee_id: employee.employeeId,
+          attendance_date: document.getElementById("entryDate").value,
+          check_in: document.getElementById("entryTime").value || null,
+          status: selectedStatus === 'On Time' ? 'Present' : selectedStatus,
+        }),
+      });
+      window.location.reload();
+    } catch (error) {
+      alert(error.message);
+      submitButton.disabled = false;
+    }
   });
 
   refreshPage();

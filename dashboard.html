@@ -520,8 +520,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<script src="api.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Pulls user name if present, otherwise defaults gracefully
   const storedName = localStorage.getItem('last_user_name') || 'Team Member';
   document.getElementById('userGreeting').textContent = `Hello, ${storedName}`;
@@ -530,7 +531,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const toast = document.getElementById('successToast');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  leaveForm.addEventListener('submit', (e) => {
+  const leaveTypeSelect = document.getElementById('leaveType');
+  try {
+    const leaveTypes = await apiJson('/leave-types');
+    leaveTypeSelect.innerHTML = '<option value="">Select leave type</option>' + leaveTypes
+      .filter(type => !type.leave_type_name.startsWith('TestLeave'))
+      .map(type => `<option value="${type.leave_type_id}">${type.leave_type_name}</option>`)
+      .join('');
+  } catch (error) {
+    console.error('Unable to load leave types:', error);
+  }
+
+  leaveForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     leaveForm.classList.add('was-validated');
@@ -539,32 +551,34 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
     
-    const leaveData = {
-      type: document.getElementById('leaveType').value,
-      backup: document.getElementById('backupEmployee').value,
-      start: document.getElementById('startDate').value,
-      end: document.getElementById('endDate').value,
-      reason: document.getElementById('reason').value,
-      submittedAt: new Date().toISOString()
-    };
-
-    const existingRequests = JSON.parse(localStorage.getItem('timeOffRequests') || '[]');
-    existingRequests.push(leaveData);
-    localStorage.setItem('timeOffRequests', JSON.stringify(existingRequests));
-
-    toast.classList.add('show');
-    leaveForm.reset();
-    leaveForm.classList.remove('was-validated');
-
-    setTimeout(() => {
-      toast.classList.remove('show');
-    }, 4000);
+    const submitButton = leaveForm.querySelector('[type="submit"]');
+    submitButton.disabled = true;
+    try {
+      const employeeId = Number(localStorage.getItem('last_employee_id'));
+      if (!employeeId) throw new Error('Your employee session is missing. Please sign in again.');
+      await apiJson('/leave-requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ employee_id: employeeId, leave_type_id: Number(leaveTypeSelect.value), start_date: document.getElementById('startDate').value, end_date: document.getElementById('endDate').value, reason: `${document.getElementById('reason').value} (Backup: ${document.getElementById('backupEmployee').value})` }),
+      });
+      toast.classList.add('show');
+      leaveForm.reset();
+      leaveForm.classList.remove('was-validated');
+      setTimeout(() => toast.classList.remove('show'), 4000);
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      submitButton.disabled = false;
+    }
   });
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem('last_user_role');
       localStorage.removeItem('last_user_name');
+      localStorage.removeItem('last_employee_id');
+      localStorage.removeItem('last_user_email');
+      localStorage.removeItem('token');
       window.location.href = 'index.html';
     });
   }

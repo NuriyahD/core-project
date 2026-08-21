@@ -676,15 +676,6 @@
           </div>
 
           <div class="field">
-            <label for="job">Department/Role</label>
-            <div class="input-wrap" data-state="default">
-              <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <input type="text" id="job" name="Job" placeholder="e.g. HR, Engineering, Sales" autocomplete="job" required>
-            </div>
-            <span class="field-error" id="jobError"></span>
-          </div>
-
-          <div class="field">
             <div class="field-label-row">
               <label for="password">Security Password</label>
               <a href="#" class="link-inline" id="forgotLink">Forgot password?</a>
@@ -827,49 +818,20 @@
   </div>
 </div>
 
+<script src="api.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
 
-// fetch data from api
-
-/*fetch('http://localhost:3000/api/auth/login')
-    .then(response => response.json())
-    .then(data => {
-        employees = data;
-        setupDashboard();
-    })
-    .catch(error => console.error('Error fetching payslip data:', error));*/
-
-  if (!localStorage.getItem('registeredUsers')) {
-    let baseUsers = [];
-    try {
-      const response = await fetch(API_ENDPOINT);
-      if (!response.ok) {
-        throw new Error("Request to " + API_ENDPOINT + " failed with status " + response.status);
-      }
-      const data = await response.json();
-      const employees = Array.isArray(data) ? data : (data.employees || []);
-      baseUsers = employees
-        .map(emp => (typeof emp.contact === 'string' ? emp.contact.trim() : (emp.contact?.email || emp.email || '')))
-        .filter(email => email !== '');
-    } catch (error) {
-      console.error("Unable to load registered users from API:", error.message);
-    }
-    localStorage.setItem('registeredUsers', JSON.stringify(baseUsers));
-  }
-
-  const existingSession = typeof Auth !== 'undefined' ? Auth.getSession() : null;
-  if (existingSession){
+  const existingSession = localStorage.getItem('token');
+  if (existingSession) {
     const savedRole = localStorage.getItem('last_user_role') || '';
-    window.location.href = savedRole.toUpperCase() === 'HR' ? 'home.html' : 'dashboard.html';
+    window.location.href = savedRole.toUpperCase().includes('HR') ? 'home.html' : 'TimeOff.html';
   }
 
   const form = document.getElementById('loginForm');
   const emailInput = document.getElementById('email');
-  const jobInput = document.getElementById('job'); 
   const passwordInput = document.getElementById('password');
   const emailError = document.getElementById('emailError');
-  const jobError = document.getElementById('jobError');
   const passwordError = document.getElementById('passwordError');
   const signInBtn = document.getElementById('signInBtn');
   const toggleBtn = document.getElementById('toggleVisibility');
@@ -900,7 +862,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
-  [emailInput, jobInput, passwordInput].forEach((input) => {
+  [emailInput, passwordInput].forEach((input) => {
     input.addEventListener('focus', () => {
       if (wrapOf(input).dataset.state !== 'error') setState(input, 'focus');
     });
@@ -956,7 +918,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     e.preventDefault();
     let valid = true;
     const emailVal = emailInput.value.trim();
-    const jobVal = jobInput.value.trim();
     const passVal = passwordInput.value;
 
     if (emailVal === ''){
@@ -965,13 +926,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else if (!isValidEmail(emailVal)){
       showError(emailInput, emailError, 'Enter a valid email address.');
       valid = false;
-    }
-
-    if (jobVal === ''){
-      showError(jobInput, jobError, 'Enter your department or role position.');
-      valid = false;
-    } else {
-      clearError(jobInput, jobError);
     }
 
     if (passVal === ''){
@@ -988,7 +942,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     signInBtn.disabled = true;
 
     try {
-    const response = await fetch('http://localhost:3000/api/auth/login', {
+    const response = await apiFetch('/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -1005,7 +959,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         signInBtn.classList.remove('is-loading');
         signInBtn.disabled = false;
 
-        passwordError.textContent = data.error || 'Invalid email or password.';
+        passwordError.textContent = data.error || data.message || 'Invalid email or password.';
         passwordError.classList.add('visible');
         setState(passwordInput, 'error');
 
@@ -1017,12 +971,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Save the user's actual role from the database
     localStorage.setItem('last_user_role', data.role);
+    localStorage.setItem('last_employee_id', String(data.employee_id));
+    localStorage.setItem('last_user_email', data.email || emailVal);
 
     // Redirect based on the actual database role
-    if (data.role.toUpperCase() === 'HR Manager') {
+    if (data.role.toUpperCase().includes('HR')) {
         window.location.href = 'home.html';
     } else {
-        window.location.href = 'dashboard.html';
+        window.location.href = 'TimeOff.html';
     }
 
 } catch (error) {
